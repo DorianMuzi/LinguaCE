@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/app_config.dart';
 import 'design/lingua_theme.dart';
 import 'design/theme_controller.dart';
+import 'i18n/locale_controller.dart';
 import 'screens/splash_screen.dart';
 
 /// Contrôleur de thème global (clair / sombre / système), persisté.
@@ -18,6 +19,7 @@ Future<void> main() async {
     );
   }
   await themeController.load();
+  await localeController.load();
   runApp(const LinguaCEApp());
 }
 
@@ -26,15 +28,15 @@ class LinguaCEApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeMode>(
-      valueListenable: themeController,
-      builder: (context, mode, _) {
+    return AnimatedBuilder(
+      animation: Listenable.merge([themeController, localeController]),
+      builder: (context, _) {
         return MaterialApp(
           title: 'LinguaCE',
           debugShowCheckedModeBanner: false,
           theme: LinguaTheme.light(),
           darkTheme: LinguaTheme.dark(),
-          themeMode: mode,
+          themeMode: themeController.value,
           // Ajuste la barre de statut selon la luminosité résolue.
           builder: (context, child) {
             final isDark = Theme.of(context).brightness == Brightness.dark;

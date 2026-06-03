@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../design/lingua_tokens.dart';
+import '../i18n/app_strings.dart';
 import 'auth_screen.dart';
 import 'main_screen.dart';
 
@@ -147,7 +148,7 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Нохчийн мотт',
+                        'Noxçiyŋ mott',
                         style: GoogleFonts.inter(
                           color: t.textSecondary,
                           fontSize: 13,
@@ -156,7 +157,7 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Apprends le tchétchène',
+                        tr('drawer.tagline'),
                         style: GoogleFonts.inter(
                           color: t.textTertiary,
                           fontSize: 12,

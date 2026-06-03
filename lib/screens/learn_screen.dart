@@ -4,6 +4,7 @@ import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
+import '../i18n/app_strings.dart';
 import '../models/models.dart';
 import '../services/lesson_service.dart';
 import 'exercise_screen.dart';
@@ -66,7 +67,7 @@ class _LearnScreenState extends State<LearnScreen> {
                     children: [
                       _buildProgressOverview(t),
                       const SizedBox(height: 28),
-                      const SectionLabel('Parcours d\'apprentissage'),
+                      SectionLabel(tr('learn.path')),
                       const SizedBox(height: 12),
                       ..._lessons.map((l) =>
                           _LessonCard(lesson: l, onOpen: () => _openLesson(l))),
@@ -106,12 +107,12 @@ class _LearnScreenState extends State<LearnScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Apprendre',
+        Text(tr('learn.title1'),
             style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary,
                 fontSize: 28,
                 fontWeight: FontWeight.bold)),
-        Text('le tchétchène',
+        Text(tr('learn.title2'),
             style: GoogleFonts.playfairDisplay(
                 color: t.accent, fontSize: 28, fontWeight: FontWeight.bold)),
       ],
@@ -131,12 +132,12 @@ class _LearnScreenState extends State<LearnScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('$completed / $total leçons',
+                Text(tr('learn.lessons_count', {'c': '$completed', 't': '$total'}),
                     style: GoogleFonts.playfairDisplay(
                         color: t.textPrimary,
                         fontSize: 22,
                         fontWeight: FontWeight.bold)),
-                Text('complétées',
+                Text(tr('learn.completed'),
                     style:
                         GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
                 const SizedBox(height: 12),
@@ -159,7 +160,10 @@ class _LearnScreenState extends State<LearnScreen> {
             children: [
               const Text('🏅', style: TextStyle(fontSize: 40)),
               const SizedBox(height: 4),
-              Text(completed == total && total > 0 ? 'Terminé' : 'Débutant',
+              Text(
+                  tr(completed == total && total > 0
+                      ? 'learn.finished'
+                      : 'learn.beginner'),
                   style: GoogleFonts.spaceMono(color: t.accent, fontSize: 11)),
             ],
           ),
@@ -231,7 +235,7 @@ class _LessonCard extends StatelessWidget {
                               borderRadius: LinguaRadius.rPill,
                               border: Border.all(color: t.accent),
                             ),
-                            child: Text('EN COURS',
+                            child: Text(tr('learn.in_progress'),
                                 style: GoogleFonts.spaceMono(
                                     color: t.accentStrong,
                                     fontSize: 9,
@@ -260,7 +264,10 @@ class _LessonCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${lesson.completedExercises}/${lesson.totalExercises} exercices',
+                        tr('learn.exercises_count', {
+                          'c': '${lesson.completedExercises}',
+                          't': '${lesson.totalExercises}'
+                        }),
                         style: GoogleFonts.spaceMono(
                             color: t.textTertiary, fontSize: 10),
                       ),
@@ -287,7 +294,7 @@ class _LessonCard extends StatelessWidget {
                         borderRadius: LinguaRadius.rPill,
                       ),
                       child: Text(
-                        isCompleted ? 'Revoir' : 'Commencer',
+                        tr(isCompleted ? 'learn.review' : 'learn.start'),
                         style: GoogleFonts.inter(
                           color: isCompleted ? t.textSecondary : t.onAccent,
                           fontSize: 11,

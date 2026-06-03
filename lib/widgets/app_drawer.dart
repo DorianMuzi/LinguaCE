@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../main.dart' show themeController;
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
+import '../i18n/app_strings.dart';
+import '../i18n/locale_controller.dart';
 import '../services/profile_service.dart';
 import '../services/auth_service.dart';
 import '../screens/auth_screen.dart';
@@ -63,20 +65,20 @@ class _AppDrawerState extends State<AppDrawer> {
       builder: (ctx) => AlertDialog(
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
-        title: Text('Se déconnecter ?',
+        title: Text(tr('profile.logout_q'),
             style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary, fontSize: 18)),
-        content: Text('Tu devras te reconnecter pour accéder à ton profil.',
+        content: Text(tr('profile.logout_desc'),
             style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text('Annuler',
+            child: Text(tr('common.cancel'),
                 style: GoogleFonts.inter(color: t.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: Text('Déconnecter',
+            child: Text(tr('profile.logout'),
                 style: GoogleFonts.inter(
                     color: t.danger, fontWeight: FontWeight.bold)),
           ),
@@ -116,18 +118,18 @@ class _AppDrawerState extends State<AppDrawer> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Version 1.0.0',
+            Text(tr('about.version'),
                 style:
                     GoogleFonts.spaceMono(color: t.accent, fontSize: 12)),
             const SizedBox(height: 12),
             Text(
-              'LinguaCE est une application mobile d\'apprentissage de la langue tchétchène (нохчийн мотт) assistée par intelligence artificielle.',
+              tr('about.desc'),
               style: GoogleFonts.inter(
                   color: t.textSecondary, fontSize: 13, height: 1.5),
             ),
             const SizedBox(height: 12),
             Text(
-              'Développée avec ❤️ pour préserver et diffuser la langue tchétchène.',
+              tr('about.made'),
               style: GoogleFonts.inter(
                   color: t.textTertiary, fontSize: 12, height: 1.4),
             ),
@@ -136,7 +138,7 @@ class _AppDrawerState extends State<AppDrawer> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Fermer',
+            child: Text(tr('common.close'),
                 style: GoogleFonts.inter(color: t.accent)),
           ),
         ],
@@ -146,33 +148,34 @@ class _AppDrawerState extends State<AppDrawer> {
 
   void _showLanguagePicker() {
     final t = context.tokens;
-    Navigator.pop(context);
-    const langs = [
-      {'code': 'FR', 'label': 'Français'},
-      {'code': 'EN', 'label': 'English'},
-      {'code': 'RU', 'label': 'Русский'},
-      {'code': 'CE', 'label': 'Нохчийн'},
-    ];
+    Navigator.pop(context); // ferme le drawer
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
-        title: Text('Langue de l\'interface',
+        title: Text(tr('set.interface_lang'),
             style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary, fontSize: 18)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: langs.map((l) {
+          children: LocaleController.supported.map((code) {
+            final selected = localeController.value == code;
             return ListTile(
-              title: Text('${l['code']} — ${l['label']}',
-                  style:
-                      GoogleFonts.inter(color: t.textPrimary, fontSize: 14)),
-              trailing: Icon(Icons.chevron_right_rounded,
-                  color: t.textTertiary, size: 18),
+              title: Text('$code — ${LocaleController.names[code]}',
+                  style: GoogleFonts.inter(
+                      color: selected ? t.accent : t.textPrimary,
+                      fontSize: 14,
+                      fontWeight:
+                          selected ? FontWeight.w600 : FontWeight.normal)),
+              trailing: selected
+                  ? Icon(Icons.check_rounded, color: t.accent, size: 18)
+                  : null,
               onTap: () {
+                localeController.setLang(code);
                 Navigator.pop(context);
-                _info('${l['label']} sélectionné');
+                _info(tr('lang.selected',
+                    {'lang': LocaleController.names[code]!}));
               },
             );
           }).toList(),
@@ -208,7 +211,7 @@ class _AppDrawerState extends State<AppDrawer> {
                             fontWeight: FontWeight.bold)),
                   ]),
                   const SizedBox(height: 4),
-                  Text('Apprendre le tchétchène',
+                  Text(tr('drawer.tagline'),
                       style: GoogleFonts.spaceMono(
                           color: t.textSecondary,
                           fontSize: 11,
@@ -235,7 +238,11 @@ class _AppDrawerState extends State<AppDrawer> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600)),
                             Text(
-                              '${_leagueEmoji(_league)} Niveau $_level · Ligue $_league',
+                              tr('drawer.profile_meta', {
+                                'emoji': _leagueEmoji(_league),
+                                'l': '$_level',
+                                'league': _league,
+                              }),
                               style: GoogleFonts.spaceMono(
                                   color: t.accent, fontSize: 11),
                             ),
@@ -257,24 +264,24 @@ class _AppDrawerState extends State<AppDrawer> {
                 children: [
                   _DrawerItem(
                     icon: Icons.home_outlined,
-                    label: 'Accueil',
+                    label: tr('drawer.home'),
                     onTap: () => Navigator.pop(context),
                   ),
                   _DrawerItem(
                     icon: Icons.info_outline,
-                    label: 'À propos',
+                    label: tr('drawer.about'),
                     onTap: _showAbout,
                   ),
                   _DrawerItem(
                     icon: Icons.language_outlined,
-                    label: 'Langue de l\'interface',
+                    label: tr('set.interface_lang'),
                     onTap: _showLanguagePicker,
                   ),
                   _DrawerItem(
                     icon: t.isDark
                         ? Icons.dark_mode_outlined
                         : Icons.light_mode_outlined,
-                    label: 'Thème sombre',
+                    label: tr('drawer.theme'),
                     trailing: Switch(
                       value: t.isDark,
                       onChanged: (v) => themeController
@@ -285,18 +292,18 @@ class _AppDrawerState extends State<AppDrawer> {
                   ),
                   _DrawerItem(
                     icon: Icons.notifications_outlined,
-                    label: 'Notifications',
+                    label: tr('set.notifications'),
                     onTap: () {
                       Navigator.pop(context);
-                      _info('Notifications — Bientôt disponible !');
+                      _info(tr('common.soon'));
                     },
                   ),
                   _DrawerItem(
                     icon: Icons.share_outlined,
-                    label: 'Partager l\'app',
+                    label: tr('drawer.share'),
                     onTap: () {
                       Navigator.pop(context);
-                      _info('Partage — Bientôt disponible !');
+                      _info(tr('common.soon'));
                     },
                   ),
                 ],
@@ -322,7 +329,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     children: [
                       Icon(Icons.logout_rounded, color: t.danger, size: 16),
                       const SizedBox(width: 8),
-                      Text('Se déconnecter',
+                      Text(tr('profile.logout_btn'),
                           style: GoogleFonts.inter(
                               color: t.danger,
                               fontSize: 14,

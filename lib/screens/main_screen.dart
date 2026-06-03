@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
 import '../data/mock_data.dart';
+import '../i18n/app_strings.dart';
 import '../widgets/floating_nav_bar.dart';
 import '../widgets/app_drawer.dart';
 import 'home_screen.dart';
@@ -39,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
         ProgressScreen(key: ValueKey('progress-$_progressSeed')),
       ];
 
-  static const _titles = ['LinguaCE', 'Chat IA', 'Apprendre', 'Progrès'];
+  static const _titleKeys = ['', 'title.chat', 'title.learn', 'title.progress'];
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +108,7 @@ class _MainScreenState extends State<MainScreen> {
       title: _currentIndex == 0
           ? null
           : Text(
-              _titles[_currentIndex],
+              tr(_titleKeys[_currentIndex]),
               style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary,
                 fontSize: 18,

@@ -4,6 +4,7 @@ import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
+import '../i18n/app_strings.dart';
 import '../services/auth_service.dart';
 import '../services/profile_service.dart';
 import '../widgets/xp_bar.dart';
@@ -57,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (ctx) => AlertDialog(
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
-        title: Text('Modifier le nom',
+        title: Text(tr('profile.edit_name'),
             style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary, fontSize: 18)),
         content: TextField(
@@ -65,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           autofocus: true,
           style: GoogleFonts.inter(color: t.textPrimary, fontSize: 14),
           decoration: InputDecoration(
-            hintText: 'Nom d\'utilisateur',
+            hintText: tr('profile.username'),
             hintStyle: GoogleFonts.inter(color: t.textTertiary),
             filled: true,
             fillColor: t.surfaceSunken,
@@ -87,12 +88,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('Annuler',
+            child: Text(tr('common.cancel'),
                 style: GoogleFonts.inter(color: t.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, controller.text.trim()),
-            child: Text('Enregistrer',
+            child: Text(tr('common.save'),
                 style: GoogleFonts.inter(
                     color: t.accent, fontWeight: FontWeight.bold)),
           ),
@@ -113,20 +114,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (ctx) => AlertDialog(
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
-        title: Text('Se déconnecter ?',
+        title: Text(tr('profile.logout_q'),
             style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary, fontSize: 18)),
-        content: Text('Tu devras te reconnecter pour accéder à ton profil.',
+        content: Text(tr('profile.logout_desc'),
             style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text('Annuler',
+            child: Text(tr('common.cancel'),
                 style: GoogleFonts.inter(color: t.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: Text('Déconnecter',
+            child: Text(tr('profile.logout'),
                 style: GoogleFonts.inter(
                     color: t.danger, fontWeight: FontWeight.bold)),
           ),
@@ -155,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: t.textPrimary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Profil',
+        title: Text(tr('title.profile'),
             style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary,
                 fontSize: 20,
@@ -249,7 +250,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AccentChip(
-                label: 'Ligue $_league', emoji: _leagueEmoji(_league)),
+                label: tr('progress.league', {'l': _league}),
+                emoji: _leagueEmoji(_league)),
             const SizedBox(width: 8),
             Container(
               padding:
@@ -259,7 +261,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 borderRadius: LinguaRadius.rPill,
                 border: Border.all(color: t.outline),
               ),
-              child: Text('🔥 $_streak jour${_streak != 1 ? 's' : ''}',
+              child: Text(
+                  '🔥 $_streak ${tr(_streak != 1 ? 'profile.days' : 'profile.day')}',
                   style: GoogleFonts.spaceMono(
                       color: t.textSecondary, fontSize: 11)),
             ),
@@ -272,10 +275,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildStatsGrid() {
     final cols = Responsive.value(context, mobile: 2, tablet: 4, desktop: 4);
     final stats = [
-      ('⭐', '$_xp', 'XP TOTAL'),
-      ('🏆', '$_level', 'NIVEAU'),
-      ('🔥', '${_streak}j', 'SÉRIE'),
-      ('📚', '$_lessonsCompleted', 'LEÇONS'),
+      ('⭐', '$_xp', tr('stat.xp_total')),
+      ('🏆', '$_level', tr('stat.level')),
+      ('🔥', '${_streak}j', tr('stat.streak')),
+      ('📚', '$_lessonsCompleted', tr('stat.lessons')),
     ];
     return GridView.count(
       crossAxisCount: cols,
@@ -292,11 +295,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildSettingsSection(LinguaTokens t) {
     final items = [
-      (Icons.notifications_outlined, 'Notifications', true),
-      (Icons.language_outlined, 'Langue de l\'interface', false),
-      (Icons.volume_up_outlined, 'Sons', true),
-      (Icons.privacy_tip_outlined, 'Confidentialité', false),
-      (Icons.help_outline_rounded, 'Aide & Support', false),
+      (Icons.notifications_outlined, tr('set.notifications'), true),
+      (Icons.language_outlined, tr('set.interface_lang'), false),
+      (Icons.volume_up_outlined, tr('set.sounds'), true),
+      (Icons.privacy_tip_outlined, tr('set.privacy'), false),
+      (Icons.help_outline_rounded, tr('set.help'), false),
     ];
     return CopilotCard(
       padding: EdgeInsets.zero,
@@ -356,7 +359,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Icon(Icons.logout_rounded, color: t.danger, size: 18),
                   const SizedBox(width: 8),
-                  Text('Se déconnecter',
+                  Text(tr('profile.logout_btn'),
                       style: GoogleFonts.inter(
                           color: t.danger,
                           fontSize: 15,

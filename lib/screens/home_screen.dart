@@ -4,6 +4,7 @@ import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
+import '../i18n/app_strings.dart';
 import '../models/models.dart';
 import '../services/profile_service.dart';
 import '../services/lesson_service.dart';
@@ -70,15 +71,15 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 14),
             _loading ? _buildSkeleton(74) : _buildXpCard(),
             const SizedBox(height: 28),
-            const SectionLabel('Actions rapides'),
+            SectionLabel(tr('home.quick_actions')),
             const SizedBox(height: 12),
             _buildQuickActions(),
             const SizedBox(height: 28),
-            const SectionLabel('Leçon du jour'),
+            SectionLabel(tr('home.daily_lesson')),
             const SizedBox(height: 12),
             _buildDailyLesson(),
             const SizedBox(height: 28),
-            const SectionLabel('Mot du jour'),
+            SectionLabel(tr('home.word_of_day')),
             const SizedBox(height: 12),
             _buildWordOfDay(),
           ],
@@ -109,12 +110,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildGreeting() {
     final t = context.tokens;
     final hour = DateTime.now().hour;
-    final greeting =
-        hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir';
+    final greetingKey = hour < 12
+        ? 'home.greeting_morning'
+        : hour < 18
+            ? 'home.greeting_afternoon'
+            : 'home.greeting_evening';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('$greeting,',
+        Text('${tr(greetingKey)},',
             style: GoogleFonts.inter(color: t.textSecondary, fontSize: 16)),
         Text(
           _loading ? '…' : _username,
@@ -141,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$_streak jour${_streak != 1 ? 's' : ''} consécutif${_streak != 1 ? 's' : ''}',
+                  tr('home.streak_days', {'n': '$_streak'}),
                   style: GoogleFonts.playfairDisplay(
                     color: t.textPrimary,
                     fontSize: 17,
@@ -149,16 +153,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Text(
-                  _streak > 0
-                      ? 'Continue comme ça !'
-                      : 'Commence ta série !',
+                  tr(_streak > 0 ? 'home.streak_keep' : 'home.streak_start'),
                   style:
                       GoogleFonts.inter(color: t.textSecondary, fontSize: 13),
                 ),
               ],
             ),
           ),
-          if (_streak > 0) const AccentChip(label: 'Record', emoji: '🏆'),
+          if (_streak > 0) AccentChip(label: tr('home.record'), emoji: '🏆'),
         ],
       ),
     );
@@ -172,9 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildQuickActions() {
     final actions = [
-      {'icon': '💬', 'label': 'Chat IA', 'tab': 1},
-      {'icon': '📚', 'label': 'Leçons', 'tab': 2},
-      {'icon': '📊', 'label': 'Progrès', 'tab': 3},
+      {'icon': '💬', 'label': 'home.qa_chat', 'tab': 1},
+      {'icon': '📚', 'label': 'home.qa_lessons', 'tab': 2},
+      {'icon': '📊', 'label': 'home.qa_progress', 'tab': 3},
     ];
     return Row(
       children: actions.map((a) {
@@ -190,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: const TextStyle(fontSize: 24)),
                   const SizedBox(height: 6),
                   Text(
-                    a['label'] as String,
+                    tr(a['label'] as String),
                     style: GoogleFonts.inter(
                       color: context.tokens.textPrimary,
                       fontSize: 12,
@@ -255,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(width: 12),
           CopilotButton(
-            label: 'Continuer',
+            label: tr('common.continue'),
             variant: CopilotButtonVariant.tonal,
             onPressed: () => widget.onTabChange(2),
           ),
@@ -272,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AccentChip(label: 'MOT DU JOUR', emoji: '✨'),
+          AccentChip(label: tr('home.word_of_day'), emoji: '✨'),
           const SizedBox(height: 12),
           Text('баркалла',
               style: GoogleFonts.playfairDisplay(
@@ -284,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style:
                   GoogleFonts.spaceMono(color: t.textSecondary, fontSize: 14)),
           const SizedBox(height: 8),
-          Text('"Merci" — Expression de gratitude en tchétchène.',
+          Text(tr('home.word_desc'),
               style: GoogleFonts.inter(color: t.textSecondary, fontSize: 13)),
         ],
       ),

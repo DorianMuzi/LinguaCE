@@ -4,6 +4,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
+import '../i18n/app_strings.dart';
 import '../models/models.dart';
 import '../data/mock_data.dart';
 import '../services/claude_service.dart';
@@ -122,20 +123,20 @@ class _ChatScreenState extends State<ChatScreen> {
       builder: (ctx) => AlertDialog(
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
-        title: Text('Effacer la conversation ?',
+        title: Text(tr('chat.clear_q'),
             style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary, fontSize: 17)),
-        content: Text('L\'historique sera supprimé définitivement.',
+        content: Text(tr('chat.clear_desc'),
             style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text('Annuler',
+            child: Text(tr('common.cancel'),
                 style: GoogleFonts.inter(color: t.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: Text('Effacer',
+            child: Text(tr('common.delete'),
                 style: GoogleFonts.inter(
                     color: t.danger, fontWeight: FontWeight.bold)),
           ),
@@ -200,7 +201,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       child: Row(
         children: [
-          Text('Langue :',
+          Text(tr('chat.language'),
               style:
                   GoogleFonts.spaceMono(color: t.textSecondary, fontSize: 12)),
           const SizedBox(width: 12),
@@ -242,7 +243,7 @@ class _ChatScreenState extends State<ChatScreen> {
           const SizedBox(width: 12),
           Icon(Icons.psychology_outlined, color: t.accent, size: 18),
           const SizedBox(width: 4),
-          Text('IA Tchétchène',
+          Text(tr('chat.ai_label'),
               style: GoogleFonts.spaceMono(color: t.accent, fontSize: 11)),
         ],
       ),
@@ -275,7 +276,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ListTile(
               leading:
                   Icon(Icons.copy_rounded, color: t.textSecondary, size: 20),
-              title: Text('Copier le texte',
+              title: Text(tr('chat.copy'),
                   style: GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
               onTap: () {
                 Navigator.pop(ctx);
@@ -286,7 +287,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ListTile(
                 leading:
                     Icon(Icons.edit_rounded, color: t.textSecondary, size: 20),
-                title: Text('Modifier',
+                title: Text(tr('chat.edit'),
                     style:
                         GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
                 onTap: () {
@@ -298,7 +299,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ListTile(
                 leading: Icon(Icons.refresh_rounded,
                     color: t.textSecondary, size: 20),
-                title: Text('Régénérer la réponse',
+                title: Text(tr('chat.regenerate'),
                     style:
                         GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
                 onTap: () {
@@ -319,7 +320,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final t = context.tokens;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content:
-          Text('Texte copié', style: GoogleFonts.inter(color: Colors.white)),
+          Text(tr('chat.copied'), style: GoogleFonts.inter(color: Colors.white)),
       backgroundColor: t.accentStrong,
       behavior: SnackBarBehavior.floating,
       duration: const Duration(seconds: 1),
@@ -564,7 +565,7 @@ class _ChatScreenState extends State<ChatScreen> {
               focusNode: _inputFocus,
               style: GoogleFonts.inter(color: t.textPrimary, fontSize: 14),
               decoration: InputDecoration(
-                hintText: 'Écrivez votre message...',
+                hintText: tr('chat.hint'),
                 hintStyle:
                     GoogleFonts.inter(color: t.textTertiary, fontSize: 14),
                 filled: true,

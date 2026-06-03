@@ -4,6 +4,7 @@ import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
+import '../i18n/app_strings.dart';
 import '../models/models.dart';
 import '../services/profile_service.dart';
 
@@ -71,11 +72,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
             const SizedBox(height: 20),
             _buildWeeklyChart(),
             const SizedBox(height: 28),
-            SectionLabel('Ligue $_league ${_leagueEmoji(_league)}'),
+            SectionLabel(
+                '${tr('progress.league', {'l': _league})} ${_leagueEmoji(_league)}'),
             const SizedBox(height: 12),
             _buildLeague(),
             const SizedBox(height: 28),
-            const SectionLabel('Mes statistiques'),
+            SectionLabel(tr('progress.stats')),
             const SizedBox(height: 12),
             _loading ? _buildStatsLoading() : _buildStats(),
           ],
@@ -89,12 +91,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Mes progrès',
+        Text(tr('progress.title'),
             style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary,
                 fontSize: 28,
                 fontWeight: FontWeight.bold)),
-        Text('Cette semaine',
+        Text(tr('progress.this_week'),
             style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
       ],
     );
@@ -128,7 +130,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           color: t.accent,
                           fontSize: 24,
                           fontWeight: FontWeight.bold)),
-                  Text('cette semaine',
+                  Text(tr('progress.week_xp'),
                       style: GoogleFonts.inter(
                           color: t.textSecondary, fontSize: 13)),
                 ],
@@ -203,7 +205,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     }
     if (_leaderboard.isEmpty) {
       return CopilotCard(
-        child: Text('Aucun classement pour l\'instant.',
+        child: Text(tr('progress.empty_league'),
             style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
       );
     }
@@ -253,13 +255,18 @@ class _ProgressScreenState extends State<ProgressScreen> {
     return Row(
       children: [
         Expanded(
-            child: StatTile(emoji: '🔥', value: '${_streak}j', label: 'SÉRIE')),
+            child: StatTile(
+                emoji: '🔥',
+                value: '${_streak}j',
+                label: tr('stat.streak'))),
         const SizedBox(width: 12),
         Expanded(
-            child: StatTile(emoji: '⭐', value: '$_xp', label: 'XP TOTAL')),
+            child: StatTile(
+                emoji: '⭐', value: '$_xp', label: tr('stat.xp_total'))),
         const SizedBox(width: 12),
         Expanded(
-            child: StatTile(emoji: '🏆', value: '$_level', label: 'NIVEAU')),
+            child: StatTile(
+                emoji: '🏆', value: '$_level', label: tr('stat.level'))),
       ],
     );
   }

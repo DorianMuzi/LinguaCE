@@ -6,6 +6,8 @@ import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
+import '../i18n/app_strings.dart';
+import '../i18n/locale_controller.dart';
 import 'main_screen.dart';
 import 'forgot_password_screen.dart';
 import 'register_screen.dart';
@@ -22,8 +24,10 @@ class _AuthScreenState extends State<AuthScreen> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _obscurePassword = true;
-  String _selectedLang = 'FR';
   bool _langOpen = false;
+
+  /// La langue de l'écran d'auth suit la langue d'interface globale.
+  String get _selectedLang => localeController.value;
 
   // ── Labels localisés ─────────────────────────────────────────────────────
   String get _tagline => switch (_selectedLang) {
@@ -107,7 +111,7 @@ class _AuthScreenState extends State<AuthScreen> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     if (email.isEmpty || password.isEmpty) {
-      _showError('Veuillez remplir tous les champs.');
+      _showError(tr('err.fill_fields'));
       return;
     }
     setState(() => _isLoading = true);
@@ -117,7 +121,7 @@ class _AuthScreenState extends State<AuthScreen> {
     } on AuthException catch (e) {
       _showError(e.message);
     } catch (_) {
-      _showError('Une erreur est survenue. Réessaie.');
+      _showError(tr('err.generic'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -330,10 +334,10 @@ class _AuthScreenState extends State<AuthScreen> {
     final selected = _selectedLang == lang;
     return GestureDetector(
       onTap: _langOpen
-          ? () => setState(() {
-                _selectedLang = lang;
-                _langOpen = false;
-              })
+          ? () {
+              localeController.setLang(lang);
+              setState(() => _langOpen = false);
+            }
           : null,
       child: AnimatedContainer(
         duration: LinguaDuration.fast,

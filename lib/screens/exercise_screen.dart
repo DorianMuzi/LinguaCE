@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
+import '../i18n/app_strings.dart';
 import '../models/models.dart';
 import '../services/lesson_service.dart';
 
@@ -393,7 +394,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                 const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
             elevation: 0,
           ),
-          child: Text(_isLast ? 'Terminer la leçon 🎓' : 'Suivant →',
+          child: Text(tr(_isLast ? 'ex.finish' : 'ex.next'),
               style:
                   GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold)),
         ),
@@ -407,7 +408,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
       child: Column(
         children: [
-          Text('Tapez la carte pour la retourner',
+          Text(tr('ex.tap_flip'),
               style: GoogleFonts.inter(color: t.textSecondary, fontSize: 13)),
           const SizedBox(height: 16),
           Expanded(
@@ -450,7 +451,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                       borderRadius: LinguaRadius.rMd),
                   elevation: 0,
                 ),
-                child: Text("J'ai compris → +5 XP",
+                child: Text(tr('ex.understood'),
                     style: GoogleFonts.inter(
                         fontSize: 15, fontWeight: FontWeight.bold)),
               ),
@@ -481,7 +482,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                     fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center),
             const SizedBox(height: 16),
-            Text('Tapez pour voir la traduction',
+            Text(tr('ex.tap_translate'),
                 style: GoogleFonts.inter(color: t.textTertiary, fontSize: 13)),
           ],
         ),
@@ -605,7 +606,8 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               isCorrect: _isCorrect,
               correctLabel: _isCorrect
                   ? null
-                  : 'Réponse : ${_current.choices![_current.correctIndex!]}',
+                  : tr('ex.answer_is',
+                      {'x': _current.choices![_current.correctIndex!]}),
               xp: _isCorrect ? '+10 XP' : null,
             ),
           ],
@@ -649,7 +651,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
           if (!_isAnswered) ...[
             Align(
               alignment: Alignment.centerLeft,
-              child: Text('💡 Indice : ${_current.translit}',
+              child: Text(tr('ex.hint', {'x': _current.translit}),
                   style:
                       GoogleFonts.spaceMono(color: t.accent, fontSize: 12)),
             ),
@@ -660,7 +662,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               textAlign: TextAlign.center,
               maxLines: 2,
               decoration: InputDecoration(
-                hintText: 'Ta réponse en cyrillique…',
+                hintText: tr('ex.answer_hint'),
                 hintStyle:
                     GoogleFonts.inter(color: t.textTertiary, fontSize: 14),
                 filled: true,
@@ -696,7 +698,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                       borderRadius: LinguaRadius.rMd),
                   elevation: 0,
                 ),
-                child: Text('Vérifier',
+                child: Text(tr('ex.check'),
                     style: GoogleFonts.inter(
                         fontSize: 15, fontWeight: FontWeight.bold)),
               ),
@@ -715,7 +717,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               ),
               child: Column(
                 children: [
-                  Text(_isCorrect ? '🎉 Parfait !' : '💡 La bonne réponse :',
+                  Text(tr(_isCorrect ? 'ex.perfect' : 'ex.correct_answer'),
                       style: GoogleFonts.inter(
                           color: _isCorrect ? t.success : t.danger,
                           fontWeight: FontWeight.bold,
@@ -773,7 +775,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(isCorrect ? 'Correct !' : 'Pas tout à fait…',
+                Text(tr(isCorrect ? 'ex.correct' : 'ex.not_quite'),
                     style: GoogleFonts.inter(
                         color: isCorrect ? t.success : t.danger,
                         fontWeight: FontWeight.bold,
@@ -807,7 +809,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
           children: [
             Text(perfect ? '🏆' : '🎓', style: const TextStyle(fontSize: 80)),
             const SizedBox(height: 24),
-            Text(perfect ? 'Parfait !' : 'Leçon terminée !',
+            Text(tr(perfect ? 'ex.done_perfect' : 'ex.done'),
                 style: GoogleFonts.playfairDisplay(
                     color: t.textPrimary,
                     fontSize: 32,
@@ -827,12 +829,12 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _stat(t, 'XP gagnés', '+$_xpEarned', '⭐'),
+                  _stat(t, tr('ex.xp_earned'), '+$_xpEarned', '⭐'),
                   Container(width: 1, height: 40, color: t.outlineSubtle),
-                  _stat(t, 'Erreurs', '$_mistakes',
+                  _stat(t, tr('ex.mistakes'), '$_mistakes',
                       _mistakes == 0 ? '✨' : '💡'),
                   Container(width: 1, height: 40, color: t.outlineSubtle),
-                  _stat(t, 'Exercices', '${_exercises.length}', '📚'),
+                  _stat(t, tr('ex.exercises'), '${_exercises.length}', '📚'),
                 ],
               ),
             ),
@@ -849,7 +851,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                       borderRadius: LinguaRadius.rLg),
                   elevation: 0,
                 ),
-                child: Text('Continuer',
+                child: Text(tr('common.continue'),
                     style: GoogleFonts.inter(
                         fontSize: 16, fontWeight: FontWeight.bold)),
               ),

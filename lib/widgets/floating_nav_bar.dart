@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
+import '../i18n/app_strings.dart';
 
 class FloatingNavBar extends StatelessWidget {
   final int currentIndex;
@@ -15,10 +16,10 @@ class FloatingNavBar extends StatelessWidget {
   });
 
   static const _items = [
-    _NavItem(icon: Icons.home_rounded, label: 'Accueil'),
-    _NavItem(icon: Icons.chat_bubble_rounded, label: 'Chat'),
-    _NavItem(icon: Icons.menu_book_rounded, label: 'Apprendre'),
-    _NavItem(icon: Icons.bar_chart_rounded, label: 'Progrès'),
+    _NavItem(icon: Icons.home_rounded, label: 'nav.home'),
+    _NavItem(icon: Icons.chat_bubble_rounded, label: 'nav.chat'),
+    _NavItem(icon: Icons.menu_book_rounded, label: 'nav.learn'),
+    _NavItem(icon: Icons.bar_chart_rounded, label: 'nav.progress'),
   ];
 
   @override
@@ -102,7 +103,7 @@ class _NavButton extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              item.label,
+              tr(item.label),
               style: GoogleFonts.spaceMono(
                 color: isSelected ? t.accentStrong : t.textSecondary,
                 fontSize: 9,

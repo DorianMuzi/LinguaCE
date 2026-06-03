@@ -5,6 +5,7 @@ import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
+import '../i18n/app_strings.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -27,11 +28,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Future<void> _resetPassword() async {
     final email = _emailController.text.trim();
     if (email.isEmpty) {
-      _showError('Veuillez entrer votre adresse email.');
+      _showError(tr('forgot.err_empty'));
       return;
     }
     if (!RegExp(r'^[\w\-.]+@[\w\-]+\.\w+$').hasMatch(email)) {
-      _showError('Adresse email invalide.');
+      _showError(tr('forgot.err_invalid'));
       return;
     }
 
@@ -50,7 +51,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       }
     } catch (_) {
       if (mounted) {
-        _showError('Une erreur est survenue. Réessaie.');
+        _showError(tr('err.generic'));
         setState(() => _isLoading = false);
       }
     }
@@ -112,14 +113,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Icon(Icons.lock_reset_rounded, color: t.accent, size: 30),
         ),
         const SizedBox(height: 24),
-        Text('Mot de passe oublié ?',
+        Text(tr('forgot.title'),
             style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary,
                 fontSize: 26,
                 fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         Text(
-          'Saisis ton adresse email et nous t\'enverrons un lien pour réinitialiser ton mot de passe.',
+          tr('forgot.desc'),
           style:
               GoogleFonts.inter(color: t.textSecondary, fontSize: 14, height: 1.5),
         ),
@@ -129,7 +130,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           keyboardType: TextInputType.emailAddress,
           style: GoogleFonts.inter(color: t.textPrimary, fontSize: 14),
           decoration: InputDecoration(
-            labelText: 'Adresse email',
+            labelText: tr('forgot.email'),
             labelStyle: GoogleFonts.inter(color: t.textTertiary, fontSize: 14),
             prefixIcon:
                 Icon(Icons.email_outlined, color: t.textTertiary, size: 20),
@@ -155,7 +156,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
         const SizedBox(height: 28),
         CopilotButton(
-          label: 'Envoyer le lien',
+          label: tr('forgot.send'),
           expand: true,
           loading: _isLoading,
           onPressed: _resetPassword,
@@ -164,7 +165,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         Center(
           child: TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Retour à la connexion',
+            child: Text(tr('forgot.back'),
                 style: GoogleFonts.inter(
                   color: t.textSecondary,
                   fontSize: 13,
@@ -194,14 +195,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Icon(Icons.mark_email_read_outlined, color: t.accent, size: 44),
         ),
         const SizedBox(height: 28),
-        Text('Email envoyé !',
+        Text(tr('forgot.sent_title'),
             style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary,
                 fontSize: 26,
                 fontWeight: FontWeight.bold),
             textAlign: TextAlign.center),
         const SizedBox(height: 14),
-        Text('Un lien de réinitialisation a été envoyé à :',
+        Text(tr('forgot.sent_to'),
             style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14),
             textAlign: TextAlign.center),
         const SizedBox(height: 6),
@@ -211,14 +212,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             textAlign: TextAlign.center),
         const SizedBox(height: 16),
         Text(
-          'Vérifie ta boîte de réception (et tes spams) puis clique sur le lien pour choisir un nouveau mot de passe.',
+          tr('forgot.check_inbox'),
           style:
               GoogleFonts.inter(color: t.textTertiary, fontSize: 13, height: 1.5),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 48),
         CopilotButton(
-          label: 'Retour à la connexion',
+          label: tr('forgot.back'),
           expand: true,
           onPressed: () => Navigator.pop(context),
         ),
@@ -228,7 +229,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             _emailSent = false;
             _emailController.clear();
           }),
-          child: Text('Utiliser une autre adresse',
+          child: Text(tr('forgot.other_email'),
               style: GoogleFonts.inter(
                 color: t.textSecondary,
                 fontSize: 13,
