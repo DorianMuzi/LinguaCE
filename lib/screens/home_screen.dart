@@ -4,8 +4,9 @@ import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
-import '../data/mock_data.dart';
+import '../models/models.dart';
 import '../services/profile_service.dart';
+import '../services/lesson_service.dart';
 import '../widgets/xp_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,12 +20,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic>? _profile;
+  List<LessonModel> _lessons = [];
   bool _loading = true;
 
   @override
   void initState() {
     super.initState();
     _loadProfile();
+    _loadLessons();
   }
 
   Future<void> _loadProfile() async {
@@ -34,6 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (_) {
       if (mounted) setState(() => _loading = false);
     }
+  }
+
+  Future<void> _loadLessons() async {
+    final lessons = await LessonService.fetchLessons();
+    if (mounted) setState(() => _lessons = lessons);
   }
 
   String get _username => _profile?['username'] as String? ?? 'Apprenant';
@@ -200,9 +208,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildDailyLesson() {
     final t = context.tokens;
-    final lesson = MockData.lessons.firstWhere(
-      (l) => l.status.name == 'active',
-      orElse: () => MockData.lessons.first,
+    if (_lessons.isEmpty) {
+      return _buildSkeleton(96);
+    }
+    final lesson = _lessons.firstWhere(
+      (l) => l.status == LessonStatus.active,
+      orElse: () => _lessons.firstWhere(
+        (l) => l.status != LessonStatus.completed,
+        orElse: () => _lessons.first,
+      ),
     );
     return CopilotCard(
       child: Row(

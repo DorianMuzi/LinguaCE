@@ -104,6 +104,45 @@ create policy "Messages creables par leur auteur"
   on public.chat_messages for insert with check (auth.uid() = user_id);
 create policy "Messages supprimables par leur auteur"
   on public.chat_messages for delete using (auth.uid() = user_id);
+
+-- Catalogue des leçons + progression par utilisateur
+create table if not exists public.lessons (
+  id text primary key,
+  title text not null,
+  subtitle text not null,
+  icon text not null,
+  xp_reward integer not null default 50,
+  total_exercises integer not null default 6,
+  sort_order integer not null default 0
+);
+alter table public.lessons enable row level security;
+create policy "Lecons visibles (authentifies)"
+  on public.lessons for select to authenticated using (true);
+
+create table if not exists public.lesson_progress (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  lesson_id text not null references public.lessons(id) on delete cascade,
+  completed_exercises integer not null default 0,
+  completed boolean not null default false,
+  updated_at timestamptz default now(),
+  primary key (user_id, lesson_id)
+);
+alter table public.lesson_progress enable row level security;
+create policy "Progression visible (proprietaire)"
+  on public.lesson_progress for select using (auth.uid() = user_id);
+create policy "Progression modifiable (proprietaire)"
+  on public.lesson_progress for all
+  using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+grant all on public.lessons, public.lesson_progress to anon, authenticated;
+
+-- Seed du catalogue
+insert into public.lessons (id, title, subtitle, icon, xp_reward, total_exercises, sort_order) values
+  ('1', 'Premiers Mots',      'Vocabulaire de base',   '🌱',       100, 6, 1),
+  ('2', 'Salutations',        'Bonjour, au revoir...', '👋',       150, 6, 2),
+  ('3', 'Chiffres & Nombres', 'De 1 à 100',            '🔢',       200, 6, 3),
+  ('4', 'La Famille',         'Mère, père, frère...',  '👨‍👩‍👧', 250, 6, 4)
+on conflict (id) do nothing;
 ```
 
 ### 4. Lancer l'app

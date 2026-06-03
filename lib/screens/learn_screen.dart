@@ -5,11 +5,42 @@ import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
 import '../models/models.dart';
-import '../data/mock_data.dart';
+import '../services/lesson_service.dart';
 import 'exercise_screen.dart';
 
-class LearnScreen extends StatelessWidget {
+class LearnScreen extends StatefulWidget {
   const LearnScreen({super.key});
+
+  @override
+  State<LearnScreen> createState() => _LearnScreenState();
+}
+
+class _LearnScreenState extends State<LearnScreen> {
+  List<LessonModel> _lessons = [];
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final lessons = await LessonService.fetchLessons();
+    if (!mounted) return;
+    setState(() {
+      _lessons = lessons;
+      _loading = false;
+    });
+  }
+
+  Future<void> _openLesson(LessonModel lesson) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => ExerciseScreen(lesson: lesson)),
+    );
+    _load(); // recharge la progression au retour
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +59,44 @@ class LearnScreen extends StatelessWidget {
           children: [
             _buildHeader(t),
             const SizedBox(height: 20),
-            _buildProgressOverview(t),
-            const SizedBox(height: 28),
-            const SectionLabel('Parcours d\'apprentissage'),
-            const SizedBox(height: 12),
-            ...MockData.lessons.map((l) => _LessonCard(lesson: l)),
+            _loading
+                ? _buildSkeleton(t)
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildProgressOverview(t),
+                      const SizedBox(height: 28),
+                      const SectionLabel('Parcours d\'apprentissage'),
+                      const SizedBox(height: 12),
+                      ..._lessons.map((l) =>
+                          _LessonCard(lesson: l, onOpen: () => _openLesson(l))),
+                    ],
+                  ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSkeleton(LinguaTokens t) {
+    return Column(
+      children: List.generate(
+        4,
+        (_) => Container(
+          height: 84,
+          margin: const EdgeInsets.only(bottom: 12),
+          decoration: BoxDecoration(
+            color: t.surfaceRaised,
+            borderRadius: LinguaRadius.rLg,
+            border: Border.all(color: t.outlineSubtle),
+          ),
+          child: Center(
+            child: SizedBox(
+              width: 22,
+              height: 22,
+              child: CircularProgressIndicator(strokeWidth: 2, color: t.accent),
+            ),
+          ),
         ),
       ),
     );
@@ -57,8 +120,8 @@ class LearnScreen extends StatelessWidget {
 
   Widget _buildProgressOverview(LinguaTokens t) {
     final completed =
-        MockData.lessons.where((l) => l.status == LessonStatus.completed).length;
-    final total = MockData.lessons.length;
+        _lessons.where((l) => l.status == LessonStatus.completed).length;
+    final total = _lessons.length;
     return CopilotCard(
       gradient: t.heroGradient,
       padding: const EdgeInsets.all(20),
@@ -96,7 +159,7 @@ class LearnScreen extends StatelessWidget {
             children: [
               const Text('🏅', style: TextStyle(fontSize: 40)),
               const SizedBox(height: 4),
-              Text('Débutant',
+              Text(completed == total && total > 0 ? 'Terminé' : 'Débutant',
                   style: GoogleFonts.spaceMono(color: t.accent, fontSize: 11)),
             ],
           ),
@@ -108,7 +171,8 @@ class LearnScreen extends StatelessWidget {
 
 class _LessonCard extends StatelessWidget {
   final LessonModel lesson;
-  const _LessonCard({required this.lesson});
+  final VoidCallback onOpen;
+  const _LessonCard({required this.lesson, required this.onOpen});
 
   @override
   Widget build(BuildContext context) {
@@ -120,14 +184,7 @@ class _LessonCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: GestureDetector(
-        onTap: isLocked
-            ? null
-            : () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ExerciseScreen(lesson: lesson),
-                  ),
-                ),
+        onTap: isLocked ? null : onOpen,
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -187,7 +244,7 @@ class _LessonCard extends StatelessWidget {
                     Text(lesson.subtitle,
                         style: GoogleFonts.inter(
                             color: t.textSecondary, fontSize: 13)),
-                    if (isActive) ...[
+                    if (isActive && lesson.completedExercises > 0) ...[
                       const SizedBox(height: 8),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(3),
@@ -254,11 +311,7 @@ class _LessonCard extends StatelessWidget {
       width: 44,
       height: 44,
       decoration: BoxDecoration(
-        color: isCompleted
-            ? t.accentSoft
-            : isLocked
-                ? t.surfaceSunken
-                : t.surfaceSunken,
+        color: isCompleted ? t.accentSoft : t.surfaceSunken,
         shape: BoxShape.circle,
         border: Border.all(color: isCompleted ? t.accent : t.outline),
       ),

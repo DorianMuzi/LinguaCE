@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../models/models.dart';
-import '../services/profile_service.dart';
+import '../services/lesson_service.dart';
 
 // ═══════════════════════════════════════════════════════════
 // MODELS
@@ -296,7 +296,12 @@ class _ExerciseScreenState extends State<ExerciseScreen>
 
   Future<void> _complete() async {
     setState(() => _isCompleted = true);
-    await ProfileService.addXP(_xpEarned);
+    await LessonService.completeLesson(
+      lessonId: widget.lesson.id,
+      completedExercises: _exercises.length,
+      totalExercises: _exercises.length,
+      xpEarned: _xpEarned,
+    );
   }
 
   // ─── Build ───────────────────────────────────────────────
