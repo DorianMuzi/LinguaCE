@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
 import '../data/mock_data.dart';
 import '../i18n/app_strings.dart';
+import '../i18n/locale_controller.dart';
 import '../widgets/floating_nav_bar.dart';
 import '../widgets/app_drawer.dart';
 import 'home_screen.dart';
@@ -35,8 +36,8 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> get _screens => [
         HomeScreen(key: ValueKey('home-$_homeSeed'), onTabChange: _setTab),
-        const ChatScreen(),
-        const LearnScreen(),
+        ChatScreen(key: ValueKey('chat-${localeController.value}')),
+        LearnScreen(key: ValueKey('learn-${localeController.value}')),
         ProgressScreen(key: ValueKey('progress-$_progressSeed')),
       ];
 
@@ -44,30 +45,37 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final t = context.tokens;
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: t.surfaceBase,
-      extendBody: true,
-      drawer: const AppDrawer(),
-      appBar: _buildAppBar(),
-      body: Stack(
-        children: [
-          IndexedStack(
-            index: _currentIndex,
-            children: _screens,
+    // Abonnement à la langue : reconstruit la coque (+ onglets, AppBar, nav)
+    // quand l'utilisateur change la langue d'interface.
+    return AnimatedBuilder(
+      animation: localeController,
+      builder: (context, _) {
+        final t = context.tokens;
+        return Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: t.surfaceBase,
+          extendBody: true,
+          drawer: const AppDrawer(),
+          appBar: _buildAppBar(),
+          body: Stack(
+            children: [
+              IndexedStack(
+                index: _currentIndex,
+                children: _screens,
+              ),
+              Positioned(
+                left: 16,
+                right: 16,
+                bottom: 16,
+                child: FloatingNavBar(
+                  currentIndex: _currentIndex,
+                  onTap: _setTab,
+                ),
+              ),
+            ],
           ),
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 16,
-            child: FloatingNavBar(
-              currentIndex: _currentIndex,
-              onTap: _setTab,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
