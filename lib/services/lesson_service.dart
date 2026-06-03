@@ -100,8 +100,12 @@ class LessonService {
         'updated_at': DateTime.now().toIso8601String(),
       });
 
+      // Activité du jour → met à jour la série (AVANT l'XP).
+      await ProfileService.updateStreak();
+
       if (isCompleted && !wasCompleted) {
         await ProfileService.addXP(xpEarned);
+        await ProfileService.updateLeague();
       }
 
       // Recompte les leçons terminées

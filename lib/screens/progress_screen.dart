@@ -4,7 +4,7 @@ import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
-import '../data/mock_data.dart';
+import '../models/models.dart';
 import '../services/profile_service.dart';
 
 class ProgressScreen extends StatefulWidget {
@@ -16,17 +16,29 @@ class ProgressScreen extends StatefulWidget {
 
 class _ProgressScreenState extends State<ProgressScreen> {
   Map<String, dynamic>? _profile;
+  List<LeagueUser> _leaderboard = [];
+  List<int> _weeklyXp = const [0, 0, 0, 0, 0, 0, 0];
   bool _loading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadProfile();
+    _load();
   }
 
-  Future<void> _loadProfile() async {
-    final profile = await ProfileService.getOrCreateProfile();
-    if (mounted) setState(() { _profile = profile; _loading = false; });
+  Future<void> _load() async {
+    final results = await Future.wait([
+      ProfileService.getOrCreateProfile(),
+      ProfileService.fetchLeaderboard(),
+      ProfileService.fetchWeeklyXp(),
+    ]);
+    if (!mounted) return;
+    setState(() {
+      _profile = results[0] as Map<String, dynamic>?;
+      _leaderboard = results[1] as List<LeagueUser>;
+      _weeklyXp = results[2] as List<int>;
+      _loading = false;
+    });
   }
 
   int get _streak => _profile?['streak'] as int? ?? 0;
@@ -88,9 +100,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
     );
   }
 
+  // Initiale du jour de la semaine (L M M J V S D) pour les 7 derniers jours.
+  String _dayLabel(int i) {
+    final d = DateTime.now().subtract(Duration(days: 6 - i));
+    return const ['L', 'M', 'M', 'J', 'V', 'S', 'D'][d.weekday - 1];
+  }
+
   Widget _buildWeeklyChart() {
     final t = context.tokens;
-    final xpData = MockData.weeklyXP;
+    final xpData = _weeklyXp;
     final maxXp = xpData.reduce((a, b) => a > b ? a : b);
     final totalWeek = xpData.fold(0, (a, b) => a + b);
 
@@ -115,7 +133,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           color: t.textSecondary, fontSize: 13)),
                 ],
               ),
-              const AccentChip(label: '↑ +12%'),
+              const Text('📈', style: TextStyle(fontSize: 24)),
             ],
           ),
           const SizedBox(height: 20),
@@ -149,7 +167,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           ),
                         ),
                         const SizedBox(height: 6),
-                        Text(MockData.weekDays[i],
+                        Text(_dayLabel(i),
                             style: GoogleFonts.spaceMono(
                                 color:
                                     isToday ? t.accent : t.textSecondary,
@@ -168,18 +186,37 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
   Widget _buildLeague() {
     final t = context.tokens;
+    if (_loading) {
+      return CopilotCard(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: SizedBox(
+              width: 22,
+              height: 22,
+              child:
+                  CircularProgressIndicator(strokeWidth: 2, color: t.accent),
+            ),
+          ),
+        ),
+      );
+    }
+    if (_leaderboard.isEmpty) {
+      return CopilotCard(
+        child: Text('Aucun classement pour l\'instant.',
+            style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
+      );
+    }
     return CopilotCard(
       padding: EdgeInsets.zero,
       child: Column(
-        children: MockData.leagueUsers.map((u) {
-          final isLast = u == MockData.leagueUsers.last;
-          return Column(
-            children: [
-              _LeagueRow(user: u),
-              if (!isLast) Divider(height: 1, color: t.outlineSubtle),
-            ],
-          );
-        }).toList(),
+        children: [
+          for (var i = 0; i < _leaderboard.length; i++) ...[
+            _LeagueRow(user: _leaderboard[i]),
+            if (i < _leaderboard.length - 1)
+              Divider(height: 1, color: t.outlineSubtle),
+          ],
+        ],
       ),
     );
   }

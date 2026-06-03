@@ -143,6 +143,26 @@ insert into public.lessons (id, title, subtitle, icon, xp_reward, total_exercise
   ('3', 'Chiffres & Nombres', 'De 1 à 100',            '🔢',       200, 6, 3),
   ('4', 'La Famille',         'Mère, père, frère...',  '👨‍👩‍👧', 250, 6, 4)
 on conflict (id) do nothing;
+
+-- Gamification : journal d'XP (graphique hebdo) + classement
+create table if not exists public.xp_events (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  amount integer not null,
+  created_at timestamptz default now()
+);
+alter table public.xp_events enable row level security;
+create policy "XP events visibles (proprietaire)"
+  on public.xp_events for select using (auth.uid() = user_id);
+create policy "XP events creables (proprietaire)"
+  on public.xp_events for insert with check (auth.uid() = user_id);
+grant all on public.xp_events to anon, authenticated;
+create index if not exists xp_events_user_date
+  on public.xp_events (user_id, created_at);
+
+-- Classement : profils lisibles par les utilisateurs authentifiés
+create policy "Classement visible (authentifies)"
+  on public.profiles for select to authenticated using (true);
 ```
 
 ### 4. Lancer l'app

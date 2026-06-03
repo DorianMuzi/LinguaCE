@@ -21,13 +21,22 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void _setTab(int index) => setState(() => _currentIndex = index);
+  // Graines incrémentées à chaque visite → forcent le rechargement des
+  // données (série, XP, progression) quand on revient sur Accueil / Progrès.
+  int _homeSeed = 0;
+  int _progressSeed = 0;
+
+  void _setTab(int index) => setState(() {
+        _currentIndex = index;
+        if (index == 0) _homeSeed++;
+        if (index == 3) _progressSeed++;
+      });
 
   List<Widget> get _screens => [
-        HomeScreen(onTabChange: _setTab),
+        HomeScreen(key: ValueKey('home-$_homeSeed'), onTabChange: _setTab),
         const ChatScreen(),
         const LearnScreen(),
-        const ProgressScreen(),
+        ProgressScreen(key: ValueKey('progress-$_progressSeed')),
       ];
 
   static const _titles = ['LinguaCE', 'Chat IA', 'Apprendre', 'Progrès'];
