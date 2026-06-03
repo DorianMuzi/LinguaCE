@@ -10,7 +10,6 @@ import '../models/models.dart';
 import '../data/mock_data.dart';
 import '../services/claude_service.dart';
 import '../services/chat_service.dart';
-import '../services/transliteration_service.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -26,9 +25,6 @@ class _ChatScreenState extends State<ChatScreen> {
   List<ChatMessage> _messages = [];
   bool _isTyping = false;
   bool _loadingHistory = true;
-
-  /// Cache des translittérations (clé = timestamp ms du message).
-  final Map<int, String> _translit = {};
 
   /// Langue des réponses de l'IA = langue d'interface (FR / EN / RU / CE).
   /// En CE, l'IA répond en tchétchène (translittération latine 1992).
@@ -57,20 +53,6 @@ class _ChatScreenState extends State<ChatScreen> {
       _loadingHistory = false;
     });
     _scrollToBottom();
-    for (final m in _messages) {
-      _prefetchTranslit(m);
-    }
-  }
-
-  /// Charge la translittération d'un message IA via l'Edge Function, puis
-  /// la met en cache. Dégradation silencieuse si indisponible.
-  Future<void> _prefetchTranslit(ChatMessage m) async {
-    if (m.isUser) return;
-    final key = m.timestamp.millisecondsSinceEpoch;
-    if (_translit.containsKey(key)) return;
-    final value = await TransliterationService.transliterate(m.text);
-    if (!mounted || value.isEmpty) return;
-    setState(() => _translit[key] = value);
   }
 
   void _sendMessage() async {
@@ -105,7 +87,6 @@ class _ChatScreenState extends State<ChatScreen> {
       });
 
       ChatService.saveMessage(aiMsg);
-      _prefetchTranslit(aiMsg);
     } catch (e) {
       if (!mounted) return;
       setState(() {
@@ -152,9 +133,6 @@ class _ChatScreenState extends State<ChatScreen> {
     await ChatService.clearHistory();
     if (!mounted) return;
     setState(() => _messages = List.from(MockData.initialMessages));
-    for (final m in _messages) {
-      _prefetchTranslit(m);
-    }
   }
 
   void _scrollToBottom() {
@@ -339,7 +317,6 @@ class _ChatScreenState extends State<ChatScreen> {
         _isTyping = false;
       });
       ChatService.saveMessage(newMsg);
-      _prefetchTranslit(newMsg);
     } catch (e) {
       if (!mounted) return;
       setState(() {
@@ -408,74 +385,33 @@ class _ChatScreenState extends State<ChatScreen> {
                             height: 1.4,
                           ),
                         )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            MarkdownBody(
-                              data: msg.text,
-                              softLineBreak: true,
-                              styleSheet: MarkdownStyleSheet(
-                                p: GoogleFonts.inter(
-                                    color: t.textPrimary,
-                                    fontSize: 14,
-                                    height: 1.4),
-                                strong: GoogleFonts.inter(
-                                    color: t.textPrimary,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold),
-                                em: GoogleFonts.inter(
-                                    color: t.textPrimary,
-                                    fontSize: 14,
-                                    fontStyle: FontStyle.italic),
-                                code: GoogleFonts.spaceMono(
-                                    color: t.accentStrong,
-                                    fontSize: 12,
-                                    backgroundColor: t.surfaceSunken),
-                                codeblockDecoration: BoxDecoration(
-                                  color: t.surfaceSunken,
-                                  borderRadius: LinguaRadius.rSm,
-                                ),
-                                listBullet: GoogleFonts.inter(
-                                    color: t.textPrimary, fontSize: 14),
-                              ),
+                      : MarkdownBody(
+                          data: msg.text,
+                          softLineBreak: true,
+                          styleSheet: MarkdownStyleSheet(
+                            p: GoogleFonts.inter(
+                                color: t.textPrimary,
+                                fontSize: 14,
+                                height: 1.4),
+                            strong: GoogleFonts.inter(
+                                color: t.textPrimary,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold),
+                            em: GoogleFonts.inter(
+                                color: t.textPrimary,
+                                fontSize: 14,
+                                fontStyle: FontStyle.italic),
+                            code: GoogleFonts.spaceMono(
+                                color: t.accentStrong,
+                                fontSize: 12,
+                                backgroundColor: t.surfaceSunken),
+                            codeblockDecoration: BoxDecoration(
+                              color: t.surfaceSunken,
+                              borderRadius: LinguaRadius.rSm,
                             ),
-                            if ((_translit[
-                                        msg.timestamp.millisecondsSinceEpoch] ??
-                                    '')
-                                .isNotEmpty) ...[
-                              const SizedBox(height: 12),
-                              Divider(height: 1, color: t.outlineSubtle),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Icon(Icons.translate_rounded,
-                                      size: 13, color: t.accent),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    'MUZIŊ DAR · LATIN',
-                                    style: GoogleFonts.spaceMono(
-                                      color: t.accent,
-                                      fontSize: 9,
-                                      letterSpacing: 1,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                _translit[
-                                    msg.timestamp.millisecondsSinceEpoch]!,
-                                style: GoogleFonts.inter(
-                                  color: t.accentStrong,
-                                  fontSize: 13,
-                                  fontStyle: FontStyle.italic,
-                                  height: 1.4,
-                                ),
-                              ),
-                            ],
-                          ],
+                            listBullet: GoogleFonts.inter(
+                                color: t.textPrimary, fontSize: 14),
+                          ),
                         ),
                 ),
                   ),
