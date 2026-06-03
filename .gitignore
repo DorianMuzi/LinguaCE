@@ -5,12 +5,15 @@ env.json
 .env
 secrets.json
 
-# ─── Supabase local (NE PAS publier) ──────────────────────────────
-# - functions/  : algorithme de translittération propriétaire (Edge Function)
-# - config.toml / .temp/ : artefacts générés localement par `supabase link`
-# Rien de tout ça ne doit être committé dans le dépôt public.
-supabase/
+# ─── Supabase local ───────────────────────────────────────────────
+# Artefacts du CLI + config liée à un projet précis (générés par `supabase link`).
+supabase/.temp/
+supabase/.branches/
+supabase/config.toml
 .supabase/
+# Algorithme de translittération PROPRIÉTAIRE — NE PAS publier.
+# (Le proxy `chat`, lui, est public : c'est un simple relais vers Anthropic.)
+supabase/functions/transliterate/
 
 # Miscellaneous
 *.class

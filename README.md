@@ -117,6 +117,35 @@ flutter run --dart-define-from-file=env.json
 
 ---
 
+## ⚡ Edge Functions
+
+L'app s'appuie sur deux Edge Functions Supabase (dossier `supabase/functions/`).
+
+### `chat` — fournie dans le dépôt ✅
+Proxy serveur vers l'API Anthropic (Claude). Il garde la clé **côté serveur**
+et évite les limites CORS du navigateur. Pour le déployer :
+
+```bash
+supabase functions deploy chat
+supabase secrets set ANTHROPIC_API_KEY=sk-ant-...   # ta clé Anthropic
+```
+
+### `transliterate` — algorithme propriétaire, non inclus 🔒
+Convertit le cyrillique tchétchène en latin (système 1992 « Muziŋ Dar »).
+L'algorithme officiel est **propriétaire** et n'est pas publié. Sans cette
+fonction, la translittération ne s'affiche simplement pas — **le reste de
+l'app fonctionne normalement**.
+
+Pour brancher ta propre version, déploie une fonction nommée `transliterate`
+respectant ce **contrat** :
+
+| | Format |
+|---|---|
+| **Entrée** (POST, JSON) | `{ "text": "Текст" }` |
+| **Sortie** (JSON) | `{ "result": "Tekst" }` |
+
+Tu es libre d'y mettre la logique de translittération de ton choix.
+
 ## 📁 Structure
 
 ```
