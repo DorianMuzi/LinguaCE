@@ -92,7 +92,7 @@ class MockData {
 
   static final initialMessages = [
     ChatMessage(
-      text: 'Salam! Je suis Noxçi, ton assistant IA pour apprendre le tchétchène. Comment puis-je t\'aider aujourd\'hui ?',
+      text: 'Marşalla du! Je suis Noxçi, ton assistant IA pour apprendre le tchétchène. Comment puis-je t\'aider aujourd\'hui ?',
       isUser: false,
       timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
     ),
