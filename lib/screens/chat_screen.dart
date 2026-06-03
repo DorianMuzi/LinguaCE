@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../i18n/app_strings.dart';
+import '../i18n/locale_controller.dart';
 import '../models/models.dart';
 import '../data/mock_data.dart';
 import '../services/claude_service.dart';
@@ -23,12 +24,18 @@ class _ChatScreenState extends State<ChatScreen> {
   final _inputFocus = FocusNode();
   final _scrollController = ScrollController();
   List<ChatMessage> _messages = [];
-  String _selectedLang = 'FR';
   bool _isTyping = false;
   bool _loadingHistory = true;
 
   /// Cache des translittérations (clé = timestamp ms du message).
   final Map<int, String> _translit = {};
+
+  /// Langue des réponses de l'IA = langue d'interface, mais le tchétchène (CE)
+  /// bascule sur le français (expliquer en tchétchène n'aide pas un débutant).
+  String get _aiLang {
+    final lang = localeController.value;
+    return (lang == 'EN' || lang == 'RU') ? lang : 'FR';
+  }
 
   @override
   void initState() {
@@ -88,7 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       final reply = await ClaudeService.send(
         messages: List.unmodifiable(_messages),
-        language: _selectedLang,
+        language: _aiLang,
       );
       if (!mounted) return;
 
@@ -170,7 +177,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final t = context.tokens;
     return Column(
       children: [
-        _buildLangSelector(t),
+        _buildHeader(t),
         Expanded(
           child: _loadingHistory
               ? Center(child: CircularProgressIndicator(color: t.accent))
@@ -191,8 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget _buildLangSelector(LinguaTokens t) {
-    const langs = ['FR', 'EN', 'RU'];
+  Widget _buildHeader(LinguaTokens t) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
@@ -201,50 +207,19 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       child: Row(
         children: [
-          Text(tr('chat.language'),
-              style:
-                  GoogleFonts.spaceMono(color: t.textSecondary, fontSize: 12)),
-          const SizedBox(width: 12),
-          ...langs.map((lang) {
-            final active = _selectedLang == lang;
-            return Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: GestureDetector(
-                onTap: () => setState(() => _selectedLang = lang),
-                child: AnimatedContainer(
-                  duration: LinguaDuration.base,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: active ? t.accent : t.surfaceSunken,
-                    borderRadius: LinguaRadius.rPill,
-                  ),
-                  child: Text(
-                    lang,
-                    style: GoogleFonts.spaceMono(
-                      color: active ? t.onAccent : t.textSecondary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }),
+          Icon(Icons.psychology_outlined, color: t.accent, size: 18),
+          const SizedBox(width: 6),
+          Text(tr('chat.ai_label'),
+              style: GoogleFonts.spaceMono(color: t.accent, fontSize: 12)),
           const Spacer(),
           IconButton(
             onPressed: _clearHistory,
             icon: Icon(Icons.delete_outline_rounded,
                 color: t.textTertiary, size: 20),
-            tooltip: 'Effacer la conversation',
+            tooltip: tr('common.delete'),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
           ),
-          const SizedBox(width: 12),
-          Icon(Icons.psychology_outlined, color: t.accent, size: 18),
-          const SizedBox(width: 4),
-          Text(tr('chat.ai_label'),
-              style: GoogleFonts.spaceMono(color: t.accent, fontSize: 11)),
         ],
       ),
     );
@@ -357,7 +332,7 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       final reply = await ClaudeService.send(
         messages: List.unmodifiable(_messages),
-        language: _selectedLang,
+        language: _aiLang,
       );
       if (!mounted) return;
       final newMsg =
