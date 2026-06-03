@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Question / discussion
+    url: https://github.com/DorianMuzi/LinguaCE/discussions
+    about: Pour les questions générales, idées ouvertes ou demandes d'aide, ouvre une discussion.
+  - name: 🔐 Faille de sécurité
+    url: mailto:moximorth@gmail.com
+    about: Signale une vulnérabilité en privé par email, surtout pas en issue publique.

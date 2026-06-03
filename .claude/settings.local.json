@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter --version)",
+      "Bash(dart --version)",
+      "Read(//c//**)",
+      "Read(//c/src/**)",
+      "Bash(flutter pub *)",
+      "Bash(echo \"EXIT:$?\")",
+      "PowerShell(Set-Location \"C:\\\\Users\\\\mouss\\\\OneDrive\\\\Bureau\\\\LinguaCE\"; flutter pub get; Write-Host \"EXIT:$LASTEXITCODE\")",
+      "Bash(flutter analyze *)",
+      "Bash(dart analyze *)",
+      "PowerShell(pip install pypdf -q)",
+      "WebFetch(domain:www.microsoft.com)"
+    ]
+  }
+}

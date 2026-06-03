@@ -1,0 +1,18 @@
+LinguaCE
+Copyright 2026 Dorian Muzi
+
+This product is licensed under the Apache License, Version 2.0.
+
+LinguaCE is an open-source mobile application for learning the Chechen
+language (нохчийн мотт) with AI assistance.
+
+This product includes third-party open-source software:
+  - Flutter & Dart (BSD-3-Clause) — https://flutter.dev
+  - Supabase Flutter (MIT) — https://supabase.com
+  - google_fonts (Apache-2.0)
+  - flutter_markdown (BSD-3-Clause)
+  - http (BSD-3-Clause)
+  - shared_preferences (BSD-3-Clause)
+
+The Chechen language content and the 1992 Latin transliteration system
+("Muziŋ Dar") are provided for educational purposes.

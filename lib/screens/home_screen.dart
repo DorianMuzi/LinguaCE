@@ -1,0 +1,279 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../design/lingua_tokens.dart';
+import '../design/lingua_scale.dart';
+import '../design/lingua_components.dart';
+import '../design/responsive.dart';
+import '../data/mock_data.dart';
+import '../services/profile_service.dart';
+import '../widgets/xp_bar.dart';
+
+class HomeScreen extends StatefulWidget {
+  final ValueChanged<int> onTabChange;
+
+  const HomeScreen({super.key, required this.onTabChange});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Map<String, dynamic>? _profile;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    try {
+      final profile = await ProfileService.getOrCreateProfile();
+      if (mounted) setState(() { _profile = profile; _loading = false; });
+    } catch (_) {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  String get _username => _profile?['username'] as String? ?? 'Apprenant';
+  int get _streak => _profile?['streak'] as int? ?? 0;
+  int get _xp => _profile?['xp'] as int? ?? 0;
+  int get _level => _profile?['level'] as int? ?? 1;
+  int get _xpToNext => _level * 1000;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 100),
+      child: ContentClamp(
+        padding: EdgeInsets.fromLTRB(
+          Responsive.isMobile(context) ? 20 : 32,
+          8,
+          Responsive.isMobile(context) ? 20 : 32,
+          0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildGreeting(),
+            const SizedBox(height: 20),
+            _loading ? _buildSkeleton(78) : _buildStreakCard(),
+            const SizedBox(height: 14),
+            _loading ? _buildSkeleton(74) : _buildXpCard(),
+            const SizedBox(height: 28),
+            const SectionLabel('Actions rapides'),
+            const SizedBox(height: 12),
+            _buildQuickActions(),
+            const SizedBox(height: 28),
+            const SectionLabel('Leçon du jour'),
+            const SizedBox(height: 12),
+            _buildDailyLesson(),
+            const SizedBox(height: 28),
+            const SectionLabel('Mot du jour'),
+            const SizedBox(height: 12),
+            _buildWordOfDay(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSkeleton(double height) {
+    final t = context.tokens;
+    return Container(
+      height: height,
+      decoration: BoxDecoration(
+        color: t.surfaceRaised,
+        borderRadius: LinguaRadius.rLg,
+        border: Border.all(color: t.outlineSubtle),
+      ),
+      child: Center(
+        child: SizedBox(
+          width: 22,
+          height: 22,
+          child: CircularProgressIndicator(strokeWidth: 2, color: t.accent),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGreeting() {
+    final t = context.tokens;
+    final hour = DateTime.now().hour;
+    final greeting =
+        hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir';
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('$greeting,',
+            style: GoogleFonts.inter(color: t.textSecondary, fontSize: 16)),
+        Text(
+          _loading ? '…' : _username,
+          style: GoogleFonts.playfairDisplay(
+            color: t.textPrimary,
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStreakCard() {
+    final t = context.tokens;
+    return CopilotCard(
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+      child: Row(
+        children: [
+          const Text('🔥', style: TextStyle(fontSize: 30)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$_streak jour${_streak != 1 ? 's' : ''} consécutif${_streak != 1 ? 's' : ''}',
+                  style: GoogleFonts.playfairDisplay(
+                    color: t.textPrimary,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  _streak > 0
+                      ? 'Continue comme ça !'
+                      : 'Commence ta série !',
+                  style:
+                      GoogleFonts.inter(color: t.textSecondary, fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+          if (_streak > 0) const AccentChip(label: 'Record', emoji: '🏆'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildXpCard() {
+    return CopilotCard(
+      child: XpBar(xp: _xp, xpToNext: _xpToNext, level: _level),
+    );
+  }
+
+  Widget _buildQuickActions() {
+    final actions = [
+      {'icon': '💬', 'label': 'Chat IA', 'tab': 1},
+      {'icon': '📚', 'label': 'Leçons', 'tab': 2},
+      {'icon': '📊', 'label': 'Progrès', 'tab': 3},
+    ];
+    return Row(
+      children: actions.map((a) {
+        return Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(right: a == actions.last ? 0 : 10),
+            child: CopilotCard(
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              onTap: () => widget.onTabChange(a['tab'] as int),
+              child: Column(
+                children: [
+                  Text(a['icon'] as String,
+                      style: const TextStyle(fontSize: 24)),
+                  const SizedBox(height: 6),
+                  Text(
+                    a['label'] as String,
+                    style: GoogleFonts.inter(
+                      color: context.tokens.textPrimary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildDailyLesson() {
+    final t = context.tokens;
+    final lesson = MockData.lessons.firstWhere(
+      (l) => l.status.name == 'active',
+      orElse: () => MockData.lessons.first,
+    );
+    return CopilotCard(
+      child: Row(
+        children: [
+          Text(lesson.icon, style: const TextStyle(fontSize: 34)),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  lesson.title,
+                  style: GoogleFonts.playfairDisplay(
+                    color: t.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(lesson.subtitle,
+                    style: GoogleFonts.inter(
+                        color: t.textSecondary, fontSize: 13)),
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(3),
+                  child: SizedBox(
+                    height: 4,
+                    child: LinearProgressIndicator(
+                      value: lesson.progress,
+                      backgroundColor: t.surfaceSunken,
+                      valueColor: AlwaysStoppedAnimation<Color>(t.accent),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          CopilotButton(
+            label: 'Continuer',
+            variant: CopilotButtonVariant.tonal,
+            onPressed: () => widget.onTabChange(2),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWordOfDay() {
+    final t = context.tokens;
+    return CopilotCard(
+      gradient: t.heroGradient,
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const AccentChip(label: 'MOT DU JOUR', emoji: '✨'),
+          const SizedBox(height: 12),
+          Text('баркалла',
+              style: GoogleFonts.playfairDisplay(
+                color: t.textPrimary,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              )),
+          Text('barkalla',
+              style:
+                  GoogleFonts.spaceMono(color: t.textSecondary, fontSize: 14)),
+          const SizedBox(height: 8),
+          Text('"Merci" — Expression de gratitude en tchétchène.',
+              style: GoogleFonts.inter(color: t.textSecondary, fontSize: 13)),
+        ],
+      ),
+    );
+  }
+}

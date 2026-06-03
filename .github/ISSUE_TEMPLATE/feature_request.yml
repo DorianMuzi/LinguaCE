@@ -1,0 +1,66 @@
+name: ✨ Proposer une fonctionnalité
+description: Suggérer une idée ou une amélioration
+title: "[Idée] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci pour ta suggestion ! Décris le besoin avant la solution —
+        ça aide à trouver la meilleure approche.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Quel problème cela résout-il ?
+      description: Le besoin ou la frustration à l'origine de l'idée.
+      placeholder: "En tant qu'apprenant, j'aimerais… parce que…"
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution proposée
+      description: Ce que tu imagines comme fonctionnement.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives envisagées
+      description: D'autres approches auxquelles tu as pensé.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Domaine concerné
+      options:
+        - Chat IA
+        - Leçons / exercices
+        - Gamification (XP, ligues…)
+        - Design / interface
+        - Contenu linguistique (tchétchène)
+        - Authentification / compte
+        - Autre
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexte supplémentaire
+      description: Maquettes, exemples, références…
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Vérifications
+      options:
+        - label: J'ai cherché dans les issues existantes et cette idée n'a pas déjà été proposée
+          required: true
