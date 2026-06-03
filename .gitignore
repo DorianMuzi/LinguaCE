@@ -5,9 +5,11 @@ env.json
 .env
 secrets.json
 
-# ─── Code propriétaire (NE PAS publier) ───────────────────────────
-# Algorithme de translittération — déployé en Edge Function privée.
-supabase/functions/
+# ─── Supabase local (NE PAS publier) ──────────────────────────────
+# - functions/  : algorithme de translittération propriétaire (Edge Function)
+# - config.toml / .temp/ : artefacts générés localement par `supabase link`
+# Rien de tout ça ne doit être committé dans le dépôt public.
+supabase/
 .supabase/
 
 # Miscellaneous
