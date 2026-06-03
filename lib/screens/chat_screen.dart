@@ -30,12 +30,9 @@ class _ChatScreenState extends State<ChatScreen> {
   /// Cache des translittérations (clé = timestamp ms du message).
   final Map<int, String> _translit = {};
 
-  /// Langue des réponses de l'IA = langue d'interface, mais le tchétchène (CE)
-  /// bascule sur le français (expliquer en tchétchène n'aide pas un débutant).
-  String get _aiLang {
-    final lang = localeController.value;
-    return (lang == 'EN' || lang == 'RU') ? lang : 'FR';
-  }
+  /// Langue des réponses de l'IA = langue d'interface (FR / EN / RU / CE).
+  /// En CE, l'IA répond en tchétchène (translittération latine 1992).
+  String get _aiLang => localeController.value;
 
   @override
   void initState() {

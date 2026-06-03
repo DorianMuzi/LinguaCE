@@ -366,6 +366,12 @@ Couleurs :
     final langInstruction = switch (language) {
       'EN' => '\nAlways reply in English.',
       'RU' => '\nОтвечай исключительно на русском языке.',
+      'CE' =>
+        '\nRéponds EXCLUSIVEMENT en tchétchène, en utilisant le système de '
+            'translittération latine de 1992 (Muziŋ Dar) — PAS de cyrillique. '
+            'Pour chaque mot ou phrase enseigné, donne aussi sa traduction '
+            'française entre parenthèses pour aider l\'apprenant. Reste simple '
+            'et pédagogique.',
       _ => '\nRéponds exclusivement en français.',
     };
     return _systemBase + langInstruction;
