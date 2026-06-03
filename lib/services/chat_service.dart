@@ -50,4 +50,26 @@ class ChatService {
     if (user == null) return;
     await _client.from('chat_messages').delete().eq('user_id', user.id);
   }
+
+  /// Remplace tout l'historique par [messages] (après édition / régénération).
+  static Future<void> replaceHistory(List<ChatMessage> messages) async {
+    final user = _client.auth.currentUser;
+    if (user == null) return;
+    try {
+      await _client.from('chat_messages').delete().eq('user_id', user.id);
+      if (messages.isEmpty) return;
+      await _client.from('chat_messages').insert(
+            messages
+                .map((m) => {
+                      'user_id': user.id,
+                      'role': m.isUser ? 'user' : 'assistant',
+                      'content': m.text,
+                      'created_at': m.timestamp.toIso8601String(),
+                    })
+                .toList(),
+          );
+    } catch (_) {
+      // Silencieux : ne pas bloquer l'UI
+    }
+  }
 }

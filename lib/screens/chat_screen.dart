@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
@@ -18,6 +19,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final _controller = TextEditingController();
+  final _inputFocus = FocusNode();
   final _scrollController = ScrollController();
   List<ChatMessage> _messages = [];
   String _selectedLang = 'FR';
@@ -36,6 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _inputFocus.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -246,6 +249,138 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  // ── Actions sur les messages (appui long / clic droit) ───────────────────
+  void _showMessageActions(ChatMessage msg) {
+    final t = context.tokens;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: t.surfaceRaised,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              width: 36,
+              height: 4,
+              decoration: BoxDecoration(
+                color: t.outline,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 8),
+            ListTile(
+              leading:
+                  Icon(Icons.copy_rounded, color: t.textSecondary, size: 20),
+              title: Text('Copier le texte',
+                  style: GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
+              onTap: () {
+                Navigator.pop(ctx);
+                _copyMessage(msg);
+              },
+            ),
+            if (msg.isUser)
+              ListTile(
+                leading:
+                    Icon(Icons.edit_rounded, color: t.textSecondary, size: 20),
+                title: Text('Modifier',
+                    style:
+                        GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _editMessage(msg);
+                },
+              )
+            else
+              ListTile(
+                leading: Icon(Icons.refresh_rounded,
+                    color: t.textSecondary, size: 20),
+                title: Text('Régénérer la réponse',
+                    style:
+                        GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _regenerate(msg);
+                },
+              ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _copyMessage(ChatMessage msg) {
+    Clipboard.setData(ClipboardData(text: msg.text));
+    if (!mounted) return;
+    final t = context.tokens;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content:
+          Text('Texte copié', style: GoogleFonts.inter(color: Colors.white)),
+      backgroundColor: t.accentStrong,
+      behavior: SnackBarBehavior.floating,
+      duration: const Duration(seconds: 1),
+      shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rMd),
+      margin: const EdgeInsets.all(16),
+    ));
+  }
+
+  void _editMessage(ChatMessage msg) {
+    final idx = _messages.indexOf(msg);
+    if (idx < 0) return;
+    final kept = _messages.sublist(0, idx);
+    setState(() {
+      _messages = List.from(kept);
+      _controller.text = msg.text;
+      _controller.selection =
+          TextSelection.collapsed(offset: msg.text.length);
+    });
+    ChatService.replaceHistory(kept);
+    _inputFocus.requestFocus();
+  }
+
+  Future<void> _regenerate(ChatMessage aiMsg) async {
+    if (_isTyping) return;
+    final idx = _messages.indexOf(aiMsg);
+    if (idx < 0) return;
+    final kept = _messages.sublist(0, idx); // tout avant cette réponse
+    setState(() {
+      _messages = List.from(kept);
+      _isTyping = true;
+    });
+    await ChatService.replaceHistory(kept);
+    _scrollToBottom();
+    try {
+      final reply = await ClaudeService.send(
+        messages: List.unmodifiable(_messages),
+        language: _selectedLang,
+      );
+      if (!mounted) return;
+      final newMsg =
+          ChatMessage(text: reply, isUser: false, timestamp: DateTime.now());
+      setState(() {
+        _messages.add(newMsg);
+        _isTyping = false;
+      });
+      ChatService.saveMessage(newMsg);
+      _prefetchTranslit(newMsg);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _messages.add(ChatMessage(
+          text: '⚠️ Erreur : ${e.toString().replaceFirst('Exception: ', '')}',
+          isUser: false,
+          timestamp: DateTime.now(),
+        ));
+        _isTyping = false;
+      });
+    }
+    _scrollToBottom();
+  }
+
   Widget _buildMessage(LinguaTokens t, ChatMessage msg) {
     final isUser = msg.isUser;
     return Padding(
@@ -274,7 +409,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 const SizedBox(width: 8),
               ],
               Flexible(
-                child: Container(
+                child: GestureDetector(
+                  onLongPress: () => _showMessageActions(msg),
+                  onSecondaryTap: () => _showMessageActions(msg),
+                  child: Container(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(
@@ -297,56 +435,81 @@ class _ChatScreenState extends State<ChatScreen> {
                             height: 1.4,
                           ),
                         )
-                      : MarkdownBody(
-                          data: msg.text,
-                          softLineBreak: true,
-                          styleSheet: MarkdownStyleSheet(
-                            p: GoogleFonts.inter(
-                                color: t.textPrimary,
-                                fontSize: 14,
-                                height: 1.4),
-                            strong: GoogleFonts.inter(
-                                color: t.textPrimary,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                            em: GoogleFonts.inter(
-                                color: t.textPrimary,
-                                fontSize: 14,
-                                fontStyle: FontStyle.italic),
-                            code: GoogleFonts.spaceMono(
-                                color: t.accentStrong,
-                                fontSize: 12,
-                                backgroundColor: t.surfaceSunken),
-                            codeblockDecoration: BoxDecoration(
-                              color: t.surfaceSunken,
-                              borderRadius: LinguaRadius.rSm,
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            MarkdownBody(
+                              data: msg.text,
+                              softLineBreak: true,
+                              styleSheet: MarkdownStyleSheet(
+                                p: GoogleFonts.inter(
+                                    color: t.textPrimary,
+                                    fontSize: 14,
+                                    height: 1.4),
+                                strong: GoogleFonts.inter(
+                                    color: t.textPrimary,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                                em: GoogleFonts.inter(
+                                    color: t.textPrimary,
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.italic),
+                                code: GoogleFonts.spaceMono(
+                                    color: t.accentStrong,
+                                    fontSize: 12,
+                                    backgroundColor: t.surfaceSunken),
+                                codeblockDecoration: BoxDecoration(
+                                  color: t.surfaceSunken,
+                                  borderRadius: LinguaRadius.rSm,
+                                ),
+                                listBullet: GoogleFonts.inter(
+                                    color: t.textPrimary, fontSize: 14),
+                              ),
                             ),
-                            listBullet: GoogleFonts.inter(
-                                color: t.textPrimary, fontSize: 14),
-                          ),
+                            if ((_translit[
+                                        msg.timestamp.millisecondsSinceEpoch] ??
+                                    '')
+                                .isNotEmpty) ...[
+                              const SizedBox(height: 12),
+                              Divider(height: 1, color: t.outlineSubtle),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Icon(Icons.translate_rounded,
+                                      size: 13, color: t.accent),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'MUZIŊ DAR · LATIN',
+                                    style: GoogleFonts.spaceMono(
+                                      color: t.accent,
+                                      fontSize: 9,
+                                      letterSpacing: 1,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                _translit[
+                                    msg.timestamp.millisecondsSinceEpoch]!,
+                                style: GoogleFonts.inter(
+                                  color: t.accentStrong,
+                                  fontSize: 13,
+                                  fontStyle: FontStyle.italic,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                 ),
+                  ),
               ),
               if (isUser) const SizedBox(width: 8),
             ],
           ),
-          if (!isUser &&
-              (_translit[msg.timestamp.millisecondsSinceEpoch] ?? '')
-                  .isNotEmpty) ...[
-            const SizedBox(height: 4),
-            Padding(
-              padding: const EdgeInsets.only(left: 40, right: 8),
-              child: Text(
-                _translit[msg.timestamp.millisecondsSinceEpoch]!,
-                style: GoogleFonts.inter(
-                  color: t.accentStrong,
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
-                  height: 1.4,
-                ),
-              ),
-            ),
-          ],
         ],
       ),
     );
@@ -398,6 +561,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Expanded(
             child: TextField(
               controller: _controller,
+              focusNode: _inputFocus,
               style: GoogleFonts.inter(color: t.textPrimary, fontSize: 14),
               decoration: InputDecoration(
                 hintText: 'Écrivez votre message...',

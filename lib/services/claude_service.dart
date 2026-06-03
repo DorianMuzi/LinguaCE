@@ -1,12 +1,9 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../config/app_config.dart';
 import '../models/models.dart';
 
 class ClaudeService {
-  static String get _apiKey => AppConfig.anthropicApiKey;
   static String get _model => AppConfig.anthropicModel;
-  static const _endpoint = 'https://api.anthropic.com/v1/messages';
 
   static const _systemBase = """
 Tu es Noxçi, assistant IA spécialisé dans l'enseignement de la langue tchétchène (нохчийн мотт / noxçiyn mott).
@@ -378,14 +375,6 @@ Couleurs :
     required List<ChatMessage> messages,
     required String language,
   }) async {
-    if (_apiKey.isEmpty) {
-      throw Exception(
-        'Clé API Anthropic manquante. Lance l\'app avec :\n'
-        'flutter run --dart-define-from-file=env.json\n'
-        '(copie env.example.json vers env.json et renseigne tes clés)',
-      );
-    }
-
     // L'API Claude exige que le premier message soit de l'utilisateur.
     // On ignore les messages d'accueil initiaux de l'assistant.
     final list = messages.toList();
@@ -403,31 +392,43 @@ Couleurs :
       throw Exception('Aucun message utilisateur à envoyer.');
     }
 
-    final response = await http
-        .post(
-          Uri.parse(_endpoint),
-          headers: {
-            'x-api-key': _apiKey,
-            'anthropic-version': '2023-06-01',
-            'content-type': 'application/json',
-          },
-          body: jsonEncode({
+    try {
+      // Appel via l'Edge Function `chat` : la clé Anthropic reste côté
+      // serveur, et on contourne les limites CORS du navigateur.
+      final res = await Supabase.instance.client.functions
+          .invoke('chat', body: {
             'model': _model,
             'max_tokens': 1024,
             'system': _buildSystemPrompt(language),
             'messages': apiMessages,
-          }),
-        )
-        .timeout(const Duration(seconds: 30));
+          })
+          .timeout(const Duration(seconds: 60));
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(utf8.decode(response.bodyBytes));
-      return data['content'][0]['text'] as String;
+      final data = res.data;
+      if (data is Map) {
+        final content = data['content'];
+        if (content is List && content.isNotEmpty) {
+          final first = content.first;
+          if (first is Map && first['text'] is String) {
+            return first['text'] as String;
+          }
+        }
+        final error = data['error'];
+        if (error != null) {
+          final msg = error is Map ? error['message'] : error.toString();
+          throw Exception(msg ?? 'Erreur inconnue.');
+        }
+      }
+      throw Exception('Réponse inattendue du serveur de chat.');
+    } on FunctionException catch (e) {
+      final details = e.details;
+      if (details is Map && details['error'] is Map) {
+        throw Exception(details['error']['message'] ?? 'Erreur serveur.');
+      }
+      throw Exception(
+        'La fonction « chat » est-elle déployée ? '
+        '(supabase functions deploy chat)',
+      );
     }
-
-    final body = jsonDecode(utf8.decode(response.bodyBytes));
-    final msg = body['error']?['message'] ??
-        'Erreur inconnue (${response.statusCode})';
-    throw Exception(msg);
   }
 }
