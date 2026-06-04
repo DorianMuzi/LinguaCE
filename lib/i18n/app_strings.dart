@@ -43,7 +43,7 @@ const Map<String, Map<String, String>> _strings = {
   'common.close':
       {'FR': 'Fermer', 'EN': 'Close', 'RU': 'Закрыть', 'CE': 'Djaq̇ovla'},
   'common.delete':
-      {'FR': 'Effacer', 'EN': 'Delete', 'RU': 'Удалить', 'CE': 'Djayakqa'},
+      {'FR': 'Effacer', 'EN': 'Delete', 'RU': 'Удалить', 'CE': 'Djadakqa'},
   'common.continue':
       {'FR': 'Continuer', 'EN': 'Continue', 'RU': 'Продолжить', 'CE': 'Djaẋaƶa'},
   'common.soon': {
@@ -254,7 +254,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Aide & Support',
     'EN': 'Help & Support',
     'RU': 'Помощь',
-    'CE': 'ġo & Djadar'
+    'CE': 'Ġönna'
   },
 
   // ── Menu latéral (drawer) ─────────────────────────────────────────────────
@@ -277,7 +277,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Partager l\'app',
     'EN': 'Share the app',
     'RU': 'Поделиться',
-    'CE': 'App djayakqa'
+    'CE': 'App djadakqa'
   },
   'drawer.profile_meta': {
     'FR': '{emoji} Niveau {l} · Ligue {league}',
@@ -328,7 +328,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'L\'historique sera supprimé définitivement.',
     'EN': 'The history will be permanently deleted.',
     'RU': 'История будет удалена навсегда.',
-    'CE': 'Istori djayakqa yur yu.'
+    'CE': 'Istori djadakqa yur yu.'
   },
   'chat.hint': {
     'FR': 'Écrivez votre message...',
