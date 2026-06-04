@@ -304,7 +304,12 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   // ─── Actions ─────────────────────────────────────────────
   void _flip() {
     setState(() => _isFlipped = !_isFlipped);
-    _isFlipped ? _flipCtrl.forward() : _flipCtrl.reverse();
+    // Respecte le réglage système « animations réduites » (accessibilité).
+    if (MediaQuery.of(context).disableAnimations) {
+      _flipCtrl.value = _isFlipped ? 1.0 : 0.0;
+    } else {
+      _isFlipped ? _flipCtrl.forward() : _flipCtrl.reverse();
+    }
   }
 
   void _confirmFlashcard() {

@@ -328,6 +328,8 @@ class _LeagueRow extends StatelessWidget {
           Expanded(
             child: Text(
               user.name as String,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: GoogleFonts.inter(
                 color: isCurrentUser ? t.textPrimary : t.textSecondary,
                 fontSize: 15,

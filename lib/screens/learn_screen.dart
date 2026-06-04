@@ -217,6 +217,8 @@ class _LessonCard extends StatelessWidget {
                         Flexible(
                           child: Text(
                             lesson.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.playfairDisplay(
                               color:
                                   isLocked ? t.textTertiary : t.textPrimary,
@@ -246,6 +248,8 @@ class _LessonCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(lesson.subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.inter(
                             color: t.textSecondary, fontSize: 13)),
                     if (isActive && lesson.completedExercises > 0) ...[

@@ -285,6 +285,7 @@ class StatTile extends StatelessWidget {
                   color: t.accent,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  fontFeatures: const [FontFeature.tabularFigures()],
                 ),
               ),
               Text(
