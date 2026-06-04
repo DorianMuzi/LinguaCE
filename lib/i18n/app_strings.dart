@@ -318,6 +318,16 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Чеченский ИИ',
     'CE': 'Noxçiyŋ AI'
   },
+  'chat.welcome': {
+    'FR':
+        'Marşalla du! Je suis Noxçi, ton assistant IA pour apprendre le tchétchène. Comment puis-je t\'aider aujourd\'hui ?',
+    'EN':
+        'Marşalla du! I\'m Noxçi, your AI assistant for learning Chechen. How can I help you today?',
+    'RU':
+        'Marşalla du! Я Noxçi, твой ИИ-помощник для изучения чеченского. Чем могу помочь сегодня?',
+    'CE':
+        'Marşalla du! So Noxçi vu, noxçiyŋ mott jamo ẋuna ġo diyrig (AI). Taxana muxa ġo daŋ deza ẋuna?'
+  },
   'chat.clear_q': {
     'FR': 'Effacer la conversation ?',
     'EN': 'Clear the conversation?',

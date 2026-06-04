@@ -7,7 +7,6 @@ import '../design/lingua_scale.dart';
 import '../i18n/app_strings.dart';
 import '../i18n/locale_controller.dart';
 import '../models/models.dart';
-import '../data/mock_data.dart';
 import '../services/claude_service.dart';
 import '../services/chat_service.dart';
 
@@ -48,12 +47,20 @@ class _ChatScreenState extends State<ChatScreen> {
     final saved = await ChatService.loadMessages();
     if (!mounted) return;
     setState(() {
-      _messages =
-          saved.isEmpty ? List.from(MockData.initialMessages) : saved;
+      _messages = saved.isEmpty ? _welcomeMessages() : saved;
       _loadingHistory = false;
     });
     _scrollToBottom();
   }
+
+  /// Message d'accueil dans la langue d'interface (clé i18n chat.welcome).
+  List<ChatMessage> _welcomeMessages() => [
+        ChatMessage(
+          text: tr('chat.welcome'),
+          isUser: false,
+          timestamp: DateTime.now(),
+        ),
+      ];
 
   void _sendMessage() async {
     final text = _controller.text.trim();
@@ -132,7 +139,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (confirmed != true) return;
     await ChatService.clearHistory();
     if (!mounted) return;
-    setState(() => _messages = List.from(MockData.initialMessages));
+    setState(() => _messages = _welcomeMessages());
   }
 
   void _scrollToBottom() {
