@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../main.dart' show themeController;
 import '../design/lingua_tokens.dart';
@@ -44,6 +45,25 @@ class _AppDrawerState extends State<AppDrawer> {
         'Argent' => '🥈',
         _ => '🦅',
       };
+
+  /// Partage : copie le lien de l'app dans le presse-papier + confirmation.
+  Future<void> _shareApp() async {
+    final messenger = ScaffoldMessenger.of(context);
+    final t = context.tokens;
+    Navigator.pop(context); // ferme le drawer
+    await Clipboard.setData(const ClipboardData(
+      text: 'LinguaCE — noxçiyŋ mott jamabe 📚\n'
+          'https://github.com/DorianMuzi/LinguaCE',
+    ));
+    messenger.showSnackBar(SnackBar(
+      content: Text(tr('chat.copied'),
+          style: GoogleFonts.inter(color: Colors.white)),
+      backgroundColor: t.accentStrong,
+      behavior: SnackBarBehavior.floating,
+      shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rMd),
+      margin: const EdgeInsets.all(16),
+    ));
+  }
 
   void _info(String message) {
     if (!mounted) return;
@@ -313,10 +333,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   _DrawerItem(
                     icon: Icons.share_outlined,
                     label: tr('drawer.share'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      _info(tr('common.soon'));
-                    },
+                    onTap: _shareApp,
                   ),
                 ],
               ),
