@@ -80,7 +80,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Commence ta série !',
     'EN': 'Start your streak!',
     'RU': 'Начни свою серию!',
-    'CE': 'Ẋovsa dola!'
+    'CE': 'Djadolade!'
   },
   'home.record': {'FR': 'Record', 'EN': 'Record', 'RU': 'Рекорд', 'CE': 'Rekord'},
   'home.quick_actions': {
@@ -235,7 +235,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Notifications',
     'EN': 'Notifications',
     'RU': 'Уведомления',
-    'CE': 'Xaamş'
+    'CE': 'Xaamaş'
   },
   'set.interface_lang': {
     'FR': 'Langue de l\'interface',
