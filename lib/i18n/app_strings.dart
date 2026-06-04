@@ -248,7 +248,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Confidentialité',
     'EN': 'Privacy',
     'RU': 'Конфиденциальность',
-    'CE': 'Bjobjalla'
+    'CE': 'Q̇aylaxalla'
   },
   'set.help': {
     'FR': 'Aide & Support',
