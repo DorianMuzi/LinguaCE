@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
-import '../data/mock_data.dart';
 import '../i18n/app_strings.dart';
 import '../i18n/locale_controller.dart';
+import '../services/profile_service.dart';
 import '../widgets/floating_nav_bar.dart';
 import '../widgets/app_drawer.dart';
 import 'home_screen.dart';
@@ -22,6 +22,25 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // Profil réel (pseudo → initiale de l'avatar de l'AppBar).
+  Map<String, dynamic>? _profile;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    final profile = await ProfileService.getOrCreateProfile();
+    if (mounted) setState(() => _profile = profile);
+  }
+
+  String get _avatarInitial {
+    final name = (_profile?['username'] as String?)?.trim() ?? '';
+    return name.isNotEmpty ? name[0].toUpperCase() : '?';
+  }
 
   // Graines incrémentées à chaque visite → forcent le rechargement des
   // données (série, XP, progression) quand on revient sur Accueil / Progrès.
@@ -126,10 +145,14 @@ class _MainScreenState extends State<MainScreen> {
       centerTitle: true,
       actions: [
         GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const ProfileScreen()),
-          ),
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ProfileScreen()),
+            );
+            // Le pseudo a pu changer dans l'écran Profil → on rafraîchit.
+            _loadProfile();
+          },
           child: Padding(
             padding: const EdgeInsets.only(right: 16),
             child: _buildAvatarButton(t),
@@ -140,7 +163,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildAvatarButton(LinguaTokens t) {
-    final user = MockData.user;
     return Container(
       width: 36,
       height: 36,
@@ -151,7 +173,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       child: Center(
         child: Text(
-          user.avatarInitials,
+          _avatarInitial,
           style: GoogleFonts.playfairDisplay(
             color: t.accentStrong,
             fontSize: 14,
