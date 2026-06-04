@@ -41,11 +41,11 @@ const Map<String, Map<String, String>> _strings = {
   'common.save':
       {'FR': 'Enregistrer', 'EN': 'Save', 'RU': 'Сохранить', 'CE': 'Ç̇aġde'},
   'common.close':
-      {'FR': 'Fermer', 'EN': 'Close', 'RU': 'Закрыть', 'CE': 'Dʼaqovla'},
+      {'FR': 'Fermer', 'EN': 'Close', 'RU': 'Закрыть', 'CE': 'Djaq̇ovla'},
   'common.delete':
-      {'FR': 'Effacer', 'EN': 'Delete', 'RU': 'Удалить', 'CE': 'Dʼayaqqa'},
+      {'FR': 'Effacer', 'EN': 'Delete', 'RU': 'Удалить', 'CE': 'Djayakqa'},
   'common.continue':
-      {'FR': 'Continuer', 'EN': 'Continue', 'RU': 'Продолжить', 'CE': 'Dʼaxoʼla'},
+      {'FR': 'Continuer', 'EN': 'Continue', 'RU': 'Продолжить', 'CE': 'Djaẋa'},
   'common.soon': {
     'FR': 'Bientôt disponible !',
     'EN': 'Coming soon!',
@@ -68,26 +68,26 @@ const Map<String, Map<String, String>> _strings = {
     'FR': '{n} jours consécutifs',
     'EN': '{n} day streak',
     'RU': '{n} дней подряд',
-    'CE': '{n} de tʼayʼaza'
+    'CE': '{n} de ṫäẋalla'
   },
   'home.streak_keep': {
     'FR': 'Continue comme ça !',
     'EN': 'Keep it up!',
     'RU': 'Так держать!',
-    'CE': 'Dʼaxoʼla iştta!'
+    'CE': 'Djaẋa iştta!'
   },
   'home.streak_start': {
     'FR': 'Commence ta série !',
     'EN': 'Start your streak!',
     'RU': 'Начни свою серию!',
-    'CE': 'Xahʼa dolade!'
+    'CE': 'Ẋovsa dola!'
   },
   'home.record': {'FR': 'Record', 'EN': 'Record', 'RU': 'Рекорд', 'CE': 'Rekord'},
   'home.quick_actions': {
     'FR': 'Actions rapides',
     'EN': 'Quick actions',
     'RU': 'Быстрые действия',
-    'CE': 'Sihha gʼullaqş'
+    'CE': 'Sixa ġullaq̇aş'
   },
   'home.qa_chat': {'FR': 'Chat IA', 'EN': 'AI Chat', 'RU': 'ИИ-чат', 'CE': 'AI Qamel'},
   'home.qa_lessons':
@@ -144,7 +144,7 @@ const Map<String, Map<String, String>> _strings = {
   'learn.finished':
       {'FR': 'Terminé', 'EN': 'Finished', 'RU': 'Завершено', 'CE': 'Çekxdälla'},
   'learn.in_progress':
-      {'FR': 'EN COURS', 'EN': 'IN PROGRESS', 'RU': 'В ПРОЦЕССЕ', 'CE': 'DʼAXO'},
+      {'FR': 'EN COURS', 'EN': 'IN PROGRESS', 'RU': 'В ПРОЦЕССЕ', 'CE': 'DJAXO'},
   'learn.exercises_count': {
     'FR': '{c}/{t} exercices',
     'EN': '{c}/{t} exercises',
@@ -152,9 +152,9 @@ const Map<String, Map<String, String>> _strings = {
     'CE': '{c}/{t} bolx'
   },
   'learn.start':
-      {'FR': 'Commencer', 'EN': 'Start', 'RU': 'Начать', 'CE': 'Dʼadolade'},
+      {'FR': 'Commencer', 'EN': 'Start', 'RU': 'Начать', 'CE': 'Djadolade'},
   'learn.review':
-      {'FR': 'Revoir', 'EN': 'Review', 'RU': 'Повторить', 'CE': 'Yuxaxaʼa'},
+      {'FR': 'Revoir', 'EN': 'Review', 'RU': 'Повторить', 'CE': 'Yuxa ẋaƶa'},
 
   // ── Progrès ───────────────────────────────────────────────────────────────
   'progress.title':
@@ -163,13 +163,13 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Cette semaine',
     'EN': 'This week',
     'RU': 'На этой неделе',
-    'CE': 'Hʼokxu kʼira'
+    'CE': 'Hoqu k̇ira'
   },
   'progress.week_xp': {
     'FR': 'cette semaine',
     'EN': 'this week',
     'RU': 'за неделю',
-    'CE': 'hʼokxu kʼira'
+    'CE': 'hoqu k̇ira'
   },
   'progress.league':
       {'FR': 'Ligue {l}', 'EN': 'League {l}', 'RU': 'Лига {l}', 'CE': 'Liga {l}'},
@@ -183,12 +183,12 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Aucun classement pour l\'instant.',
     'EN': 'No ranking yet.',
     'RU': 'Пока нет рейтинга.',
-    'CE': 'Hʼinca classement yac.'
+    'CE': 'Hinca classement yac.'
   },
-  'stat.streak': {'FR': 'SÉRIE', 'EN': 'STREAK', 'RU': 'СЕРИЯ', 'CE': 'TʼAY'},
+  'stat.streak': {'FR': 'SÉRIE', 'EN': 'STREAK', 'RU': 'СЕРИЯ', 'CE': 'Ṫäẋalla'},
   'stat.xp_total':
-      {'FR': 'XP TOTAL', 'EN': 'TOTAL XP', 'RU': 'ВСЕГО XP', 'CE': 'XP DʼOG'},
-  'stat.level': {'FR': 'NIVEAU', 'EN': 'LEVEL', 'RU': 'УРОВЕНЬ', 'CE': 'TʼEMA'},
+      {'FR': 'XP TOTAL', 'EN': 'TOTAL XP', 'RU': 'ВСЕГО XP', 'CE': 'XP yerrig'},
+  'stat.level': {'FR': 'NIVEAU', 'EN': 'LEVEL', 'RU': 'УРОВЕНЬ', 'CE': 'Ṫeġa'},
   'stat.lessons':
       {'FR': 'LEÇONS', 'EN': 'LESSONS', 'RU': 'УРОКИ', 'CE': 'DEŞARŞ'},
 
@@ -197,7 +197,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Modifier le nom',
     'EN': 'Edit name',
     'RU': 'Изменить имя',
-    'CE': 'Ċe hʼaşdo'
+    'CE': 'Ċe ẋaşdo'
   },
   'profile.username': {
     'FR': 'Nom d\'utilisateur',
@@ -215,7 +215,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Tu devras te reconnecter pour accéder à ton profil.',
     'EN': 'You\'ll need to sign in again to access your profile.',
     'RU': 'Нужно будет войти снова, чтобы открыть профиль.',
-    'CE': 'Profile da hʼotta yuxa çuvala deza hʼuna.'
+    'CE': 'Profile da hotta yuxa çuvala deza ẋuna.'
   },
   'profile.logout': {
     'FR': 'Déconnecter',
@@ -248,13 +248,13 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Confidentialité',
     'EN': 'Privacy',
     'RU': 'Конфиденциальность',
-    'CE': 'Bʼobʼalla'
+    'CE': 'Bjobjalla'
   },
   'set.help': {
     'FR': 'Aide & Support',
     'EN': 'Help & Support',
     'RU': 'Помощь',
-    'CE': 'Gʼo & Dʼadar'
+    'CE': 'ġo & Djadar'
   },
 
   // ── Menu latéral (drawer) ─────────────────────────────────────────────────
@@ -271,19 +271,19 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Thème sombre',
     'EN': 'Dark theme',
     'RU': 'Тёмная тема',
-    'CE': 'Bʼarža tema'
+    'CE': 'Bjärƶ tema'
   },
   'drawer.share': {
     'FR': 'Partager l\'app',
     'EN': 'Share the app',
     'RU': 'Поделиться',
-    'CE': 'App dʼayʼa'
+    'CE': 'App djayakqa'
   },
   'drawer.profile_meta': {
     'FR': '{emoji} Niveau {l} · Ligue {league}',
     'EN': '{emoji} Level {l} · {league} League',
     'RU': '{emoji} Уровень {l} · Лига {league}',
-    'CE': '{emoji} Tʼema {l} · Liga {league}'
+    'CE': '{emoji} Ṫeġa {l} · Liga {league}'
   },
   'about.version':
       {'FR': 'Version 1.0.0', 'EN': 'Version 1.0.0', 'RU': 'Версия 1.0.0', 'CE': 'Version 1.0.0'},
@@ -295,7 +295,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU':
         'LinguaCE — мобильное приложение для изучения чеченского языка (нохчийн мотт) с помощью искусственного интеллекта.',
     'CE':
-        'LinguaCE — noxçiyŋ mott jamabaŋ mobiltelefonaŋ programma yu, AI gʼoʼaca.'
+        'LinguaCE — noxçiyŋ mott jamabaŋ mobiltelefonaŋ programma yu, AI ġonica.'
   },
   'about.made': {
     'FR': 'Développée avec ❤️ pour préserver et diffuser la langue tchétchène.',
@@ -307,7 +307,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': '{lang} sélectionné',
     'EN': '{lang} selected',
     'RU': 'Выбран {lang}',
-    'CE': '{lang} xʼaržina'
+    'CE': '{lang} xärƶina'
   },
 
   // ── Chat ──────────────────────────────────────────────────────────────────
@@ -322,19 +322,19 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Effacer la conversation ?',
     'EN': 'Clear the conversation?',
     'RU': 'Очистить переписку?',
-    'CE': 'Qamel dʼadaqqa?'
+    'CE': 'Qamel djadakqa?'
   },
   'chat.clear_desc': {
     'FR': 'L\'historique sera supprimé définitivement.',
     'EN': 'The history will be permanently deleted.',
     'RU': 'История будет удалена навсегда.',
-    'CE': 'Istori dʼayaqqa yʼür yu.'
+    'CE': 'Istori djayakqa yur yu.'
   },
   'chat.hint': {
     'FR': 'Écrivez votre message...',
     'EN': 'Type your message...',
     'RU': 'Напишите сообщение...',
-    'CE': 'Hʼaŋ xaam yazde...'
+    'CE': 'Ẋaŋ xaam yazde...'
   },
   'chat.copy': {
     'FR': 'Copier le texte',
@@ -342,7 +342,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Копировать текст',
     'CE': 'Tekst kopde'
   },
-  'chat.edit': {'FR': 'Modifier', 'EN': 'Edit', 'RU': 'Изменить', 'CE': 'Hʼaşdo'},
+  'chat.edit': {'FR': 'Modifier', 'EN': 'Edit', 'RU': 'Изменить', 'CE': 'Ẋaşdo'},
   'chat.regenerate': {
     'FR': 'Régénérer la réponse',
     'EN': 'Regenerate response',
@@ -361,13 +361,13 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Veuillez remplir tous les champs.',
     'EN': 'Please fill in all fields.',
     'RU': 'Заполните все поля.',
-    'CE': 'Massa mettigaş dʼayazde.'
+    'CE': 'Massa mettigaş djayazde.'
   },
   'err.generic': {
     'FR': 'Une erreur est survenue. Réessaie.',
     'EN': 'Something went wrong. Try again.',
     'RU': 'Произошла ошибка. Попробуйте снова.',
-    'CE': 'Gʼalat xilla. Yuxa gʼort.'
+    'CE': 'ġalat xilla. Yuxa ġort.'
   },
 
   // ── Exercices ─────────────────────────────────────────────────────────────
@@ -375,21 +375,21 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Tapez la carte pour la retourner',
     'EN': 'Tap the card to flip it',
     'RU': 'Нажмите на карточку, чтобы перевернуть',
-    'CE': 'Kart juxaerza tʼeqʼa'
+    'CE': 'Kart yuxaerzo ṫara toxa'
   },
   'ex.tap_translate': {
     'FR': 'Tapez pour voir la traduction',
     'EN': 'Tap to see the translation',
     'RU': 'Нажмите, чтобы увидеть перевод',
-    'CE': 'Goçyar gayta tʼeqʼa'
+    'CE': 'Goçe gayta ṫara toxa'
   },
   'ex.understood': {
     'FR': 'J\'ai compris → +5 XP',
     'EN': 'Got it → +5 XP',
     'RU': 'Понятно → +5 XP',
-    'CE': 'Kxiʼti → +5 XP'
+    'CE': 'Qiytira → +5 XP'
   },
-  'ex.next': {'FR': 'Suivant →', 'EN': 'Next →', 'RU': 'Дальше →', 'CE': 'Dʼaxo →'},
+  'ex.next': {'FR': 'Suivant →', 'EN': 'Next →', 'RU': 'Дальше →', 'CE': 'Djaxo →'},
   'ex.finish': {
     'FR': 'Terminer la leçon 🎓',
     'EN': 'Finish the lesson 🎓',
@@ -400,13 +400,13 @@ const Map<String, Map<String, String>> _strings = {
     'FR': '💡 Indice : {x}',
     'EN': '💡 Hint: {x}',
     'RU': '💡 Подсказка: {x}',
-    'CE': '💡 Gʼo: {x}'
+    'CE': '💡 ġo: {x}'
   },
   'ex.answer_hint': {
     'FR': 'Ta réponse en latin…',
     'EN': 'Your answer in Latin…',
     'RU': 'Ваш ответ латиницей…',
-    'CE': 'Hʼaŋ juʼp latiniyca…'
+    'CE': 'Ẋaŋ ƶop latiniyca…'
   },
   'ex.check': {'FR': 'Vérifier', 'EN': 'Check', 'RU': 'Проверить', 'CE': 'Talla'},
   'ex.perfect': {
@@ -419,7 +419,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': '💡 La bonne réponse :',
     'EN': '💡 The correct answer:',
     'RU': '💡 Правильный ответ:',
-    'CE': '💡 Nisa juʼp:'
+    'CE': '💡 Niysa ƶop:'
   },
   'ex.correct':
       {'FR': 'Correct !', 'EN': 'Correct!', 'RU': 'Верно!', 'CE': 'Nisa!'},
@@ -433,7 +433,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Réponse : {x}',
     'EN': 'Answer: {x}',
     'RU': 'Ответ: {x}',
-    'CE': 'Juʼp: {x}'
+    'CE': 'Ƶop: {x}'
   },
   'ex.done_perfect':
       {'FR': 'Parfait !', 'EN': 'Perfect!', 'RU': 'Отлично!', 'CE': 'Dika!'},
@@ -444,9 +444,9 @@ const Map<String, Map<String, String>> _strings = {
     'CE': 'Deşar çekxdälla!'
   },
   'ex.xp_earned':
-      {'FR': 'XP gagnés', 'EN': 'XP earned', 'RU': 'Получено XP', 'CE': 'XP qaʼchina'},
+      {'FR': 'XP gagnés', 'EN': 'XP earned', 'RU': 'Получено XP', 'CE': 'XP qäçna'},
   'ex.mistakes':
-      {'FR': 'Erreurs', 'EN': 'Mistakes', 'RU': 'Ошибки', 'CE': 'Gʼalataş'},
+      {'FR': 'Erreurs', 'EN': 'Mistakes', 'RU': 'Ошибки', 'CE': 'ġalataş'},
   'ex.exercises':
       {'FR': 'Exercices', 'EN': 'Exercises', 'RU': 'Упражнения', 'CE': 'Bolxaş'},
 
@@ -465,7 +465,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU':
         'Введите email — мы отправим ссылку для сброса пароля.',
     'CE':
-        'Hʼaŋ elektronni poşt yazde, doş juxametta link dʼahʼür du oxa hʼuna.'
+        'Ẋaŋ elektronni poşt yazde, doş juxametta link djaẋür du oxa ẋuna.'
   },
   'forgot.email': {
     'FR': 'Adresse email',
@@ -477,7 +477,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Envoyer le lien',
     'EN': 'Send the link',
     'RU': 'Отправить ссылку',
-    'CE': 'Link dʼahʼa'
+    'CE': 'Link djaẋa'
   },
   'forgot.back': {
     'FR': 'Retour à la connexion',
@@ -489,13 +489,13 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Email envoyé !',
     'EN': 'Email sent!',
     'RU': 'Письмо отправлено!',
-    'CE': 'Email dʼahʼna!'
+    'CE': 'Email djaẋna!'
   },
   'forgot.sent_to': {
     'FR': 'Un lien de réinitialisation a été envoyé à :',
     'EN': 'A reset link has been sent to:',
     'RU': 'Ссылка для сброса отправлена на:',
-    'CE': 'Juxametta link dʼahʼna:'
+    'CE': 'Juxametta link djaẋna:'
   },
   'forgot.check_inbox': {
     'FR':
@@ -505,7 +505,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU':
         'Проверьте почту (и спам), затем нажмите на ссылку, чтобы задать новый пароль.',
     'CE':
-        'Hʼaŋ poşt talla (spam a), tʼaqqa link tʼeqʼa kerla doş xʼarža.'
+        'Ẋaŋ poşt talla (spam a), ṫaqqa link ṫara toxa kerla doş ẋarƶa.'
   },
   'forgot.other_email': {
     'FR': 'Utiliser une autre adresse',
@@ -517,7 +517,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Veuillez entrer votre adresse email.',
     'EN': 'Please enter your email address.',
     'RU': 'Введите ваш email.',
-    'CE': 'Hʼaŋ elektronni poşt yazde.'
+    'CE': 'Ẋaŋ elektronni poşt yazde.'
   },
   'forgot.err_invalid': {
     'FR': 'Adresse email invalide.',
