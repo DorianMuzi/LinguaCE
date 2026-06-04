@@ -326,7 +326,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU':
         'Marşalla du! Я Noxçi, твой ИИ-помощник для изучения чеченского. Чем могу помочь сегодня?',
     'CE':
-        'Marşalla du! So Noxçi vu, noxçiyŋ mott jamo ẋuna ġönça (AI) vu. Taxana muxa ġo daŋ deza ẋuna?'
+        'Marşalla du! So Noxçi ċe yolaş, noxçiyŋ mott jamo ẋuna ġo diyrig qöllina ẋeq̇al (AI) du. Taxana muxa ġo daŋ deza ẋuna?'
   },
   'chat.clear_q': {
     'FR': 'Effacer la conversation ?',
