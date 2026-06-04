@@ -152,7 +152,7 @@ const Map<String, Map<String, String>> _strings = {
     'CE': '{c}/{t} bolx'
   },
   'learn.start':
-      {'FR': 'Commencer', 'EN': 'Start', 'RU': 'Начать', 'CE': 'Djadolade'},
+      {'FR': 'Commencer', 'EN': 'Start', 'RU': 'Начать', 'CE': 'Djadolo'},
   'learn.review':
       {'FR': 'Revoir', 'EN': 'Review', 'RU': 'Повторить', 'CE': 'Yuxa ẋaƶa'},
 
