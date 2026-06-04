@@ -46,6 +46,7 @@ class _AppDrawerState extends State<AppDrawer> {
       };
 
   void _info(String message) {
+    if (!mounted) return;
     final t = context.tokens;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content:
@@ -148,10 +149,12 @@ class _AppDrawerState extends State<AppDrawer> {
 
   void _showLanguagePicker() {
     final t = context.tokens;
+    // Capturé tant que le drawer est monté : reste valide après sa fermeture.
+    final messenger = ScaffoldMessenger.of(context);
     Navigator.pop(context); // ferme le drawer
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
         title: Text(tr('set.interface_lang'),
@@ -172,10 +175,19 @@ class _AppDrawerState extends State<AppDrawer> {
                   ? Icon(Icons.check_rounded, color: t.accent, size: 18)
                   : null,
               onTap: () {
+                Navigator.of(dialogContext).pop(); // ferme la boîte de dialogue
                 localeController.setLang(code);
-                Navigator.pop(context);
-                _info(tr('lang.selected',
-                    {'lang': LocaleController.names[code]!}));
+                messenger.showSnackBar(SnackBar(
+                  content: Text(
+                      tr('lang.selected',
+                          {'lang': LocaleController.names[code]!}),
+                      style: GoogleFonts.inter(color: Colors.white)),
+                  backgroundColor: t.accentStrong,
+                  behavior: SnackBarBehavior.floating,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: LinguaRadius.rMd),
+                  margin: const EdgeInsets.all(16),
+                ));
               },
             );
           }).toList(),
