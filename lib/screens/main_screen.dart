@@ -105,6 +105,7 @@ class _MainScreenState extends State<MainScreen> {
       elevation: 0,
       leading: GestureDetector(
         onTap: () => _scaffoldKey.currentState?.openDrawer(),
+        behavior: HitTestBehavior.opaque,
         child: Padding(
           padding: const EdgeInsets.only(left: 16),
           child: Row(
@@ -144,18 +145,26 @@ class _MainScreenState extends State<MainScreen> {
             ),
       centerTitle: true,
       actions: [
-        GestureDetector(
-          onTap: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const ProfileScreen()),
-            );
-            // Le pseudo a pu changer dans l'écran Profil → on rafraîchit.
-            _loadProfile();
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: _buildAvatarButton(t),
+        Semantics(
+          button: true,
+          label: tr('nav.profile'),
+          child: Tooltip(
+            message: tr('nav.profile'),
+            child: GestureDetector(
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                );
+                // Le pseudo a pu changer dans l'écran Profil → on rafraîchit.
+                _loadProfile();
+              },
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 6, 16, 6),
+                child: _buildAvatarButton(t),
+              ),
+            ),
           ),
         ),
       ],

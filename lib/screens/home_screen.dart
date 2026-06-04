@@ -122,6 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
             style: GoogleFonts.inter(color: t.textSecondary, fontSize: 16)),
         Text(
           _loading ? '…' : _username,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: GoogleFonts.playfairDisplay(
             color: t.textPrimary,
             fontSize: 32,
