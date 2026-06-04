@@ -91,7 +91,7 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'Суьйре', translit: 'Süyre', french: 'Soir',
         prompt: 'Comment dit-on "Soir" en tchétchène ?',
-        choices: ['De', 'Büysa', 'ʼüyre', 'Süyre'],
+        choices: ['De', 'Büysa', 'jüyre', 'Süyre'],
         correctIndex: 3,
       ),
       Exercise(
@@ -194,9 +194,9 @@ class _Data {
       ),
       Exercise(
         type: ExerciseType.qcm,
-        cyrillic: 'Ӏаьржа', translit: 'ʼärƶa', french: 'Noir',
+        cyrillic: 'Ӏаьржа', translit: 'järƶa', french: 'Noir',
         prompt: 'Comment dit-on "Noir" en tchétchène ?',
-        choices: ['ʼärƶa', 'Moƶa', 'Kʼayn', 'Siyna'],
+        choices: ['järƶa', 'Moƶa', 'Kʼayn', 'Siyna'],
         correctIndex: 0,
       ),
       Exercise(
