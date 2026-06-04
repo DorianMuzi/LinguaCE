@@ -62,7 +62,7 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'Дукха', translit: 'Duqa', french: 'Beaucoup',
         prompt: 'Quel mot signifie "Beaucoup" ?',
-        choices: ['K̇ezig', 'Voŋ', 'Dika', 'Duqa'],
+        choices: ['Kʼezig', 'Voŋ', 'Dika', 'Duqa'],
         correctIndex: 3,
       ),
       Exercise(
@@ -175,14 +175,14 @@ class _Data {
     ],
     '5': [
       Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'цӀен', translit: 'ċeŋ', french: 'Rouge'),
+          cyrillic: 'цӀен', translit: 'cʼeŋ', french: 'Rouge'),
       Exercise(type: ExerciseType.flashcard,
           cyrillic: 'сийна', translit: 'siyna', french: 'Bleu'),
       Exercise(
         type: ExerciseType.qcm,
-        cyrillic: 'цӀен', translit: 'ċeŋ', french: 'Rouge',
+        cyrillic: 'цӀен', translit: 'cʼeŋ', french: 'Rouge',
         prompt: 'Comment dit-on "Rouge" en tchétchène ?',
-        choices: ['Siyna', 'Ċeŋ', 'K̇ayŋ', 'Bäccara'],
+        choices: ['Siyna', 'Cʼeŋ', 'Kʼayŋ', 'Bäccara'],
         correctIndex: 1,
       ),
       Exercise(
@@ -196,12 +196,12 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'Ӏаьржа', translit: 'Järƶa', french: 'Noir',
         prompt: 'Comment dit-on "Noir" en tchétchène ?',
-        choices: ['Järƶa', 'Moƶa', 'K̇ayŋ', 'Siyna'],
+        choices: ['Järƶa', 'Moƶa', 'Kʼayŋ', 'Siyna'],
         correctIndex: 0,
       ),
       Exercise(
         type: ExerciseType.translation,
-        cyrillic: 'кӀайн', translit: 'k̇ayŋ', french: 'Blanc',
+        cyrillic: 'кӀайн', translit: 'kʼayŋ', french: 'Blanc',
         prompt: 'Traduis en tchétchène :\n"Blanc"',
       ),
     ],
