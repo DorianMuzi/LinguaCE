@@ -48,7 +48,7 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'Баркалла', translit: 'Barkalla', french: 'Merci',
         prompt: 'Comment dit-on "Merci" en tchétchène ?',
-        choices: ['Salam', 'Barkalla', 'Dika', 'Von'],
+        choices: ['Salam', 'Barkalla', 'Dika', 'Voŋ'],
         correctIndex: 1,
       ),
       Exercise(
@@ -60,14 +60,14 @@ class _Data {
       ),
       Exercise(
         type: ExerciseType.qcm,
-        cyrillic: 'Дукха', translit: 'Dukxa', french: 'Beaucoup',
+        cyrillic: 'Дукха', translit: 'Duqa', french: 'Beaucoup',
         prompt: 'Quel mot signifie "Beaucoup" ?',
-        choices: ['Kʼezig', 'Von', 'Dika', 'Dukxa'],
+        choices: ['K̇ezig', 'Voŋ', 'Dika', 'Duqa'],
         correctIndex: 3,
       ),
       Exercise(
         type: ExerciseType.translation,
-        cyrillic: 'Баркалла дукха', translit: 'Barkalla dukxa',
+        cyrillic: 'Баркалла дукха', translit: 'Barkalla duqa',
         french: 'Merci beaucoup',
         prompt: 'Traduis en tchétchène :\n"Merci beaucoup"',
       ),
@@ -113,7 +113,7 @@ class _Data {
       Exercise(type: ExerciseType.flashcard,
           cyrillic: 'цхьа', translit: 'cẋa', french: 'Un (1)'),
       Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'шиъ', translit: 'şiʔ', french: 'Deux (2)'),
+          cyrillic: 'шиъ', translit: 'şiə', french: 'Deux (2)'),
       Exercise(
         type: ExerciseType.qcm,
         cyrillic: 'кхо', translit: 'qo', french: 'Trois (3)',
@@ -125,14 +125,14 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'пхи', translit: 'pxi', french: 'Cinq (5)',
         prompt: 'Comment dit-on "5" en tchétchène ?',
-        choices: ['Diʔ', 'Pxi', 'Yalx', 'Vorx'],
+        choices: ['Diə', 'Pxi', 'Yalx', 'Vorx'],
         correctIndex: 1,
       ),
       Exercise(
         type: ExerciseType.qcm,
         cyrillic: 'цхьа', translit: 'cẋa', french: 'Un (1)',
         prompt: 'Comment dit-on "1" en tchétchène ?',
-        choices: ['Şiʔ', 'Qo', 'Cẋa', 'Diʔ'],
+        choices: ['Şiə', 'Qo', 'Cẋa', 'Diə'],
         correctIndex: 2,
       ),
       Exercise(
@@ -175,14 +175,14 @@ class _Data {
     ],
     '5': [
       Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'цӀен', translit: 'cʼen', french: 'Rouge'),
+          cyrillic: 'цӀен', translit: 'ċeŋ', french: 'Rouge'),
       Exercise(type: ExerciseType.flashcard,
           cyrillic: 'сийна', translit: 'siyna', french: 'Bleu'),
       Exercise(
         type: ExerciseType.qcm,
-        cyrillic: 'цӀен', translit: 'cʼen', french: 'Rouge',
+        cyrillic: 'цӀен', translit: 'ċeŋ', french: 'Rouge',
         prompt: 'Comment dit-on "Rouge" en tchétchène ?',
-        choices: ['Siyna', 'Cʼen', 'Kʼayn', 'Bäccara'],
+        choices: ['Siyna', 'Ċeŋ', 'K̇ayŋ', 'Bäccara'],
         correctIndex: 1,
       ),
       Exercise(
@@ -196,12 +196,12 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'Ӏаьржа', translit: 'järƶa', french: 'Noir',
         prompt: 'Comment dit-on "Noir" en tchétchène ?',
-        choices: ['järƶa', 'Moƶa', 'Kʼayn', 'Siyna'],
+        choices: ['järƶa', 'Moƶa', 'K̇ayŋ', 'Siyna'],
         correctIndex: 0,
       ),
       Exercise(
         type: ExerciseType.translation,
-        cyrillic: 'кӀайн', translit: 'kʼayn', french: 'Blanc',
+        cyrillic: 'кӀайн', translit: 'k̇ayŋ', french: 'Blanc',
         prompt: 'Traduis en tchétchène :\n"Blanc"',
       ),
     ],
@@ -347,12 +347,14 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   /// que la saisie reste réaliste avec un clavier standard.
   static String _normalize(String s) {
     const folds = {
-      'ş': 's', 'ẋ': 'x', 'ç': 'c', 'ġ': 'g', 'ŋ': 'n',
-      'ü': 'u', 'ö': 'o', 'ə': 'e',
+      'ş': 's', 'ẋ': 'x', 'ç': 'c', 'ġ': 'g', 'ŋ': 'n', 'ƶ': 'z', 'ċ': 'c',
+      'ü': 'u', 'ö': 'o', 'ä': 'a', 'ə': 'e',
       'ʔ': '', 'ʼ': '', 'ʻ': '', '\'': '', '`': '',
     };
     var out = s.trim().toLowerCase();
     folds.forEach((k, v) => out = out.replaceAll(k, v));
+    // Retire les diacritiques combinants (ex. point suscrit de k̇, q̇).
+    out = out.replaceAll(RegExp('[̀-ͯ]'), '');
     return out.replaceAll(RegExp(r'\s+'), ' ');
   }
 
