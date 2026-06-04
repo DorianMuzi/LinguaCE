@@ -68,7 +68,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': '{n} jours consécutifs',
     'EN': '{n} day streak',
     'RU': '{n} дней подряд',
-    'CE': '{n} de ṫäẋalla'
+    'CE': '{n} de Roġ'
   },
   'home.streak_keep': {
     'FR': 'Continue comme ça !',
@@ -185,7 +185,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Пока нет рейтинга.',
     'CE': 'Hinca classement yac.'
   },
-  'stat.streak': {'FR': 'SÉRIE', 'EN': 'STREAK', 'RU': 'СЕРИЯ', 'CE': 'Ṫäẋalla'},
+  'stat.streak': {'FR': 'SÉRIE', 'EN': 'STREAK', 'RU': 'СЕРИЯ', 'CE': 'Roġ'},
   'stat.xp_total':
       {'FR': 'XP TOTAL', 'EN': 'TOTAL XP', 'RU': 'ВСЕГО XP', 'CE': 'XP yerrig'},
   'stat.level': {'FR': 'NIVEAU', 'EN': 'LEVEL', 'RU': 'УРОВЕНЬ', 'CE': 'Ṫeġa'},
