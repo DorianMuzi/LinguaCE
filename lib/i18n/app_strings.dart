@@ -375,13 +375,13 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Tapez la carte pour la retourner',
     'EN': 'Tap the card to flip it',
     'RU': 'Нажмите на карточку, чтобы перевернуть',
-    'CE': 'Kart yuxaerzo ṫara toxa'
+    'CE': 'Kart yuxaerzo ṫetajae'
   },
   'ex.tap_translate': {
     'FR': 'Tapez pour voir la traduction',
     'EN': 'Tap to see the translation',
     'RU': 'Нажмите, чтобы увидеть перевод',
-    'CE': 'Goçe gayta ṫara toxa'
+    'CE': 'Goçe gayta ṫetajae'
   },
   'ex.understood': {
     'FR': 'J\'ai compris → +5 XP',
@@ -444,7 +444,7 @@ const Map<String, Map<String, String>> _strings = {
     'CE': 'Deşar çekxdälla!'
   },
   'ex.xp_earned':
-      {'FR': 'XP gagnés', 'EN': 'XP earned', 'RU': 'Получено XP', 'CE': 'XP qäçna'},
+      {'FR': 'XP gagnés', 'EN': 'XP earned', 'RU': 'Получено XP', 'CE': 'Däkqina XP'},
   'ex.mistakes':
       {'FR': 'Erreurs', 'EN': 'Mistakes', 'RU': 'Ошибки', 'CE': 'ġalataş'},
   'ex.exercises':
@@ -505,7 +505,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU':
         'Проверьте почту (и спам), затем нажмите на ссылку, чтобы задать новый пароль.',
     'CE':
-        'Ẋaŋ poşt talla (spam a), ṫaqqa link ṫara toxa kerla doş ẋarƶa.'
+        'Ẋaŋ poşt talla (spam a), ṫaqqa link ṫetajae kerla doş ẋarƶa.'
   },
   'forgot.other_email': {
     'FR': 'Utiliser une autre adresse',
