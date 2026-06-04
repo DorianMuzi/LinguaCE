@@ -187,7 +187,7 @@ const Map<String, Map<String, String>> _strings = {
   },
   'stat.streak': {'FR': 'SÉRIE', 'EN': 'STREAK', 'RU': 'СЕРИЯ', 'CE': 'Roġ'},
   'stat.xp_total':
-      {'FR': 'XP TOTAL', 'EN': 'TOTAL XP', 'RU': 'ВСЕГО XP', 'CE': 'XP yerrig'},
+      {'FR': 'XP TOTAL', 'EN': 'TOTAL XP', 'RU': 'ВСЕГО XP', 'CE': 'Yerrig XP'},
   'stat.level': {'FR': 'NIVEAU', 'EN': 'LEVEL', 'RU': 'УРОВЕНЬ', 'CE': 'Ṫeġa'},
   'stat.lessons':
       {'FR': 'LEÇONS', 'EN': 'LESSONS', 'RU': 'УРОКИ', 'CE': 'DEŞARŞ'},
