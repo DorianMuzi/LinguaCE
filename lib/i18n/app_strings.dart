@@ -20,14 +20,14 @@ String tr(String key, [Map<String, String>? params]) {
 const Map<String, Map<String, String>> _strings = {
   // ── Navigation ────────────────────────────────────────────────────────────
   'nav.home': {'FR': 'Accueil', 'EN': 'Home', 'RU': 'Главная', 'CE': 'Ċa'},
-  'nav.chat': {'FR': 'Chat', 'EN': 'Chat', 'RU': 'Чат', 'CE': 'Qamel'},
+  'nav.chat': {'FR': 'Chat', 'EN': 'Chat', 'RU': 'Чат', 'CE': 'Q̇amel'},
   'nav.learn': {'FR': 'Apprendre', 'EN': 'Learn', 'RU': 'Учить', 'CE': 'Jamar'},
   'nav.progress':
       {'FR': 'Progrès', 'EN': 'Progress', 'RU': 'Прогресс', 'CE': 'Progress'},
 
   // ── Titres d'écran ────────────────────────────────────────────────────────
   'title.chat':
-      {'FR': 'Chat IA', 'EN': 'AI Chat', 'RU': 'ИИ-чат', 'CE': 'AI Qamel'},
+      {'FR': 'Chat IA', 'EN': 'AI Chat', 'RU': 'ИИ-чат', 'CE': 'AI Q̇amel'},
   'title.learn':
       {'FR': 'Apprendre', 'EN': 'Learn', 'RU': 'Учить', 'CE': 'Jamar'},
   'title.progress':
@@ -89,7 +89,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Быстрые действия',
     'CE': 'Sixa ġullaqaş'
   },
-  'home.qa_chat': {'FR': 'Chat IA', 'EN': 'AI Chat', 'RU': 'ИИ-чат', 'CE': 'AI Qamel'},
+  'home.qa_chat': {'FR': 'Chat IA', 'EN': 'AI Chat', 'RU': 'ИИ-чат', 'CE': 'AI Q̇amel'},
   'home.qa_lessons':
       {'FR': 'Leçons', 'EN': 'Lessons', 'RU': 'Уроки', 'CE': 'Deşarş'},
   'home.qa_progress':
@@ -332,7 +332,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Effacer la conversation ?',
     'EN': 'Clear the conversation?',
     'RU': 'Очистить переписку?',
-    'CE': 'Qamel djadakqa?'
+    'CE': 'Q̇amel djadakqa?'
   },
   'chat.clear_desc': {
     'FR': 'L\'historique sera supprimé définitivement.',
