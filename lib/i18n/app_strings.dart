@@ -45,7 +45,7 @@ const Map<String, Map<String, String>> _strings = {
   'common.delete':
       {'FR': 'Effacer', 'EN': 'Delete', 'RU': 'Удалить', 'CE': 'Djayakqa'},
   'common.continue':
-      {'FR': 'Continuer', 'EN': 'Continue', 'RU': 'Продолжить', 'CE': 'Djaẋa'},
+      {'FR': 'Continuer', 'EN': 'Continue', 'RU': 'Продолжить', 'CE': 'Djaẋaƶa'},
   'common.soon': {
     'FR': 'Bientôt disponible !',
     'EN': 'Coming soon!',
@@ -87,7 +87,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Actions rapides',
     'EN': 'Quick actions',
     'RU': 'Быстрые действия',
-    'CE': 'Sixa ġullaq̇aş'
+    'CE': 'Sixa ġullaqaş'
   },
   'home.qa_chat': {'FR': 'Chat IA', 'EN': 'AI Chat', 'RU': 'ИИ-чат', 'CE': 'AI Qamel'},
   'home.qa_lessons':
@@ -163,13 +163,13 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Cette semaine',
     'EN': 'This week',
     'RU': 'На этой неделе',
-    'CE': 'Hoqu k̇ira'
+    'CE': 'Hoqu k̇iranna'
   },
   'progress.week_xp': {
     'FR': 'cette semaine',
     'EN': 'this week',
     'RU': 'за неделю',
-    'CE': 'hoqu k̇ira'
+    'CE': 'hoqu k̇iranna'
   },
   'progress.league':
       {'FR': 'Ligue {l}', 'EN': 'League {l}', 'RU': 'Лига {l}', 'CE': 'Liga {l}'},
