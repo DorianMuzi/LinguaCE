@@ -64,106 +64,20 @@ Puis édite `env.json` :
 ```
 > `env.json` est ignoré par git — il ne sera jamais committé.
 
-### 3. Configurer la base Supabase
-Dans le **SQL Editor** de ton projet Supabase, exécute :
+### 3. Configurer la base de données
 
-```sql
--- Table des profils
-create table if not exists public.profiles (
-  id          uuid primary key references auth.users(id) on delete cascade,
-  username    text not null,
-  xp          integer not null default 0,
-  level       integer not null default 1,
-  streak      integer not null default 0,
-  lessons_completed integer not null default 0,
-  league      text not null default 'Aigle',
-  interface_language text not null default 'FR',
-  last_activity timestamptz,
-  created_at  timestamptz default now()
-);
-alter table public.profiles enable row level security;
-create policy "Profil visible par son proprietaire"
-  on public.profiles for select using (auth.uid() = id);
-create policy "Profil modifiable par son proprietaire"
-  on public.profiles for update using (auth.uid() = id);
-create policy "Profil creable a l'inscription"
-  on public.profiles for insert with check (auth.uid() = id);
+Le schéma complet est **versionné** dans `supabase/migrations/`. Applique-le
+en une commande avec le [CLI Supabase](https://supabase.com/docs/guides/cli) :
 
--- Table des messages de chat
-create table if not exists public.chat_messages (
-  id          uuid primary key default gen_random_uuid(),
-  user_id     uuid not null references auth.users(id) on delete cascade,
-  role        text not null check (role in ('user', 'assistant')),
-  content     text not null,
-  created_at  timestamptz default now()
-);
-alter table public.chat_messages enable row level security;
-create policy "Messages visibles par leur auteur"
-  on public.chat_messages for select using (auth.uid() = user_id);
-create policy "Messages creables par leur auteur"
-  on public.chat_messages for insert with check (auth.uid() = user_id);
-create policy "Messages supprimables par leur auteur"
-  on public.chat_messages for delete using (auth.uid() = user_id);
-
--- Catalogue des leçons + progression par utilisateur
-create table if not exists public.lessons (
-  id text primary key,
-  title text not null,
-  subtitle text not null,
-  icon text not null,
-  xp_reward integer not null default 50,
-  total_exercises integer not null default 6,
-  sort_order integer not null default 0
-);
-alter table public.lessons enable row level security;
-create policy "Lecons visibles (authentifies)"
-  on public.lessons for select to authenticated using (true);
-
-create table if not exists public.lesson_progress (
-  user_id uuid not null references auth.users(id) on delete cascade,
-  lesson_id text not null references public.lessons(id) on delete cascade,
-  completed_exercises integer not null default 0,
-  completed boolean not null default false,
-  updated_at timestamptz default now(),
-  primary key (user_id, lesson_id)
-);
-alter table public.lesson_progress enable row level security;
-create policy "Progression visible (proprietaire)"
-  on public.lesson_progress for select using (auth.uid() = user_id);
-create policy "Progression modifiable (proprietaire)"
-  on public.lesson_progress for all
-  using (auth.uid() = user_id) with check (auth.uid() = user_id);
-
-grant all on public.lessons, public.lesson_progress to anon, authenticated;
-
--- Seed du catalogue
-insert into public.lessons (id, title, subtitle, icon, xp_reward, total_exercises, sort_order) values
-  ('1', 'Premiers Mots',      'Vocabulaire de base',   '🌱',       100, 6, 1),
-  ('2', 'Salutations',        'Bonjour, au revoir...', '👋',       150, 6, 2),
-  ('3', 'Chiffres & Nombres', 'De 1 à 100',            '🔢',       200, 6, 3),
-  ('4', 'La Famille',         'Mère, père, frère...',  '👨‍👩‍👧', 250, 6, 4)
-on conflict (id) do nothing;
-
--- Gamification : journal d'XP (graphique hebdo) + classement
-create table if not exists public.xp_events (
-  id bigint generated always as identity primary key,
-  user_id uuid not null references auth.users(id) on delete cascade,
-  amount integer not null,
-  created_at timestamptz default now()
-);
-alter table public.xp_events enable row level security;
-create policy "XP events visibles (proprietaire)"
-  on public.xp_events for select using (auth.uid() = user_id);
-create policy "XP events creables (proprietaire)"
-  on public.xp_events for insert with check (auth.uid() = user_id);
-grant all on public.xp_events to anon, authenticated;
-create index if not exists xp_events_user_date
-  on public.xp_events (user_id, created_at);
-
--- Classement : profils lisibles par les utilisateurs authentifiés
-create policy "Classement visible (authentifies)"
-  on public.profiles for select to authenticated using (true);
+```bash
+supabase link --project-ref <ton-project-ref>   # une seule fois
+supabase db push
 ```
+
+Cela crée automatiquement **toutes les tables, politiques RLS, privilèges et
+le catalogue de leçons** — aucun copier-coller de SQL.
+
+> Pour réinitialiser une base locale de dev : `supabase db reset`.
 
 ### 4. Lancer l'app
 ```bash
