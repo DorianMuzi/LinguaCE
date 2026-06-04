@@ -48,13 +48,13 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'Баркалла', translit: 'Barkalla', french: 'Merci',
         prompt: 'Comment dit-on "Merci" en tchétchène ?',
-        choices: ['Салам', 'Баркалла', 'Дика', 'Вон'],
+        choices: ['Salam', 'Barkalla', 'Dika', 'Von'],
         correctIndex: 1,
       ),
       Exercise(
         type: ExerciseType.qcm,
         cyrillic: 'Дика', translit: 'Dika', french: 'Bien / Bon',
-        prompt: 'Que signifie "Дика" ?',
+        prompt: 'Que signifie "Dika" ?',
         choices: ['Mauvais', 'Beaucoup', 'Bien / Bon', 'Peu'],
         correctIndex: 2,
       ),
@@ -62,7 +62,7 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'Дукха', translit: 'Dukxa', french: 'Beaucoup',
         prompt: 'Quel mot signifie "Beaucoup" ?',
-        choices: ['КӀезиг', 'Вон', 'Дика', 'Дукха'],
+        choices: ['Kʼezig', 'Von', 'Dika', 'Dukxa'],
         correctIndex: 3,
       ),
       Exercise(
@@ -84,21 +84,21 @@ class _Data {
         cyrillic: 'Марша огӀийла', translit: 'Marşa oġiyla',
         french: 'Bonjour (formel)',
         prompt: 'Quel est le bonjour formel en tchétchène ?',
-        choices: ['Салам', 'Баркалла', 'Марша огӀийла', 'Дика де'],
+        choices: ['Salam', 'Barkalla', 'Marşa oġiyla', 'Dika de'],
         correctIndex: 2,
       ),
       Exercise(
         type: ExerciseType.qcm,
         cyrillic: 'Суьйре', translit: 'Süyre', french: 'Soir',
         prompt: 'Comment dit-on "Soir" en tchétchène ?',
-        choices: ['Де', 'Буьйса', 'ӀуьйреI', 'Суьйре'],
+        choices: ['De', 'Büysa', 'ʼüyre', 'Süyre'],
         correctIndex: 3,
       ),
       Exercise(
         type: ExerciseType.qcm,
         cyrillic: 'Марша огӀийла', translit: 'Marşa oġiyla',
         french: 'Entre libre (litt.)',
-        prompt: 'Que signifie littéralement "Марша огӀийла" ?',
+        prompt: 'Que signifie littéralement "Marşa oġiyla" ?',
         choices: ['Bonne journée', 'Entre libre', 'Bonne nuit', 'À bientôt'],
         correctIndex: 1,
       ),
@@ -117,7 +117,7 @@ class _Data {
       Exercise(
         type: ExerciseType.qcm,
         cyrillic: 'кхо', translit: 'qo', french: 'Trois (3)',
-        prompt: '"Кхо" signifie ?',
+        prompt: '"Qo" signifie ?',
         choices: ['Un', 'Deux', 'Trois', 'Quatre'],
         correctIndex: 2,
       ),
@@ -125,14 +125,14 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'пхи', translit: 'pxi', french: 'Cinq (5)',
         prompt: 'Comment dit-on "5" en tchétchène ?',
-        choices: ['Диъ', 'Пхи', 'Ялх', 'Ворх'],
+        choices: ['Diʔ', 'Pxi', 'Yalx', 'Vorx'],
         correctIndex: 1,
       ),
       Exercise(
         type: ExerciseType.qcm,
         cyrillic: 'цхьа', translit: 'cẋa', french: 'Un (1)',
         prompt: 'Comment dit-on "1" en tchétchène ?',
-        choices: ['Шиъ', 'Кхо', 'Цхьа', 'Диъ'],
+        choices: ['Şiʔ', 'Qo', 'Cẋa', 'Diʔ'],
         correctIndex: 2,
       ),
       Exercise(
@@ -150,13 +150,13 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'Ваша', translit: 'Vaşa', french: 'Frère',
         prompt: 'Comment dit-on "Frère" en tchétchène ?',
-        choices: ['Йиша', 'Нана', 'Ваша', 'Да'],
+        choices: ['Yişa', 'Nana', 'Vaşa', 'Da'],
         correctIndex: 2,
       ),
       Exercise(
         type: ExerciseType.qcm,
-        cyrillic: 'Йиша', translit: 'Yiça', french: 'Sœur',
-        prompt: '"Йиша" signifie ?',
+        cyrillic: 'Йиша', translit: 'Yişa', french: 'Sœur',
+        prompt: '"Yişa" signifie ?',
         choices: ['Mère', 'Père', 'Frère', 'Sœur'],
         correctIndex: 3,
       ),
@@ -164,7 +164,7 @@ class _Data {
         type: ExerciseType.qcm,
         cyrillic: 'Да', translit: 'Da', french: 'Père',
         prompt: 'Comment dit-on "Père" en tchétchène ?',
-        choices: ['Нана', 'Да', 'Ваша', 'Йиша'],
+        choices: ['Nana', 'Da', 'Vaşa', 'Yişa'],
         correctIndex: 1,
       ),
       Exercise(
@@ -264,9 +264,8 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   }
 
   void _checkTranslation() {
-    final input = _translCtrl.text.trim().toLowerCase();
-    final answer = _current.cyrillic.trim().toLowerCase();
-    final correct = input == answer;
+    final correct =
+        _normalize(_translCtrl.text) == _normalize(_current.translit);
     setState(() {
       _isAnswered = true;
       _isCorrect = correct;
@@ -277,6 +276,20 @@ class _ExerciseScreenState extends State<ExerciseScreen>
         _xpEarned += 5;
       }
     });
+  }
+
+  /// Comparaison tolérante : ignore la casse, les espaces multiples et les
+  /// signes diacritiques du latin Muziŋ Dar (ş→s, ġ→g, ʔ/ʼ ignorés…) pour
+  /// que la saisie reste réaliste avec un clavier standard.
+  static String _normalize(String s) {
+    const folds = {
+      'ş': 's', 'ẋ': 'x', 'ç': 'c', 'ġ': 'g', 'ŋ': 'n',
+      'ü': 'u', 'ö': 'o', 'ə': 'e',
+      'ʔ': '', 'ʼ': '', 'ʻ': '', '\'': '', '`': '',
+    };
+    var out = s.trim().toLowerCase();
+    folds.forEach((k, v) => out = out.replaceAll(k, v));
+    return out.replaceAll(RegExp(r'\s+'), ' ');
   }
 
   void _next() {
@@ -475,12 +488,15 @@ class _ExerciseScreenState extends State<ExerciseScreen>
           children: [
             const Text('📖', style: TextStyle(fontSize: 48)),
             const SizedBox(height: 16),
-            Text(_current.cyrillic,
+            Text(_current.translit,
                 style: GoogleFonts.playfairDisplay(
                     color: t.textPrimary,
-                    fontSize: 52,
+                    fontSize: 48,
                     fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center),
+            const SizedBox(height: 8),
+            Text(_current.cyrillic,
+                style: GoogleFonts.inter(color: t.textTertiary, fontSize: 16)),
             const SizedBox(height: 16),
             Text(tr('ex.tap_translate'),
                 style: GoogleFonts.inter(color: t.textTertiary, fontSize: 13)),
@@ -499,15 +515,15 @@ class _ExerciseScreenState extends State<ExerciseScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_current.cyrillic,
-                style: GoogleFonts.playfairDisplay(
-                    color: t.textSecondary, fontSize: 26)),
-            const SizedBox(height: 12),
             Text(_current.translit,
                 style: GoogleFonts.spaceMono(
                     color: t.accentStrong,
-                    fontSize: 32,
+                    fontSize: 34,
                     fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text(_current.cyrillic,
+                style: GoogleFonts.playfairDisplay(
+                    color: t.textSecondary, fontSize: 22)),
             const SizedBox(height: 16),
             Container(
               padding:
@@ -651,7 +667,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
           if (!_isAnswered) ...[
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(tr('ex.hint', {'x': _current.translit}),
+              child: Text(tr('ex.hint', {'x': _current.cyrillic}),
                   style:
                       GoogleFonts.spaceMono(color: t.accent, fontSize: 12)),
             ),
@@ -723,14 +739,14 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                           fontWeight: FontWeight.bold,
                           fontSize: 16)),
                   const SizedBox(height: 12),
-                  Text(_current.cyrillic,
+                  Text(_current.translit,
                       style: GoogleFonts.playfairDisplay(
                           color: t.textPrimary,
-                          fontSize: 32,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold)),
-                  Text(_current.translit,
-                      style: GoogleFonts.spaceMono(
-                          color: t.accent, fontSize: 18)),
+                  Text(_current.cyrillic,
+                      style: GoogleFonts.inter(
+                          color: t.textTertiary, fontSize: 15)),
                   const SizedBox(height: 4),
                   Text(_current.french,
                       style: GoogleFonts.inter(

@@ -403,10 +403,10 @@ const Map<String, Map<String, String>> _strings = {
     'CE': '💡 Gʼo: {x}'
   },
   'ex.answer_hint': {
-    'FR': 'Ta réponse en cyrillique…',
-    'EN': 'Your answer in Cyrillic…',
-    'RU': 'Ваш ответ кириллицей…',
-    'CE': 'Hʼaŋ juʼp cirilliyca…'
+    'FR': 'Ta réponse en latin…',
+    'EN': 'Your answer in Latin…',
+    'RU': 'Ваш ответ латиницей…',
+    'CE': 'Hʼaŋ juʼp latiniyca…'
   },
   'ex.check': {'FR': 'Vérifier', 'EN': 'Check', 'RU': 'Проверить', 'CE': 'Talla'},
   'ex.perfect': {
