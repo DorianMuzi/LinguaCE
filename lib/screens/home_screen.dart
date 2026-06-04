@@ -276,13 +276,13 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           AccentChip(label: tr('home.word_of_day'), emoji: '✨'),
           const SizedBox(height: 12),
-          Text('баркалла',
+          Text('barkalla',
               style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary,
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
               )),
-          Text('barkalla',
+          Text('баркалла',
               style:
                   GoogleFonts.spaceMono(color: t.textSecondary, fontSize: 14)),
           const SizedBox(height: 8),
