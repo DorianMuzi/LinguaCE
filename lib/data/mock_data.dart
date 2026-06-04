@@ -53,6 +53,26 @@ class MockData {
       totalExercises: 18,
       completedExercises: 0,
     ),
+    LessonModel(
+      id: '5',
+      title: 'Les Couleurs',
+      subtitle: 'Rouge, bleu, vert...',
+      icon: '🎨',
+      status: LessonStatus.locked,
+      xpReward: 300,
+      totalExercises: 6,
+      completedExercises: 0,
+    ),
+    LessonModel(
+      id: '6',
+      title: 'La Nourriture',
+      subtitle: 'Pain, eau, viande...',
+      icon: '🍽️',
+      status: LessonStatus.locked,
+      xpReward: 350,
+      totalExercises: 6,
+      completedExercises: 0,
+    ),
   ];
 
   static const leagueUsers = [

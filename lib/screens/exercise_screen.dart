@@ -173,6 +173,70 @@ class _Data {
         prompt: 'Traduis en tchétchène :\n"Mère"',
       ),
     ],
+    '5': [
+      Exercise(type: ExerciseType.flashcard,
+          cyrillic: 'цӀен', translit: 'cʼen', french: 'Rouge'),
+      Exercise(type: ExerciseType.flashcard,
+          cyrillic: 'сийна', translit: 'siyna', french: 'Bleu'),
+      Exercise(
+        type: ExerciseType.qcm,
+        cyrillic: 'цӀен', translit: 'cʼen', french: 'Rouge',
+        prompt: 'Comment dit-on "Rouge" en tchétchène ?',
+        choices: ['Siyna', 'Cʼen', 'Kʼayn', 'Bäccara'],
+        correctIndex: 1,
+      ),
+      Exercise(
+        type: ExerciseType.qcm,
+        cyrillic: 'баьццара', translit: 'bäccara', french: 'Vert',
+        prompt: 'Que signifie "Bäccara" ?',
+        choices: ['Rouge', 'Bleu', 'Vert', 'Noir'],
+        correctIndex: 2,
+      ),
+      Exercise(
+        type: ExerciseType.qcm,
+        cyrillic: 'Ӏаьржа', translit: 'ʼärƶa', french: 'Noir',
+        prompt: 'Comment dit-on "Noir" en tchétchène ?',
+        choices: ['ʼärƶa', 'Moƶa', 'Kʼayn', 'Siyna'],
+        correctIndex: 0,
+      ),
+      Exercise(
+        type: ExerciseType.translation,
+        cyrillic: 'кӀайн', translit: 'kʼayn', french: 'Blanc',
+        prompt: 'Traduis en tchétchène :\n"Blanc"',
+      ),
+    ],
+    '6': [
+      Exercise(type: ExerciseType.flashcard,
+          cyrillic: 'бепиг', translit: 'bepig', french: 'Pain'),
+      Exercise(type: ExerciseType.flashcard,
+          cyrillic: 'хи', translit: 'xi', french: 'Eau'),
+      Exercise(
+        type: ExerciseType.qcm,
+        cyrillic: 'хи', translit: 'xi', french: 'Eau',
+        prompt: 'Comment dit-on "Eau" en tchétchène ?',
+        choices: ['Bepig', 'Xi', 'Şura', 'Tüxa'],
+        correctIndex: 1,
+      ),
+      Exercise(
+        type: ExerciseType.qcm,
+        cyrillic: 'жижиг', translit: 'ƶiƶig', french: 'Viande',
+        prompt: 'Que signifie "Ƶiƶig" ?',
+        choices: ['Pain', 'Lait', 'Viande', 'Sel'],
+        correctIndex: 2,
+      ),
+      Exercise(
+        type: ExerciseType.qcm,
+        cyrillic: 'шура', translit: 'şura', french: 'Lait',
+        prompt: 'Comment dit-on "Lait" en tchétchène ?',
+        choices: ['Tüxa', 'Xi', 'Şura', 'Bepig'],
+        correctIndex: 2,
+      ),
+      Exercise(
+        type: ExerciseType.translation,
+        cyrillic: 'бепиг', translit: 'bepig', french: 'Pain',
+        prompt: 'Traduis en tchétchène :\n"Pain"',
+      ),
+    ],
   };
 
   static List<Exercise> forLesson(String id) => _byLesson[id] ?? [];
