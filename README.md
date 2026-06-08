@@ -11,8 +11,9 @@
 [![Flutter](https://img.shields.io/badge/Flutter-3-02569B?logo=flutter)](https://flutter.dev)
 [![Platform](https://img.shields.io/badge/platform-Android-3DDC84?logo=android)](#)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
+[![Discord](https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/fnPmjfttc)
 
-[Join Discord](#) · [Open Issues](https://github.com/DorianMuzi/LinguaCE/issues) · [Instagram](#)
+[Join Discord](https://discord.gg/fnPmjfttc) · [Open Issues](https://github.com/DorianMuzi/LinguaCE/issues) · [Instagram](https://www.instagram.com/lingua_ce)
 
 </div>
 
@@ -74,7 +75,7 @@ We're building LinguaCE in the open — and we'd love you to be part of it.
 Whether you're a Flutter developer, a Chechen native speaker, a designer, or just
 curious — there's a place for you.
 
-👉 **[Join the LinguaCE Discord](#)**
+👉 **[Join the LinguaCE Discord](https://discord.gg/fnPmjfttc)**
 
 On the server you'll find:
 
@@ -181,6 +182,6 @@ covered by the Apache 2.0 license.
 
 *The Chechen language must not disappear.*
 
-[Discord](#) · [Instagram](#) · [GitHub Issues](https://github.com/DorianMuzi/LinguaCE/issues)
+[Discord](https://discord.gg/fnPmjfttc) · [Instagram](https://www.instagram.com/lingua_ce) · [GitHub Issues](https://github.com/DorianMuzi/LinguaCE/issues)
 
 </div>
