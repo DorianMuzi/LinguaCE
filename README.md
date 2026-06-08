@@ -1,158 +1,186 @@
-# LinguaCE 🏔
+<div align="center">
 
-**Application mobile d'apprentissage de la langue tchétchène (нохчийн мотт) assistée par IA.**
+<img src="assets/images/IconeApp.png" alt="LinguaCE" width="100" height="100" />
+
+# LinguaCE
+
+**The first AI-powered app for learning the Chechen language.**
 
 [![CI](https://github.com/DorianMuzi/LinguaCE/actions/workflows/ci.yml/badge.svg)](https://github.com/DorianMuzi/LinguaCE/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
-[![Flutter](https://img.shields.io/badge/Flutter-3.8+-02569B?logo=flutter)](https://flutter.dev)
+[![Flutter](https://img.shields.io/badge/Flutter-3-02569B?logo=flutter)](https://flutter.dev)
+[![Platform](https://img.shields.io/badge/platform-Android-3DDC84?logo=android)](#)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
 
-LinguaCE aide à apprendre le tchétchène — une langue caucasienne du nord-est —
-grâce à un assistant conversationnel (Claude), des leçons interactives, un
-système de progression gamifié et le système de translittération latine de 1992.
+[Join Discord](#) · [Open Issues](https://github.com/DorianMuzi/LinguaCE/issues) · [Instagram](#)
 
----
+</div>
 
-## ✨ Fonctionnalités
+## What is LinguaCE?
 
-- 🤖 **Chat IA** — un tuteur spécialisé en grammaire tchétchène (Claude)
-- 📚 **Leçons & exercices** — flashcards, QCM, traduction
-- 🔤 **Translittération** automatique cyrillique → latin (système de 1992)
-- 🏆 **Gamification** — XP, niveaux, séries, ligues, classement
-- 🌍 **Interface multilingue** — FR / EN / RU / CE
-- 🎨 **Design system bi-thème** — clair & sombre (style « Copilot »), responsive mobile/desktop
-- 🔐 **Authentification** — Supabase (email + Google)
+Duolingo supports 40+ languages. Chechen is not one of them.
 
-## 🛠 Stack technique
+LinguaCE is an open-source, Duolingo-style mobile app for learning Chechen — a
+language spoken by ~1.5 million people with almost no digital learning tools. The
+app is powered by Flutter, the Claude AI API, and a custom Latin transliteration
+system called the **Chechen Latin Script**.
 
-| Domaine | Technologie |
+It features **Noxçi**, an AI language assistant with a deep understanding of
+Chechen grammar, culture, and oral tradition.
+
+## Features
+
+- 🎓 **Gamified learning** — XP, streaks, 8 progression levels (Dözal → Noxčijn Mott)
+- 🤖 **Noxçi AI assistant** — powered by Claude API with a Chechen-specific grammar system prompt
+- 🔤 **Chechen Latin Script** — a proprietary Latin transliteration system for the Chechen language
+- 🏆 **5 cultural leagues** — Stone, Forest, Mountain, Eagle, Noxčo
+- 🔐 **Auth & database** — Supabase authentication and real-time data
+- 📱 **Cross-platform** — Android (active), iOS and desktop (roadmap)
+
+## Tech Stack
+
+| Layer | Technology |
 |---|---|
-| Framework | Flutter / Dart |
-| IA | API Anthropic Claude |
-| Backend / Auth | Supabase |
-| Design | Système de tokens maison (`lib/design/`) |
-| Polices | Google Fonts (Playfair Display, Inter, Space Mono) |
+| Mobile framework | Flutter 3 / Dart |
+| AI assistant | Anthropic Claude API (claude-sonnet-4-5) |
+| Backend & Auth | Supabase |
+| Transliteration | Chechen Latin Script (proprietary) |
+| Target platforms | Android · iOS · macOS · Windows · Linux |
 
----
+## Roadmap
 
-## 🚀 Démarrage
+```
+✅  PHASE 1 — Core
+    Flutter app structure, Claude API integration (Noxçi),
+    Supabase auth, Chechen Latin Script, app icon & UI
 
-### Prérequis
-- [Flutter](https://docs.flutter.dev/get-started/install) 3.8 ou supérieur
-- Un compte [Supabase](https://supabase.com) (gratuit)
-- Une clé API [Anthropic](https://console.anthropic.com)
+🔧  PHASE 2 — Stability (current)
+    Android network fix · Live XP/streak/level data
+    Profile screen · Drawer navigation · Markdown rendering
 
-### 1. Cloner le projet
+🎯  PHASE 3 — Beta
+    iOS & desktop builds · Full lesson content (8 levels)
+    Designer onboarding · App Store submission
+
+🔮  PHASE 4 — Voice
+    TTS/STT for Chechen (Coqui YourTTS + Whisper)
+    Mozilla Common Voice · Chechen corpus
+```
+
+## 💬 Join the Community
+
+We're building LinguaCE in the open — and we'd love you to be part of it.
+
+Whether you're a Flutter developer, a Chechen native speaker, a designer, or just
+curious — there's a place for you.
+
+👉 **[Join the LinguaCE Discord](#)**
+
+On the server you'll find:
+
+- **#flutter-dart** — technical discussions & bug tracking
+- **#claude-api** — AI integration & Noxçi development
+- **#chechen-linguistics** — language validation & corpus building
+- **#chechen-latin-script** — transliteration system discussions
+- **#general** — open to everyone
+
+All skill levels welcome. All backgrounds welcome. The language belongs to everyone.
+
+## 🤝 Open Roles
+
+We're actively looking for contributors. All roles are volunteer-based and fully remote.
+
+| Role | Priority | Status |
+|---|---|---|
+| Flutter / Dart Developer | 🔴 High | Open now |
+| Chechen Linguist / Native Speaker | 🔴 High | Open now |
+| UI/UX Designer (Mobile) | 🟡 Medium | Open — Beta phase |
+| ML Engineer (Speech / NLP) | 🟡 Medium | Open — Phase 2 |
+| Community & Growth Manager | ⚪ Later | Post-launch |
+
+→ See full role descriptions in [CONTRIBUTING.md](CONTRIBUTING.md)
+→ Or [open an issue](https://github.com/DorianMuzi/LinguaCE/issues) to introduce yourself
+
+## Getting Started
+
 ```bash
+# Clone the repo
 git clone https://github.com/DorianMuzi/LinguaCE.git
 cd LinguaCE
+
+# Install dependencies
 flutter pub get
-```
 
-### 2. Configurer les secrets
-Les clés ne sont **jamais** dans le code source. Copie le modèle et renseigne tes valeurs :
-```bash
+# Set up environment variables (keys are never committed)
 cp env.example.json env.json
-```
-Puis édite `env.json` :
-```json
-{
-  "ANTHROPIC_API_KEY": "sk-ant-...",
-  "ANTHROPIC_MODEL": "claude-haiku-4-5-20251001",
-  "SUPABASE_URL": "https://votre-projet.supabase.co",
-  "SUPABASE_ANON_KEY": "eyJhbG..."
-}
-```
-> `env.json` est ignoré par git — il ne sera jamais committé.
+# then edit env.json — add your ANTHROPIC_API_KEY and Supabase URL + anon key
 
-### 3. Configurer la base de données
-
-Le schéma complet est **versionné** dans `supabase/migrations/`. Applique-le
-en une commande avec le [CLI Supabase](https://supabase.com/docs/guides/cli) :
-
-```bash
-supabase link --project-ref <ton-project-ref>   # une seule fois
+# Apply the database schema (Supabase CLI)
+supabase link --project-ref <your-project-ref>
 supabase db push
-```
 
-Cela crée automatiquement **toutes les tables, politiques RLS, privilèges et
-le catalogue de leçons** — aucun copier-coller de SQL.
-
-> Pour réinitialiser une base locale de dev : `supabase db reset`.
-
-### 4. Lancer l'app
-```bash
+# Run on Android
 flutter run --dart-define-from-file=env.json
+
+# Run on Chrome (web)
+flutter run -d chrome --dart-define-from-file=env.json
 ```
 
-> **Android Studio / VS Code** : ajoute `--dart-define-from-file=env.json`
-> dans les arguments de ta configuration de lancement
-> (Run > Edit Configurations > Additional run args).
+> The AI chat is proxied through a Supabase Edge Function (`supabase/functions/chat`).
+> Deploy it with `supabase functions deploy chat`, then
+> `supabase secrets set ANTHROPIC_API_KEY=...`. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
----
+> ⚠️ Note: Android emulator networking requires a fix for Supabase auth — see issue #1.
 
-## ⚡ Edge Functions
-
-L'app s'appuie sur deux Edge Functions Supabase (dossier `supabase/functions/`).
-
-### `chat` — fournie dans le dépôt ✅
-Proxy serveur vers l'API Anthropic (Claude). Il garde la clé **côté serveur**
-et évite les limites CORS du navigateur. Pour le déployer :
-
-```bash
-supabase functions deploy chat
-supabase secrets set ANTHROPIC_API_KEY=sk-ant-...   # ta clé Anthropic
-```
-
-### `transliterate` — algorithme propriétaire, non inclus 🔒
-Convertit le cyrillique tchétchène en latin (système 1992 « Muziŋ Dar »).
-L'algorithme officiel est **propriétaire** et n'est pas publié. Sans cette
-fonction, la translittération ne s'affiche simplement pas — **le reste de
-l'app fonctionne normalement**.
-
-Pour brancher ta propre version, déploie une fonction nommée `transliterate`
-respectant ce **contrat** :
-
-| | Format |
-|---|---|
-| **Entrée** (POST, JSON) | `{ "text": "Текст" }` |
-| **Sortie** (JSON) | `{ "result": "Tekst" }` |
-
-Tu es libre d'y mettre la logique de translittération de ton choix.
-
-## 📁 Structure
+## Project Structure
 
 ```
 lib/
-├── config/        # Configuration & secrets (via --dart-define)
-├── design/        # Design system : tokens, themes, composants, responsive
-├── models/        # Modeles de donnees
-├── data/          # Donnees statiques (lecons, etc.)
-├── services/      # Claude, Supabase, auth, profil, chat, transliteration
-├── screens/       # Ecrans (splash, auth, accueil, chat, apprendre, progres…)
-├── widgets/       # Widgets partages (nav bar, drawer, xp bar)
-└── main.dart      # Point d'entree
+├── main.dart        # Entry point
+├── config/          # App config & secrets wiring (--dart-define)
+├── design/          # Design system (tokens, theme, components)
+├── i18n/            # Localization (FR · EN · RU · CE)
+├── screens/         # App screens (home, chat, learn, progress, profile…)
+├── widgets/         # Reusable UI components
+├── services/        # Claude API, Supabase, lessons, profile, chat
+├── models/          # Data models (user, lesson, message…)
+└── data/            # Mock / fallback data
 ```
 
-## 🎨 Design system
+## Contributing
 
-Le langage visuel repose sur des **tokens sémantiques** (`lib/design/lingua_tokens.dart`)
-exposés via `ThemeExtension`. Accès dans un widget : `context.tokens.accent`.
-Le thème bascule automatiquement clair/sombre et suit le réglage système.
+1. Fork the repository
+2. Create a branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature`
+5. Open a Pull Request
 
-## 🤝 Contribuer
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a PR.
 
-Les contributions sont les bienvenues ! Consulte le guide
-[CONTRIBUTING.md](CONTRIBUTING.md) (workflow, style, design system, contenu
-linguistique) et le [Code de conduite](CODE_OF_CONDUCT.md).
+## About the Language
 
-En résumé : ouvre une *issue* pour discuter d'un changement, puis une
-*pull request* — `flutter analyze` doit passer sans erreur, et l'app doit
-rester correcte en thème clair **et** sombre.
+Chechen (Нохчийн мотт / Noxçiyŋ mott) is a Northeast Caucasian language spoken
+primarily in the Chechen Republic (Russia) and by a large diaspora worldwide. It
+is classified as a vulnerable language by UNESCO, with limited digital resources
+and almost no existing language learning tools.
 
-## 📄 Licence
+LinguaCE is built with deep respect for Chechen culture, oral tradition, and the
+communities working to preserve the language.
 
-Distribué sous licence **Apache 2.0**. Voir [LICENSE](LICENSE).
+## License
 
----
+This project is licensed under the **Apache License 2.0** — see the
+[LICENSE](LICENSE) file for details.
 
-<p align="center">Fait avec ❤️ pour préserver et diffuser la langue tchétchène.</p>
+The **Chechen Latin Script** transliteration system is proprietary and **not**
+covered by the Apache 2.0 license.
+
+<div align="center">
+
+**Noxçiyŋ mott bayna djabala ca beza. 🤍**
+
+*The Chechen language must not disappear.*
+
+[Discord](#) · [Instagram](#) · [GitHub Issues](https://github.com/DorianMuzi/LinguaCE/issues)
+
+</div>
