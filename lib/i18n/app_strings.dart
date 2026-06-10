@@ -50,7 +50,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Bientôt disponible !',
     'EN': 'Coming soon!',
     'RU': 'Скоро!',
-    'CE': 'Sihha xir du!'
+    'CE': 'Sixxa xir du!'
   },
 
   // ── Accueil ───────────────────────────────────────────────────────────────
@@ -98,19 +98,19 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Leçon du jour',
     'EN': 'Daily lesson',
     'RU': 'Урок дня',
-    'CE': 'Tahanlera deşar'
+    'CE': 'Taxanlera deşar'
   },
   'home.word_of_day': {
     'FR': 'Mot du jour',
     'EN': 'Word of the day',
     'RU': 'Слово дня',
-    'CE': 'Tahanlera doş'
+    'CE': 'Taxanlera doş'
   },
   'home.word_desc': {
     'FR': '"Merci" — Expression de gratitude en tchétchène.',
     'EN': '"Thank you" — An expression of gratitude in Chechen.',
     'RU': '«Спасибо» — выражение благодарности на чеченском.',
-    'CE': '"Barkalla" — bart boçu doş noxçiyn matte.'
+    'CE': '"Barkalla" — bart bocu doş noxçiyŋ matte.'
   },
 
   // ── Apprendre ─────────────────────────────────────────────────────────────
@@ -125,7 +125,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Parcours d\'apprentissage',
     'EN': 'Learning path',
     'RU': 'Программа обучения',
-    'CE': 'Jamaraŋ neq'
+    'CE': 'Jamaraŋ neq̇'
   },
   'learn.lessons_count': {
     'FR': '{c} / {t} leçons',
@@ -137,12 +137,12 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'complétées',
     'EN': 'completed',
     'RU': 'завершено',
-    'CE': 'çekxdäxna'
+    'CE': 'çeqdäxna'
   },
   'learn.beginner':
       {'FR': 'Débutant', 'EN': 'Beginner', 'RU': 'Новичок', 'CE': 'Dolalurg'},
   'learn.finished':
-      {'FR': 'Terminé', 'EN': 'Finished', 'RU': 'Завершено', 'CE': 'Çekxdälla'},
+      {'FR': 'Terminé', 'EN': 'Finished', 'RU': 'Завершено', 'CE': 'Çeqdälla'},
   'learn.in_progress':
       {'FR': 'EN COURS', 'EN': 'IN PROGRESS', 'RU': 'В ПРОЦЕССЕ', 'CE': 'DJAXO'},
   'learn.exercises_count': {
@@ -271,7 +271,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Thème sombre',
     'EN': 'Dark theme',
     'RU': 'Тёмная тема',
-    'CE': 'Bjärƶ tema'
+    'CE': 'Järƶa tema'
   },
   'drawer.share': {
     'FR': 'Partager l\'app',
@@ -295,7 +295,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU':
         'LinguaCE — мобильное приложение для изучения чеченского языка (нохчийн мотт) с помощью искусственного интеллекта.',
     'CE':
-        'LinguaCE — noxçiyŋ mott jamabaŋ mobiltelefonaŋ programma yu, AI ġonica.'
+        'LinguaCE — noxçiyŋ mott jamabaŋ mobiltelefonaŋ programma yu, AI ġönca.'
   },
   'about.made': {
     'FR': 'Développée avec ❤️ pour préserver et diffuser la langue tchétchène.',
@@ -326,7 +326,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU':
         'Marşalla du! Я Noxçi, твой ИИ-помощник для изучения чеченского. Чем могу помочь сегодня?',
     'CE':
-        'Marşalla du! So Noxçi ċe yolaş, noxçiyŋ mott jamo ẋuna ġo diyrig qöllina ẋeq̇al (AI) du. Taxana muxa ġo daŋ deza ẋuna?'
+        'Marşalla du! So Noxçi ċe yoluş, noxçiyŋ mott jamo ẋuna ġo diyrig qöllina ẋeq̇al (AI) du. Taxana muxa ġo daŋ deza ẋuna?'
   },
   'chat.clear_q': {
     'FR': 'Effacer la conversation ?',
@@ -357,7 +357,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Régénérer la réponse',
     'EN': 'Regenerate response',
     'RU': 'Сгенерировать заново',
-    'CE': 'Juxa kxolla'
+    'CE': 'Yuxa qolla'
   },
   'chat.copied': {
     'FR': 'Texte copié',
@@ -404,7 +404,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Terminer la leçon 🎓',
     'EN': 'Finish the lesson 🎓',
     'RU': 'Завершить урок 🎓',
-    'CE': 'Deşar çekxdaqqa 🎓'
+    'CE': 'Deşar çeqdakqa 🎓'
   },
   'ex.hint': {
     'FR': '💡 Indice : {x}',
@@ -432,12 +432,12 @@ const Map<String, Map<String, String>> _strings = {
     'CE': '💡 Niysa ƶop:'
   },
   'ex.correct':
-      {'FR': 'Correct !', 'EN': 'Correct!', 'RU': 'Верно!', 'CE': 'Nisa!'},
+      {'FR': 'Correct !', 'EN': 'Correct!', 'RU': 'Верно!', 'CE': 'Niysa!'},
   'ex.not_quite': {
     'FR': 'Pas tout à fait…',
     'EN': 'Not quite…',
     'RU': 'Не совсем…',
-    'CE': 'Dац iştta…'
+    'CE': 'Dac iştta…'
   },
   'ex.answer_is': {
     'FR': 'Réponse : {x}',
@@ -451,7 +451,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Leçon terminée !',
     'EN': 'Lesson complete!',
     'RU': 'Урок завершён!',
-    'CE': 'Deşar çekxdälla!'
+    'CE': 'Deşar çeqdälla!'
   },
   'ex.xp_earned':
       {'FR': 'XP gagnés', 'EN': 'XP earned', 'RU': 'Получено XP', 'CE': 'Däkqina XP'},
@@ -475,7 +475,7 @@ const Map<String, Map<String, String>> _strings = {
     'RU':
         'Введите email — мы отправим ссылку для сброса пароля.',
     'CE':
-        'Ẋaŋ elektronni poşt yazde, doş juxametta link djaẋür du oxa ẋuna.'
+        'Ẋaŋ elektronni poşt yazde, doş yuxametta link djaẋür du oxa ẋuna.'
   },
   'forgot.email': {
     'FR': 'Adresse email',
@@ -493,7 +493,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Retour à la connexion',
     'EN': 'Back to sign in',
     'RU': 'Назад ко входу',
-    'CE': 'Çuvaxare juxa'
+    'CE': 'Çuvaxare yuxa'
   },
   'forgot.sent_title': {
     'FR': 'Email envoyé !',
@@ -505,7 +505,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Un lien de réinitialisation a été envoyé à :',
     'EN': 'A reset link has been sent to:',
     'RU': 'Ссылка для сброса отправлена на:',
-    'CE': 'Juxametta link djaẋna:'
+    'CE': 'Yuxametta link djaẋna:'
   },
   'forgot.check_inbox': {
     'FR':
@@ -515,13 +515,13 @@ const Map<String, Map<String, String>> _strings = {
     'RU':
         'Проверьте почту (и спам), затем нажмите на ссылку, чтобы задать новый пароль.',
     'CE':
-        'Ẋaŋ poşt talla (spam a), ṫaqqa link ṫetajae kerla doş ẋarƶa.'
+        'Ẋaŋ poşt talla (spam a), ṫakqa link ṫetajae kerla doş ẋarƶa.'
   },
   'forgot.other_email': {
     'FR': 'Utiliser une autre adresse',
     'EN': 'Use another address',
     'RU': 'Использовать другой адрес',
-    'CE': 'Kxin adres lela'
+    'CE': 'Qin adres lela'
   },
   'forgot.err_empty': {
     'FR': 'Veuillez entrer votre adresse email.',
@@ -533,6 +533,6 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Adresse email invalide.',
     'EN': 'Invalid email address.',
     'RU': 'Неверный email.',
-    'CE': 'Elektronni poşt nisa yac.'
+    'CE': 'Elektronni poşt niysa yac.'
   },
 };

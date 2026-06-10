@@ -37,13 +37,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String get _subtitle => switch (_l) {
         'EN' => 'Join LinguaCE and start learning Chechen.',
         'RU' => 'Присоединяйся к LinguaCE и начни учить чеченский.',
-        'CE' => 'Djaxotta LinguaCE-na ṫе, noxçiyŋ mott jamabaŋ vola a lo.',
+        'CE' => 'Djaxotta LinguaCE-na ṫe, noxçiyŋ mott jamabaŋ vola a lo.',
         _ => 'Rejoins LinguaCE et commence à apprendre le tchétchène.',
       };
   String get _nameLabel => switch (_l) {
         'EN' => 'Username',
         'RU' => 'Имя пользователя',
-        'CE' => 'Deq̇aşxoçuŋ ċе',
+        'CE' => 'Deq̇aşxoçuŋ ċe',
         _ => 'Nom d\'utilisateur',
       };
   String get _emailLabel => switch (_l) {
@@ -61,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String get _passwordHint => switch (_l) {
         'EN' => 'At least 6 characters',
         'RU' => 'Минимум 6 символов',
-        'CE' => '6-l k̇еzig ca xila dеza elp/surt',
+        'CE' => '6-l k̇ezig ca xila deza elp/surt',
         _ => 'Au moins 6 caractères',
       };
   String get _confirmLabel => switch (_l) {

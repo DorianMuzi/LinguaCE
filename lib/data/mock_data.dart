@@ -125,11 +125,11 @@ class MockData {
   ];
 
   static const aiResponses = [
-    'En tchétchène, on dit "Маршалла хаттар" (Marshalla khattar) pour demander "Comment vas-tu ?"',
-    'Le mot "доттагӀалла" (dottag\'alla) signifie "amitié" en tchétchène.',
+    'En tchétchène, on dit "Маршалла хаттар" (Marşalla xattar) pour demander "Comment vas-tu ?"',
+    'Le mot "доттагӀалла" (dottaġalla) signifie "amitié" en tchétchène.',
     'Pour dire "merci" en tchétchène, on utilise "баркалла" (barkalla).',
     'Le tchétchène est une langue nakh-daghestanaise avec environ 1,5 million de locuteurs.',
-    'Le verbe "хаа" (khaa) signifie "savoir" ou "connaître" en tchétchène.',
+    'Le verbe "хаа" (xaa) signifie "savoir" ou "connaître" en tchétchène.',
   ];
 
   static const weeklyXP = [120, 340, 180, 560, 290, 420, 180];
