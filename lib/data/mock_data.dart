@@ -9,7 +9,7 @@ class MockData {
     xpToNext: 3500,
     streak: 12,
     avatarInitials: 'D',
-    league: 'Aigle',
+    league: 'stone',
   );
 
   static const lessons = [

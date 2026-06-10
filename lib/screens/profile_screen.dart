@@ -41,14 +41,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int get _xpToNext => _level * 1000;
   int get _streak => ProfileService.effectiveStreak(_profile);
   int get _lessonsCompleted => _profile?['lessons_completed'] as int? ?? 0;
-  String get _league => _profile?['league'] as String? ?? 'Aigle';
-
-  String _leagueEmoji(String league) => switch (league) {
-        'Diamant' => '💎',
-        'Or' => '🥇',
-        'Argent' => '🥈',
-        _ => '🦅',
-      };
+  String get _league =>
+      ProfileService.normalizeLeague(_profile?['league'] as String?);
 
   Future<void> _editUsername() async {
     final t = context.tokens;
@@ -250,8 +244,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AccentChip(
-                label: tr('progress.league', {'l': _league}),
-                emoji: _leagueEmoji(_league)),
+                label: tr('progress.league', {'l': tr('league.$_league')}),
+                emoji: ProfileService.leagueEmoji(_league)),
             const SizedBox(width: 8),
             Container(
               padding:

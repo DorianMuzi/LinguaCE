@@ -35,16 +35,10 @@ class _AppDrawerState extends State<AppDrawer> {
 
   String get _username => _profile?['username'] as String? ?? 'Apprenant';
   int get _level => _profile?['level'] as int? ?? 1;
-  String get _league => _profile?['league'] as String? ?? 'Aigle';
+  String get _league =>
+      ProfileService.normalizeLeague(_profile?['league'] as String?);
   String get _initials =>
       _username.isNotEmpty ? _username[0].toUpperCase() : 'A';
-
-  String _leagueEmoji(String l) => switch (l) {
-        'Diamant' => '💎',
-        'Or' => '🥇',
-        'Argent' => '🥈',
-        _ => '🦅',
-      };
 
   /// Partage : copie le lien de l'app dans le presse-papier + confirmation.
   Future<void> _shareApp() async {
@@ -271,9 +265,9 @@ class _AppDrawerState extends State<AppDrawer> {
                                     fontWeight: FontWeight.w600)),
                             Text(
                               tr('drawer.profile_meta', {
-                                'emoji': _leagueEmoji(_league),
+                                'emoji': ProfileService.leagueEmoji(_league),
                                 'l': '$_level',
-                                'league': _league,
+                                'league': tr('league.$_league'),
                               }),
                               style: GoogleFonts.spaceMono(
                                   color: t.accent, fontSize: 11),

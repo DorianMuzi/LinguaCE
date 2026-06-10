@@ -15,7 +15,7 @@ class ProfileService {
       'level': 1,
       'streak': 0,
       'lessons_completed': 0,
-      'league': 'Aigle',
+      'league': 'stone',
       'interface_language': 'FR',
     });
   }
@@ -59,7 +59,7 @@ class ProfileService {
         'level': 1,
         'streak': 0,
         'lessons_completed': 0,
-        'league': 'Aigle',
+        'league': 'stone',
         'interface_language': 'FR',
       });
 
@@ -156,22 +156,45 @@ class ProfileService {
         .eq('id', user.id);
   }
 
+  // ── Ligues culturelles ────────────────────────────────────────────────
+  // Les 5 ligues du README : Pierre → Forêt → Montagne → Aigle → Noxço.
+  // La base stocke la clé stable ; l'affichage passe par i18n (league.<clé>).
+
+  /// Ligue correspondant à un total d'XP.
+  static String leagueForXp(int xp) {
+    if (xp >= 15000) return 'noxco';
+    if (xp >= 7000) return 'eagle';
+    if (xp >= 3000) return 'mountain';
+    if (xp >= 1000) return 'forest';
+    return 'stone';
+  }
+
+  /// Normalise les valeurs héritées (Aigle/Argent/Or/Diamant) encore en
+  /// base — elles sont réécrites en clé stable à la prochaine complétion
+  /// de leçon, mais l'affichage doit les comprendre d'ici là.
+  static String normalizeLeague(String? raw) => switch (raw) {
+        'stone' || 'forest' || 'mountain' || 'eagle' || 'noxco' => raw!,
+        'Argent' => 'forest',
+        'Or' => 'mountain',
+        'Diamant' => 'eagle',
+        _ => 'stone', // 'Aigle' était l'ancienne ligue par défaut
+      };
+
+  static String leagueEmoji(String league) => switch (normalizeLeague(league)) {
+        'noxco' => '🐺',
+        'eagle' => '🦅',
+        'mountain' => '⛰️',
+        'forest' => '🌲',
+        _ => '🪨',
+      };
+
   static Future<void> updateLeague() async {
     final user = _client.auth.currentUser;
     if (user == null) return;
     final profile = await getProfile();
     if (profile == null) return;
-    final xp = profile['xp'] as int;
-    String league = 'Aigle';
-    if (xp >= 10000) {
-      league = 'Diamant';
-    } else if (xp >= 5000) {
-      league = 'Or';
-    } else if (xp >= 2000) {
-      league = 'Argent';
-    }
     await _client.from('profiles').update({
-      'league': league,
+      'league': leagueForXp(profile['xp'] as int),
     }).eq('id', user.id);
   }
 

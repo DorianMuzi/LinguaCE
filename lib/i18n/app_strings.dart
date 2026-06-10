@@ -179,6 +179,15 @@ const Map<String, Map<String, String>> _strings = {
   },
   'progress.league':
       {'FR': 'Ligue {l}', 'EN': 'League {l}', 'RU': 'Лига {l}', 'CE': 'Liga {l}'},
+  // Les 5 ligues culturelles (Pierre → Forêt → Montagne → Aigle → Noxço).
+  'league.stone':
+      {'FR': 'Pierre', 'EN': 'Stone', 'RU': 'Камень', 'CE': 'Ṫulg'},
+  'league.forest': {'FR': 'Forêt', 'EN': 'Forest', 'RU': 'Лес', 'CE': 'Ẋun'},
+  'league.mountain':
+      {'FR': 'Montagne', 'EN': 'Mountain', 'RU': 'Гора', 'CE': 'Lam'},
+  'league.eagle': {'FR': 'Aigle', 'EN': 'Eagle', 'RU': 'Орёл', 'CE': 'Ärzu'},
+  'league.noxco':
+      {'FR': 'Noxço', 'EN': 'Noxço', 'RU': 'Noxço', 'CE': 'Noxço'},
   'progress.stats': {
     'FR': 'Mes statistiques',
     'EN': 'My stats',

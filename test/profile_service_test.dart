@@ -36,4 +36,25 @@ void main() {
       );
     });
   });
+
+  group('ProfileService — ligues culturelles', () {
+    test('seuils de leagueForXp', () {
+      expect(ProfileService.leagueForXp(0), 'stone');
+      expect(ProfileService.leagueForXp(999), 'stone');
+      expect(ProfileService.leagueForXp(1000), 'forest');
+      expect(ProfileService.leagueForXp(3000), 'mountain');
+      expect(ProfileService.leagueForXp(7000), 'eagle');
+      expect(ProfileService.leagueForXp(15000), 'noxco');
+    });
+
+    test('normalizeLeague mappe les anciennes valeurs et les inconnues', () {
+      expect(ProfileService.normalizeLeague('Aigle'), 'stone');
+      expect(ProfileService.normalizeLeague('Argent'), 'forest');
+      expect(ProfileService.normalizeLeague('Or'), 'mountain');
+      expect(ProfileService.normalizeLeague('Diamant'), 'eagle');
+      expect(ProfileService.normalizeLeague('noxco'), 'noxco');
+      expect(ProfileService.normalizeLeague(null), 'stone');
+      expect(ProfileService.normalizeLeague('???'), 'stone');
+    });
+  });
 }

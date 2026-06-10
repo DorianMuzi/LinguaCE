@@ -45,14 +45,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
   int get _streak => ProfileService.effectiveStreak(_profile);
   int get _xp => _profile?['xp'] as int? ?? 0;
   int get _level => _profile?['level'] as int? ?? 1;
-  String get _league => _profile?['league'] as String? ?? 'Aigle';
-
-  String _leagueEmoji(String league) => switch (league) {
-        'Diamant' => '💎',
-        'Or' => '🥇',
-        'Argent' => '🥈',
-        _ => '🦅',
-      };
+  String get _league =>
+      ProfileService.normalizeLeague(_profile?['league'] as String?);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +67,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
             _buildWeeklyChart(),
             const SizedBox(height: 28),
             SectionLabel(
-                '${tr('progress.league', {'l': _league})} ${_leagueEmoji(_league)}'),
+                '${tr('progress.league', {'l': tr('league.$_league')})} ${ProfileService.leagueEmoji(_league)}'),
             const SizedBox(height: 12),
             _buildLeague(),
             const SizedBox(height: 28),
