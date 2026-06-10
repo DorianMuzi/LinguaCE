@@ -5,6 +5,12 @@ import '../models/models.dart';
 class ClaudeService {
   static String get _model => AppConfig.anthropicModel;
 
+  /// Nombre maximal de messages d'historique envoyés à l'API.
+  /// Sans fenêtre, tout l'historique chargé (jusqu'à 100 messages) partait
+  /// à chaque requête : coût et latence croissaient à chaque tour de chat.
+  /// 16 messages = 8 échanges, largement assez de contexte pédagogique.
+  static const _historyWindow = 16;
+
   static const _systemBase = """
 Tu es Noxçi, assistant IA spécialisé dans l'enseignement de la langue tchétchène (нохчийн мотт / noxçiyŋ mott).
 
@@ -381,9 +387,13 @@ Couleurs :
     required List<ChatMessage> messages,
     required String language,
   }) async {
+    // Fenêtre glissante : seuls les derniers messages partent à l'API.
+    final list = messages.length > _historyWindow
+        ? messages.sublist(messages.length - _historyWindow)
+        : messages.toList();
+
     // L'API Claude exige que le premier message soit de l'utilisateur.
-    // On ignore les messages d'accueil initiaux de l'assistant.
-    final list = messages.toList();
+    // On ignore les messages d'accueil (ou d'assistant en tête de fenêtre).
     int start = 0;
     while (start < list.length && !list[start].isUser) {
       start++;
