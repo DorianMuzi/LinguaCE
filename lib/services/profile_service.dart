@@ -95,6 +95,23 @@ class ProfileService {
     } catch (_) {}
   }
 
+  /// Série effective à AFFICHER. La valeur stockée n'est recalculée qu'à la
+  /// prochaine activité : sans ce correctif, un utilisateur absent verrait
+  /// son ancienne série intacte. Si plus d'un jour civil s'est écoulé depuis
+  /// `last_activity`, la série est en réalité rompue → 0.
+  static int effectiveStreak(Map<String, dynamic>? profile) {
+    if (profile == null) return 0;
+    final streak = (profile['streak'] as int?) ?? 0;
+    final lastRaw = profile['last_activity'] as String?;
+    if (lastRaw == null) return 0;
+    final last = DateTime.parse(lastRaw).toLocal();
+    final now = DateTime.now();
+    final diff = DateTime(now.year, now.month, now.day)
+        .difference(DateTime(last.year, last.month, last.day))
+        .inDays;
+    return diff <= 1 ? streak : 0;
+  }
+
   /// Met à jour la série quotidienne en comparant les **jours calendaires**.
   /// À appeler AVANT [addXP] (qui écrase `last_activity`).
   static Future<void> updateStreak() async {

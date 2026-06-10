@@ -42,7 +42,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     });
   }
 
-  int get _streak => _profile?['streak'] as int? ?? 0;
+  int get _streak => ProfileService.effectiveStreak(_profile);
   int get _xp => _profile?['xp'] as int? ?? 0;
   int get _level => _profile?['level'] as int? ?? 1;
   String get _league => _profile?['league'] as String? ?? 'Aigle';

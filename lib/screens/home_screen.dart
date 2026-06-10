@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String get _username => _profile?['username'] as String? ?? 'Apprenant';
-  int get _streak => _profile?['streak'] as int? ?? 0;
+  int get _streak => ProfileService.effectiveStreak(_profile);
   int get _xp => _profile?['xp'] as int? ?? 0;
   int get _level => _profile?['level'] as int? ?? 1;
   int get _xpToNext => _level * 1000;

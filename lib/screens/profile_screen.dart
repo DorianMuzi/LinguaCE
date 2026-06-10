@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int get _xp => _profile?['xp'] as int? ?? 0;
   int get _level => _profile?['level'] as int? ?? 1;
   int get _xpToNext => _level * 1000;
-  int get _streak => _profile?['streak'] as int? ?? 0;
+  int get _streak => ProfileService.effectiveStreak(_profile);
   int get _lessonsCompleted => _profile?['lessons_completed'] as int? ?? 0;
   String get _league => _profile?['league'] as String? ?? 'Aigle';
 
