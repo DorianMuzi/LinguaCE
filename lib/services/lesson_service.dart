@@ -70,6 +70,41 @@ class LessonService {
     }
   }
 
+  /// Sauvegarde une progression partielle (sortie en cours de leçon).
+  /// Ne touche ni à l'XP ni au statut « terminé », et ne régresse jamais
+  /// une progression existante.
+  static Future<void> saveProgress({
+    required String lessonId,
+    required int completedExercises,
+  }) async {
+    final user = _client.auth.currentUser;
+    if (user == null || completedExercises <= 0) return;
+    try {
+      final prev = await _client
+          .from('lesson_progress')
+          .select('completed, completed_exercises')
+          .eq('user_id', user.id)
+          .eq('lesson_id', lessonId)
+          .maybeSingle();
+      if (prev?['completed'] as bool? ?? false) return;
+      final prevCount = prev?['completed_exercises'] as int? ?? 0;
+      if (completedExercises <= prevCount) return;
+
+      await _client.from('lesson_progress').upsert({
+        'user_id': user.id,
+        'lesson_id': lessonId,
+        'completed_exercises': completedExercises,
+        'completed': false,
+        'updated_at': DateTime.now().toIso8601String(),
+      });
+
+      // Une sortie en cours de leçon reste une activité du jour.
+      await ProfileService.updateStreak();
+    } catch (_) {
+      // Hors-ligne : repli silencieux, cohérent avec le reste du service.
+    }
+  }
+
   /// Enregistre la complétion d'une leçon, ajoute l'XP (une seule fois) et
   /// met à jour le compteur de leçons terminées du profil.
   static Future<void> completeLesson({

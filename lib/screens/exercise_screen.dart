@@ -276,6 +276,14 @@ class _ExerciseScreenState extends State<ExerciseScreen>
     super.initState();
     _exercises = _Data.forLesson(widget.lesson.id);
 
+    // Reprise : on repart de la progression partielle sauvegardée.
+    // Une leçon déjà terminée (mode révision) recommence du début.
+    if (_exercises.isNotEmpty &&
+        widget.lesson.status != LessonStatus.completed) {
+      _currentIndex =
+          widget.lesson.completedExercises.clamp(0, _exercises.length - 1);
+    }
+
     _flipCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -389,31 +397,86 @@ class _ExerciseScreenState extends State<ExerciseScreen>
     );
   }
 
+  /// Progression entamée mais leçon ni terminée ni en simple révision.
+  bool get _hasUnsavedProgress => !_isCompleted && _currentIndex > 0;
+
+  /// Sortie de la leçon : confirme si une progression serait interrompue,
+  /// puis la sauvegarde (best-effort) avant de fermer l'écran.
+  Future<void> _requestExit() async {
+    if (!_hasUnsavedProgress) {
+      Navigator.pop(context);
+      return;
+    }
+    final t = context.tokens;
+    final leave = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: t.surfaceRaised,
+        shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
+        title: Text(tr('ex.quit_q'),
+            style: GoogleFonts.playfairDisplay(
+                color: t.textPrimary, fontSize: 17)),
+        content: Text(tr('ex.quit_desc'),
+            style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr('common.continue'),
+                style: GoogleFonts.inter(
+                    color: t.accentStrong, fontWeight: FontWeight.bold)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(tr('ex.quit_leave'),
+                style: GoogleFonts.inter(color: t.textSecondary)),
+          ),
+        ],
+      ),
+    );
+    if (leave != true || !mounted) return;
+
+    // Fire-and-forget, cohérent avec les autres écritures de l'app : on ne
+    // bloque pas la fermeture sur le réseau.
+    LessonService.saveProgress(
+      lessonId: widget.lesson.id,
+      completedExercises: _currentIndex,
+    );
+    Navigator.pop(context);
+  }
+
   // ─── Build ───────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     if (_exercises.isEmpty) return const SizedBox.shrink();
     final t = context.tokens;
-    return Scaffold(
-      backgroundColor: t.surfaceBase,
-      body: SafeArea(
-        child: _isCompleted
-            ? _buildCompletion(t)
-            : Column(
-                children: [
-                  _buildHeader(t),
-                  Expanded(
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child: KeyedSubtree(
-                        key: ValueKey(_currentIndex),
-                        child: _buildExercise(t),
+    return PopScope(
+      // Intercepte le retour système (geste / bouton Android) tant qu'une
+      // progression serait perdue, pour passer par la confirmation.
+      canPop: !_hasUnsavedProgress,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _requestExit();
+      },
+      child: Scaffold(
+        backgroundColor: t.surfaceBase,
+        body: SafeArea(
+          child: _isCompleted
+              ? _buildCompletion(t)
+              : Column(
+                  children: [
+                    _buildHeader(t),
+                    Expanded(
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 250),
+                        child: KeyedSubtree(
+                          key: ValueKey(_currentIndex),
+                          child: _buildExercise(t),
+                        ),
                       ),
                     ),
-                  ),
-                  _buildFooter(t),
-                ],
-              ),
+                    _buildFooter(t),
+                  ],
+                ),
+        ),
       ),
     );
   }
@@ -425,7 +488,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
       child: Row(
         children: [
           IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: _requestExit,
             icon: Icon(Icons.close_rounded, color: t.textSecondary),
           ),
           Expanded(

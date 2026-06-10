@@ -459,6 +459,27 @@ const Map<String, Map<String, String>> _strings = {
       {'FR': 'Erreurs', 'EN': 'Mistakes', 'RU': 'Ошибки', 'CE': 'ġalataş'},
   'ex.exercises':
       {'FR': 'Exercices', 'EN': 'Exercises', 'RU': 'Упражнения', 'CE': 'Bolxaş'},
+  'ex.quit_q': {
+    'FR': 'Quitter la leçon ?',
+    'EN': 'Leave the lesson?',
+    'RU': 'Выйти из урока?',
+    'CE': 'Deşar dita?'
+  },
+  'ex.quit_desc': {
+    'FR':
+        'Ta progression est sauvegardée — tu reprendras où tu t\'es arrêté. L\'XP sera accordé à la fin de la leçon.',
+    'EN':
+        'Your progress is saved — you\'ll pick up where you left off. XP is awarded when you finish the lesson.',
+    'RU':
+        'Прогресс сохранён — вы продолжите с того же места. XP начисляется после завершения урока.',
+    'CE': 'Ẋaŋ progress ç̇aġdina du.'
+  },
+  'ex.quit_leave': {
+    'FR': 'Quitter',
+    'EN': 'Leave',
+    'RU': 'Выйти',
+    'CE': 'Aravala'
+  },
 
   // ── Mot de passe oublié ───────────────────────────────────────────────────
   'forgot.title': {
