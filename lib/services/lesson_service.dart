@@ -107,14 +107,17 @@ class LessonService {
 
   /// Enregistre la complétion d'une leçon, ajoute l'XP (une seule fois) et
   /// met à jour le compteur de leçons terminées du profil.
-  static Future<void> completeLesson({
+  ///
+  /// Renvoie `false` si la sauvegarde a échoué (hors-ligne…), pour que
+  /// l'UI puisse le signaler et proposer de réessayer.
+  static Future<bool> completeLesson({
     required String lessonId,
     required int completedExercises,
     required int totalExercises,
     required int xpEarned,
   }) async {
     final user = _client.auth.currentUser;
-    if (user == null) return;
+    if (user == null) return false;
     final isCompleted = completedExercises >= totalExercises;
 
     try {
@@ -153,9 +156,11 @@ class LessonService {
           .from('profiles')
           .update({'lessons_completed': (completedRows as List).length})
           .eq('id', user.id);
+      return true;
     } catch (_) {
-      // Repli silencieux : au pire, l'XP du profil est tout de même ajouté
-      if (isCompleted) await ProfileService.addXP(xpEarned);
+      // Pas de repli addXP ici : si l'upsert avait réussi avant l'échec,
+      // on créditerait l'XP en double. L'UI propose de réessayer.
+      return false;
     }
   }
 }

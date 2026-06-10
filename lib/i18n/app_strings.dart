@@ -46,6 +46,12 @@ const Map<String, Map<String, String>> _strings = {
       {'FR': 'Effacer', 'EN': 'Delete', 'RU': 'Удалить', 'CE': 'Djadakqa'},
   'common.continue':
       {'FR': 'Continuer', 'EN': 'Continue', 'RU': 'Продолжить', 'CE': 'Djaẋaƶa'},
+  'common.retry': {
+    'FR': 'Réessayer',
+    'EN': 'Retry',
+    'RU': 'Повторить',
+    'CE': 'Yuxa ġort'
+  },
   'common.soon': {
     'FR': 'Bientôt disponible !',
     'EN': 'Coming soon!',
@@ -479,6 +485,12 @@ const Map<String, Map<String, String>> _strings = {
     'EN': 'Leave',
     'RU': 'Выйти',
     'CE': 'Aravala'
+  },
+  'ex.save_failed': {
+    'FR': 'Hors ligne — ta progression n\'a pas pu être enregistrée.',
+    'EN': 'Offline — your progress couldn\'t be saved.',
+    'RU': 'Нет сети — прогресс не удалось сохранить.',
+    'CE': 'Internet yac — progress ç̇aġdina dac.'
   },
 
   // ── Mot de passe oublié ───────────────────────────────────────────────────

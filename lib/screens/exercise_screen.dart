@@ -263,6 +263,8 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   bool _isAnswered = false;
   bool _isCorrect = false;
   bool _isCompleted = false;
+  bool _saveFailed = false;
+  bool _retrying = false;
 
   late AnimationController _flipCtrl;
   late Animation<double> _flipAnim;
@@ -389,12 +391,27 @@ class _ExerciseScreenState extends State<ExerciseScreen>
 
   Future<void> _complete() async {
     setState(() => _isCompleted = true);
-    await LessonService.completeLesson(
-      lessonId: widget.lesson.id,
-      completedExercises: _exercises.length,
-      totalExercises: _exercises.length,
-      xpEarned: _xpEarned,
-    );
+    final saved = await _saveCompletion();
+    if (mounted && !saved) setState(() => _saveFailed = true);
+  }
+
+  Future<bool> _saveCompletion() => LessonService.completeLesson(
+        lessonId: widget.lesson.id,
+        completedExercises: _exercises.length,
+        totalExercises: _exercises.length,
+        xpEarned: _xpEarned,
+      );
+
+  /// Nouvelle tentative de sauvegarde depuis le bandeau hors-ligne.
+  /// Idempotent : la garde `wasCompleted` du service empêche tout double XP.
+  Future<void> _retrySave() async {
+    setState(() => _retrying = true);
+    final saved = await _saveCompletion();
+    if (!mounted) return;
+    setState(() {
+      _retrying = false;
+      _saveFailed = !saved;
+    });
   }
 
   /// Progression entamée mais leçon ni terminée ni en simple révision.
@@ -988,6 +1005,44 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                 ],
               ),
             ),
+            if (_saveFailed) ...[
+              const SizedBox(height: 16),
+              Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: t.danger.withValues(alpha: 0.08),
+                  borderRadius: LinguaRadius.rMd,
+                  border: Border.all(color: t.danger.withValues(alpha: 0.4)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.cloud_off_rounded, color: t.danger, size: 20),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(tr('ex.save_failed'),
+                          style: GoogleFonts.inter(
+                              color: t.textPrimary, fontSize: 13)),
+                    ),
+                    TextButton(
+                      onPressed: _retrying ? null : _retrySave,
+                      child: _retrying
+                          ? SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 2, color: t.danger),
+                            )
+                          : Text(tr('common.retry'),
+                              style: GoogleFonts.inter(
+                                  color: t.danger,
+                                  fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             const SizedBox(height: 40),
             SizedBox(
               width: double.infinity,
