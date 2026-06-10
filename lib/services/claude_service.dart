@@ -368,19 +368,32 @@ Couleurs :
 11. Pour les modes conditionnels et optatifs, toujours préciser si l'action est possible ou impossible
 12. Quand on enseigne un verbe, mentionner son aspect (однократный/многократный) si pertinent""";
 
-  static String _buildSystemPrompt(String language) {
+  /// System prompt en deux blocs pour le prompt caching Anthropic :
+  /// le bloc grammatical (identique à chaque requête, ~10k tokens) porte le
+  /// point de cache → ses tokens sont resservis à ~10 % du prix ; seul le
+  /// petit bloc de langue, placé APRÈS le point de cache, varie. Les quatre
+  /// langues d'interface partagent ainsi la même entrée de cache.
+  /// L'Edge Function `chat` transmet `system` tel quel à l'API.
+  static List<Map<String, dynamic>> _buildSystemBlocks(String language) {
     final langInstruction = switch (language) {
-      'EN' => '\nAlways reply in English.',
-      'RU' => '\nОтвечай исключительно на русском языке.',
+      'EN' => 'Always reply in English.',
+      'RU' => 'Отвечай исключительно на русском языке.',
       'CE' =>
-        '\nRéponds EXCLUSIVEMENT en tchétchène, en utilisant le système de '
+        'Réponds EXCLUSIVEMENT en tchétchène, en utilisant le système de '
             'translittération latine de 1992 (Muziŋ Dar) — PAS de cyrillique. '
             'Pour chaque mot ou phrase enseigné, donne aussi sa traduction '
             'française entre parenthèses pour aider l\'apprenant. Reste simple '
             'et pédagogique.',
-      _ => '\nRéponds exclusivement en français.',
+      _ => 'Réponds exclusivement en français.',
     };
-    return _systemBase + langInstruction;
+    return [
+      {
+        'type': 'text',
+        'text': _systemBase,
+        'cache_control': {'type': 'ephemeral'},
+      },
+      {'type': 'text', 'text': langInstruction},
+    ];
   }
 
   static Future<String> send({
@@ -415,7 +428,7 @@ Couleurs :
           .invoke('chat', body: {
             'model': _model,
             'max_tokens': 1024,
-            'system': _buildSystemPrompt(language),
+            'system': _buildSystemBlocks(language),
             'messages': apiMessages,
           })
           .timeout(const Duration(seconds: 60));
