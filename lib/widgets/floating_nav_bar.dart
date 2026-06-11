@@ -33,7 +33,9 @@ class FloatingNavBar extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(26),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+          // Sigma modéré : un blur de 30 est sensiblement plus coûteux sur
+          // les Android d'entrée de gamme pour un rendu quasi identique.
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Container(
             height: 64,
             decoration: BoxDecoration(
@@ -81,36 +83,47 @@ class _NavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: LinguaDuration.base,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: isSelected
-            ? BoxDecoration(
-                color: t.accentSoft,
-                borderRadius: BorderRadius.circular(20),
-              )
-            : null,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              item.icon,
-              color: isSelected ? t.accentStrong : t.textSecondary,
-              size: 22,
+    // Semantics : les lecteurs d'écran annoncent un bouton et l'onglet
+    // actif ; InkWell remplace GestureDetector pour le retour visuel.
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: tr(item.label),
+      excludeSemantics: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: AnimatedContainer(
+            duration: LinguaDuration.base,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: isSelected
+                ? BoxDecoration(
+                    color: t.accentSoft,
+                    borderRadius: BorderRadius.circular(20),
+                  )
+                : null,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  item.icon,
+                  color: isSelected ? t.accentStrong : t.textSecondary,
+                  size: 22,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  tr(item.label),
+                  style: GoogleFonts.spaceMono(
+                    color: isSelected ? t.accentStrong : t.textSecondary,
+                    fontSize: 10.5,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 2),
-            Text(
-              tr(item.label),
-              style: GoogleFonts.spaceMono(
-                color: isSelected ? t.accentStrong : t.textSecondary,
-                fontSize: 9,
-                letterSpacing: 0.3,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

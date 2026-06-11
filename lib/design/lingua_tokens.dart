@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 /// Tokens de design sémantiques de LinguaCE.
 ///
 /// Exposés via [ThemeExtension] : ils basculent automatiquement entre le
-/// thème clair (façon Microsoft 365 Copilot — aéré, neutre, lumineux) et le
-/// thème sombre (identité LinguaCE — or sur brun, montagne tchétchène).
+/// thème clair (façon Microsoft 365 Copilot — neutres aérés, accent indigo)
+/// et le thème sombre (mêmes neutres assombris, accent indigo clair).
 ///
 /// Accès dans un widget : `context.tokens`.
 @immutable

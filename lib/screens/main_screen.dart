@@ -42,22 +42,31 @@ class _MainScreenState extends State<MainScreen> {
     return name.isNotEmpty ? name[0].toUpperCase() : '?';
   }
 
-  // Graines incrémentées à chaque visite → forcent le rechargement des
-  // données (série, XP, progression) quand on revient sur Accueil / Progrès.
-  int _homeSeed = 0;
-  int _progressSeed = 0;
+  // Signaux de rafraîchissement : quand on revient sur Accueil / Progrès,
+  // l'écran re-télécharge ses données EN PLACE (les valeurs affichées
+  // restent visibles pendant le chargement — pas de skeleton qui clignote,
+  // contrairement à l'ancien mécanisme de graines qui recréait l'écran).
+  final _refreshHome = ValueNotifier(0);
+  final _refreshProgress = ValueNotifier(0);
+
+  @override
+  void dispose() {
+    _refreshHome.dispose();
+    _refreshProgress.dispose();
+    super.dispose();
+  }
 
   void _setTab(int index) => setState(() {
         _currentIndex = index;
-        if (index == 0) _homeSeed++;
-        if (index == 3) _progressSeed++;
+        if (index == 0) _refreshHome.value++;
+        if (index == 3) _refreshProgress.value++;
       });
 
   List<Widget> get _screens => [
-        HomeScreen(key: ValueKey('home-$_homeSeed'), onTabChange: _setTab),
+        HomeScreen(onTabChange: _setTab, refresh: _refreshHome),
         ChatScreen(key: ValueKey('chat-${localeController.value}')),
         LearnScreen(key: ValueKey('learn-${localeController.value}')),
-        ProgressScreen(key: ValueKey('progress-$_progressSeed')),
+        ProgressScreen(refresh: _refreshProgress),
       ];
 
   static const _titleKeys = ['', 'title.chat', 'title.learn', 'title.progress'];
@@ -70,28 +79,36 @@ class _MainScreenState extends State<MainScreen> {
       animation: localeController,
       builder: (context, _) {
         final t = context.tokens;
-        return Scaffold(
-          key: _scaffoldKey,
-          backgroundColor: t.surfaceBase,
-          extendBody: true,
-          drawer: const AppDrawer(),
-          appBar: _buildAppBar(),
-          body: Stack(
-            children: [
-              IndexedStack(
-                index: _currentIndex,
-                children: _screens,
-              ),
-              Positioned(
-                left: 16,
-                right: 16,
-                bottom: 16,
-                child: FloatingNavBar(
-                  currentIndex: _currentIndex,
-                  onTap: _setTab,
+        return PopScope(
+          // Retour Android : depuis un autre onglet, revenir d'abord à
+          // l'Accueil au lieu de quitter l'application.
+          canPop: _currentIndex == 0,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop) _setTab(0);
+          },
+          child: Scaffold(
+            key: _scaffoldKey,
+            backgroundColor: t.surfaceBase,
+            extendBody: true,
+            drawer: const AppDrawer(),
+            appBar: _buildAppBar(),
+            body: Stack(
+              children: [
+                IndexedStack(
+                  index: _currentIndex,
+                  children: _screens,
                 ),
-              ),
-            ],
+                Positioned(
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                  child: FloatingNavBar(
+                    currentIndex: _currentIndex,
+                    onTap: _setTab,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -103,36 +120,47 @@ class _MainScreenState extends State<MainScreen> {
     return AppBar(
       backgroundColor: t.surfaceBase,
       elevation: 0,
-      leading: GestureDetector(
-        onTap: () => _scaffoldKey.currentState?.openDrawer(),
-        behavior: HitTestBehavior.opaque,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Lingua',
-                style: GoogleFonts.cormorantGaramond(
-                  color: t.textPrimary,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'CE',
-                style: GoogleFonts.cormorantGaramond(
-                  color: t.accent,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+      // Hamburger explicite : taper sur le logo ouvrait le drawer, mais
+      // personne ne devine cette affordance — l'icône standard la rend
+      // visible (le logo reste cliquable).
+      leading: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(width: 4),
+          IconButton(
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+            icon: Icon(Icons.menu_rounded, color: t.textPrimary, size: 22),
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
           ),
-        ),
+          GestureDetector(
+            onTap: () => _scaffoldKey.currentState?.openDrawer(),
+            behavior: HitTestBehavior.opaque,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Lingua',
+                  style: GoogleFonts.cormorantGaramond(
+                    color: t.textPrimary,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'CE',
+                  style: GoogleFonts.cormorantGaramond(
+                    color: t.accent,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-      leadingWidth: 130,
+      leadingWidth: 168,
       title: _currentIndex == 0
           ? null
           : Text(
