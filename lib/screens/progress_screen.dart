@@ -208,9 +208,18 @@ class _ProgressScreenState extends State<ProgressScreen> {
       child: Column(
         children: [
           for (var i = 0; i < _leaderboard.length; i++) ...[
+            // Saut de rangs (ligne de l'utilisateur hors top) → ellipse.
+            if (i > 0)
+              if (_leaderboard[i].rank > _leaderboard[i - 1].rank + 1)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Text('· · ·',
+                      style: GoogleFonts.inter(
+                          color: t.textTertiary, fontSize: 12)),
+                )
+              else
+                Divider(height: 1, color: t.outlineSubtle),
             _LeagueRow(user: _leaderboard[i]),
-            if (i < _leaderboard.length - 1)
-              Divider(height: 1, color: t.outlineSubtle),
           ],
         ],
       ),

@@ -208,6 +208,9 @@ class ProfileService {
   ];
 
   /// Classement des utilisateurs par XP (le plus haut d'abord).
+  /// Si l'utilisateur connecté n'est pas dans le top [limit], sa propre
+  /// ligne — avec son rang réel — est ajoutée en fin de liste, pour qu'un
+  /// débutant se voie toujours dans le classement.
   static Future<List<LeagueUser>> fetchLeaderboard({int limit = 20}) async {
     final me = _client.auth.currentUser;
     try {
@@ -229,6 +232,32 @@ class ProfileService {
           rank: i + 1,
           isCurrentUser: r['id'] == me?.id,
         ));
+      }
+
+      if (me != null && !result.any((u) => u.isCurrentUser)) {
+        final mine = await _client
+            .from('profiles')
+            .select('username, xp')
+            .eq('id', me.id)
+            .maybeSingle();
+        if (mine != null) {
+          final myXp = (mine['xp'] as int?) ?? 0;
+          // Rang = nombre de profils strictement au-dessus + 1.
+          final higher = await _client
+              .from('profiles')
+              .select('id')
+              .gt('xp', myXp)
+              .count(CountOption.exact);
+          final name = (mine['username'] as String?) ?? 'Apprenant';
+          result.add(LeagueUser(
+            name: name,
+            avatarInitials: name.isNotEmpty ? name[0].toUpperCase() : 'A',
+            avatarColor: _avatarPalette[higher.count % _avatarPalette.length],
+            xp: myXp,
+            rank: higher.count + 1,
+            isCurrentUser: true,
+          ));
+        }
       }
       return result;
     } catch (_) {
