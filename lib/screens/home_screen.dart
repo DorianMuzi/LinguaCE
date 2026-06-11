@@ -14,7 +14,11 @@ import '../widgets/xp_bar.dart';
 class HomeScreen extends StatefulWidget {
   final ValueChanged<int> onTabChange;
 
-  const HomeScreen({super.key, required this.onTabChange});
+  /// Notifié à chaque retour sur l'onglet : re-télécharge les données en
+  /// gardant les valeurs affichées (pas de skeleton après le 1er chargement).
+  final Listenable? refresh;
+
+  const HomeScreen({super.key, required this.onTabChange, this.refresh});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -28,6 +32,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    widget.refresh?.addListener(_reload);
+    _reload();
+  }
+
+  @override
+  void dispose() {
+    widget.refresh?.removeListener(_reload);
+    super.dispose();
+  }
+
+  void _reload() {
     _loadProfile();
     _loadLessons();
   }

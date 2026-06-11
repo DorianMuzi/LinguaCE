@@ -9,7 +9,11 @@ import '../models/models.dart';
 import '../services/profile_service.dart';
 
 class ProgressScreen extends StatefulWidget {
-  const ProgressScreen({super.key});
+  /// Notifié à chaque retour sur l'onglet : re-télécharge les données en
+  /// gardant les valeurs affichées (pas de skeleton après le 1er chargement).
+  final Listenable? refresh;
+
+  const ProgressScreen({super.key, this.refresh});
 
   @override
   State<ProgressScreen> createState() => _ProgressScreenState();
@@ -24,7 +28,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
   @override
   void initState() {
     super.initState();
+    widget.refresh?.addListener(_load);
     _load();
+  }
+
+  @override
+  void dispose() {
+    widget.refresh?.removeListener(_load);
+    super.dispose();
   }
 
   Future<void> _load() async {
