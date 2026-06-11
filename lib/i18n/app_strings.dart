@@ -374,6 +374,22 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Сгенерировать заново',
     'CE': 'Yuxa qolla'
   },
+  // Suggestions de démarrage (CE : repli sur FR en attendant relecture native)
+  'chat.sugg_hello': {
+    'FR': 'Comment dit-on bonjour ?',
+    'EN': 'How do you say hello?',
+    'RU': 'Как сказать «здравствуйте»?'
+  },
+  'chat.sugg_intro': {
+    'FR': 'Apprends-moi à me présenter',
+    'EN': 'Teach me to introduce myself',
+    'RU': 'Научи меня представляться'
+  },
+  'chat.sugg_proverb': {
+    'FR': 'Donne-moi un proverbe tchétchène',
+    'EN': 'Tell me a Chechen proverb',
+    'RU': 'Расскажи чеченскую пословицу'
+  },
   'chat.copied': {
     'FR': 'Texte copié',
     'EN': 'Text copied',

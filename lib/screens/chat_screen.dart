@@ -175,8 +175,42 @@ class _ChatScreenState extends State<ChatScreen> {
                   },
                 ),
         ),
+        // Démarrage à froid : suggestions tant qu'aucun message utilisateur.
+        if (!_loadingHistory && !_isTyping && !_messages.any((m) => m.isUser))
+          _buildSuggestions(t),
         _buildInputBar(t),
       ],
+    );
+  }
+
+  Widget _buildSuggestions(LinguaTokens t) {
+    final suggestions = [
+      tr('chat.sugg_hello'),
+      tr('chat.sugg_intro'),
+      tr('chat.sugg_proverb'),
+    ];
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          for (final s in suggestions)
+            ActionChip(
+              label: Text(s,
+                  style:
+                      GoogleFonts.inter(fontSize: 13, color: t.textPrimary)),
+              backgroundColor: t.surfaceRaised,
+              side: BorderSide(color: t.outline),
+              shape: const RoundedRectangleBorder(
+                  borderRadius: LinguaRadius.rPill),
+              onPressed: () {
+                _controller.text = s;
+                _sendMessage();
+              },
+            ),
+        ],
+      ),
     );
   }
 
@@ -426,9 +460,61 @@ class _ChatScreenState extends State<ChatScreen> {
               if (isUser) const SizedBox(width: 8),
             ],
           ),
+          // Message d'erreur réseau → bouton Réessayer plutôt que retaper.
+          if (!isUser && msg.text.startsWith('⚠️'))
+            Padding(
+              padding: const EdgeInsets.only(left: 40),
+              child: TextButton.icon(
+                onPressed: () => _retryAfterError(msg),
+                icon: Icon(Icons.refresh_rounded, size: 16, color: t.accent),
+                label: Text(tr('common.retry'),
+                    style: GoogleFonts.inter(
+                        color: t.accent,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600)),
+              ),
+            ),
         ],
       ),
     );
+  }
+
+  /// Relance la dernière requête après une erreur réseau : retire le
+  /// message d'erreur (jamais persisté) et renvoie l'historique tel quel.
+  Future<void> _retryAfterError(ChatMessage errMsg) async {
+    if (_isTyping) return;
+    final idx = _messages.indexOf(errMsg);
+    if (idx < 0) return;
+    setState(() {
+      _messages.removeAt(idx);
+      _isTyping = true;
+    });
+    _scrollToBottom();
+    try {
+      final reply = await ClaudeService.send(
+        messages: List.unmodifiable(_messages),
+        language: _aiLang,
+      );
+      if (!mounted) return;
+      final aiMsg =
+          ChatMessage(text: reply, isUser: false, timestamp: DateTime.now());
+      setState(() {
+        _messages.add(aiMsg);
+        _isTyping = false;
+      });
+      ChatService.saveMessage(aiMsg);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _messages.add(ChatMessage(
+          text: '⚠️ Erreur : ${e.toString().replaceFirst('Exception: ', '')}',
+          isUser: false,
+          timestamp: DateTime.now(),
+        ));
+        _isTyping = false;
+      });
+    }
+    _scrollToBottom();
   }
 
   Widget _buildTypingIndicator(LinguaTokens t) {
