@@ -5,6 +5,7 @@ import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
 import '../i18n/app_strings.dart';
+import '../i18n/locale_controller.dart';
 import '../models/models.dart';
 import '../services/profile_service.dart';
 import '../services/lesson_service.dart';
@@ -268,8 +269,35 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  /// Mots du jour — vocabulaire attesté du corpus de l'app (leçons et
+  /// system prompt de Noxçi), translittération conforme au système officiel.
+  /// (latin, cyrillique, sens par langue d'interface — repli sur FR)
+  static const _wordsOfDay = [
+    ('barkalla', 'баркалла', {'FR': 'Merci', 'EN': 'Thank you', 'RU': 'Спасибо'}),
+    ('de', 'де', {'FR': 'Jour', 'EN': 'Day', 'RU': 'День'}),
+    ('büysa', 'буьйса', {'FR': 'Nuit', 'EN': 'Night', 'RU': 'Ночь'}),
+    ('xi', 'хи', {'FR': 'Eau', 'EN': 'Water', 'RU': 'Вода'}),
+    ('lam', 'лам', {'FR': 'Montagne', 'EN': 'Mountain', 'RU': 'Гора'}),
+    ('ċa', 'цӀа', {'FR': 'Maison', 'EN': 'House', 'RU': 'Дом'}),
+    ('nana', 'нана', {'FR': 'Mère', 'EN': 'Mother', 'RU': 'Мать'}),
+    ('da', 'да', {'FR': 'Père', 'EN': 'Father', 'RU': 'Отец'}),
+    ('dog', 'дог', {'FR': 'Cœur', 'EN': 'Heart', 'RU': 'Сердце'}),
+    ('küg', 'куьг', {'FR': 'Main', 'EN': 'Hand', 'RU': 'Рука'}),
+    ('bepig', 'бепиг', {'FR': 'Pain', 'EN': 'Bread', 'RU': 'Хлеб'}),
+    ('şura', 'шура', {'FR': 'Lait', 'EN': 'Milk', 'RU': 'Молоко'}),
+    ('ƶiƶig', 'жижиг', {'FR': 'Viande', 'EN': 'Meat', 'RU': 'Мясо'}),
+    ('korta', 'корта', {'FR': 'Tête', 'EN': 'Head', 'RU': 'Голова'}),
+    ('borz', 'борз', {'FR': 'Loup', 'EN': 'Wolf', 'RU': 'Волк'}),
+    ('ärzu', 'аьрзу', {'FR': 'Aigle', 'EN': 'Eagle', 'RU': 'Орёл'}),
+  ];
+
   Widget _buildWordOfDay() {
     final t = context.tokens;
+    // Rotation quotidienne : un mot différent chaque jour civil.
+    final day = DateTime.now().difference(DateTime(2026)).inDays;
+    final word = _wordsOfDay[day % _wordsOfDay.length];
+    final meaning =
+        word.$3[localeController.value] ?? word.$3['FR'] ?? '';
     return CopilotCard(
       gradient: t.heroGradient,
       padding: const EdgeInsets.all(20),
@@ -278,17 +306,17 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           AccentChip(label: tr('home.word_of_day'), emoji: '✨'),
           const SizedBox(height: 12),
-          Text('barkalla',
+          Text(word.$1,
               style: GoogleFonts.playfairDisplay(
                 color: t.textPrimary,
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
               )),
-          Text('баркалла',
+          Text(word.$2,
               style:
                   GoogleFonts.spaceMono(color: t.textSecondary, fontSize: 14)),
           const SizedBox(height: 8),
-          Text(tr('home.word_desc'),
+          Text(tr('home.word_meaning', {'m': meaning}),
               style: GoogleFonts.inter(color: t.textSecondary, fontSize: 13)),
         ],
       ),

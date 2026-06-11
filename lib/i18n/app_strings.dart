@@ -112,11 +112,11 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Слово дня',
     'CE': 'Taxanlera doş'
   },
-  'home.word_desc': {
-    'FR': '"Merci" — Expression de gratitude en tchétchène.',
-    'EN': '"Thank you" — An expression of gratitude in Chechen.',
-    'RU': '«Спасибо» — выражение благодарности на чеченском.',
-    'CE': '"Barkalla" — bart bocu doş noxçiyŋ matte.'
+  'home.word_meaning': {
+    'FR': '« {m} » — le mot tchétchène du jour.',
+    'EN': '"{m}" — today\'s Chechen word.',
+    'RU': '«{m}» — чеченское слово дня.',
+    'CE': '"{m}" — taxanlera noxçiyŋ doş.'
   },
 
   // ── Apprendre ─────────────────────────────────────────────────────────────
