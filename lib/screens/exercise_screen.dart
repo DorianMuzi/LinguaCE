@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
@@ -257,6 +258,10 @@ class ExerciseScreen extends StatefulWidget {
 class _ExerciseScreenState extends State<ExerciseScreen>
     with SingleTickerProviderStateMixin {
   late final List<Exercise> _exercises;
+
+  /// Nombre d'exercices de base (hors rattrapages ajoutés en fin de file) :
+  /// la progression persistée reste bornée à cette valeur.
+  late final int _baseCount;
   int _currentIndex = 0;
   int _xpEarned = 0;
   int _mistakes = 0;
@@ -276,7 +281,10 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   @override
   void initState() {
     super.initState();
-    _exercises = _Data.forLesson(widget.lesson.id);
+    // Copie modifiable : la boucle de rattrapage ajoute en fin de file,
+    // et les listes de _Data sont const.
+    _exercises = List.of(_Data.forLesson(widget.lesson.id));
+    _baseCount = _exercises.length;
 
     // Reprise : on repart de la progression partielle sauvegardée.
     // Une leçon déjà terminée (mode révision) recommence du début.
@@ -330,6 +338,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   void _answerQcm(int index) {
     if (_isAnswered) return;
     final correct = index == _current.correctIndex;
+    correct ? HapticFeedback.lightImpact() : HapticFeedback.mediumImpact();
     setState(() {
       _selectedChoice = index;
       _isAnswered = true;
@@ -345,6 +354,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   void _checkTranslation() {
     final correct =
         _normalize(_translCtrl.text) == _normalize(_current.translit);
+    correct ? HapticFeedback.lightImpact() : HapticFeedback.mediumImpact();
     setState(() {
       _isAnswered = true;
       _isCorrect = correct;
@@ -374,6 +384,11 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   }
 
   void _next() {
+    // Boucle de rattrapage : un exercice raté revient en fin de file
+    // jusqu'à être réussi (les flashcards, elles, ne se ratent pas).
+    if (_isAnswered && !_isCorrect) {
+      _exercises.add(_current);
+    }
     if (_isLast) {
       _complete();
       return;
@@ -390,6 +405,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   }
 
   Future<void> _complete() async {
+    HapticFeedback.heavyImpact(); // petite célébration tactile
     setState(() => _isCompleted = true);
     final saved = await _saveCompletion();
     if (mounted && !saved) setState(() => _saveFailed = true);
@@ -456,7 +472,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
     // bloque pas la fermeture sur le réseau.
     LessonService.saveProgress(
       lessonId: widget.lesson.id,
-      completedExercises: _currentIndex,
+      completedExercises: _currentIndex.clamp(0, _baseCount - 1),
     );
     Navigator.pop(context);
   }
