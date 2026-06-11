@@ -72,31 +72,58 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       _messages.add(userMsg);
       _controller.clear();
-      _isTyping = true;
     });
-    _scrollToBottom();
-
     ChatService.saveMessage(userMsg);
+    await _requestReply();
+  }
 
+  /// Demande une réponse de Noxçi pour l'historique courant, en streaming :
+  /// la bulle apparaît au premier fragment puis grandit au fil des tokens.
+  Future<void> _requestReply() async {
+    setState(() => _isTyping = true);
+    _scrollToBottom();
+    int? aiIndex;
     try {
       final reply = await ClaudeService.send(
         messages: List.unmodifiable(_messages),
         language: _aiLang,
+        onDelta: (partial) {
+          if (!mounted) return;
+          setState(() {
+            if (aiIndex == null) {
+              _isTyping = false;
+              _messages.add(ChatMessage(
+                  text: partial, isUser: false, timestamp: DateTime.now()));
+              aiIndex = _messages.length - 1;
+            } else {
+              // Même timestamp → même clé de widget : pas de re-création.
+              _messages[aiIndex!] = ChatMessage(
+                  text: partial,
+                  isUser: false,
+                  timestamp: _messages[aiIndex!].timestamp);
+            }
+          });
+          _autoScroll();
+        },
       );
       if (!mounted) return;
 
       final aiMsg =
           ChatMessage(text: reply, isUser: false, timestamp: DateTime.now());
-
       setState(() {
-        _messages.add(aiMsg);
+        if (aiIndex == null) {
+          _messages.add(aiMsg);
+        } else {
+          _messages[aiIndex!] = aiMsg;
+        }
         _isTyping = false;
       });
-
       ChatService.saveMessage(aiMsg);
     } catch (e) {
       if (!mounted) return;
       setState(() {
+        // Retire une éventuelle bulle partielle avant d'afficher l'erreur.
+        if (aiIndex != null) _messages.removeAt(aiIndex!);
         _messages.add(ChatMessage(
           text: '⚠️ Erreur : ${e.toString().replaceFirst('Exception: ', '')}',
           isUser: false,
@@ -106,6 +133,15 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     }
     _scrollToBottom();
+  }
+
+  /// Suit le bas de la liste pendant le streaming (saut direct, léger).
+  void _autoScroll() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
+    });
   }
 
   Future<void> _clearHistory() async {
@@ -339,37 +375,9 @@ class _ChatScreenState extends State<ChatScreen> {
     final idx = _messages.indexOf(aiMsg);
     if (idx < 0) return;
     final kept = _messages.sublist(0, idx); // tout avant cette réponse
-    setState(() {
-      _messages = List.from(kept);
-      _isTyping = true;
-    });
+    setState(() => _messages = List.from(kept));
     await ChatService.replaceHistory(kept);
-    _scrollToBottom();
-    try {
-      final reply = await ClaudeService.send(
-        messages: List.unmodifiable(_messages),
-        language: _aiLang,
-      );
-      if (!mounted) return;
-      final newMsg =
-          ChatMessage(text: reply, isUser: false, timestamp: DateTime.now());
-      setState(() {
-        _messages.add(newMsg);
-        _isTyping = false;
-      });
-      ChatService.saveMessage(newMsg);
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _messages.add(ChatMessage(
-          text: '⚠️ Erreur : ${e.toString().replaceFirst('Exception: ', '')}',
-          isUser: false,
-          timestamp: DateTime.now(),
-        ));
-        _isTyping = false;
-      });
-    }
-    _scrollToBottom();
+    await _requestReply();
   }
 
   Widget _buildMessage(LinguaTokens t, ChatMessage msg) {
@@ -485,36 +493,8 @@ class _ChatScreenState extends State<ChatScreen> {
     if (_isTyping) return;
     final idx = _messages.indexOf(errMsg);
     if (idx < 0) return;
-    setState(() {
-      _messages.removeAt(idx);
-      _isTyping = true;
-    });
-    _scrollToBottom();
-    try {
-      final reply = await ClaudeService.send(
-        messages: List.unmodifiable(_messages),
-        language: _aiLang,
-      );
-      if (!mounted) return;
-      final aiMsg =
-          ChatMessage(text: reply, isUser: false, timestamp: DateTime.now());
-      setState(() {
-        _messages.add(aiMsg);
-        _isTyping = false;
-      });
-      ChatService.saveMessage(aiMsg);
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _messages.add(ChatMessage(
-          text: '⚠️ Erreur : ${e.toString().replaceFirst('Exception: ', '')}',
-          isUser: false,
-          timestamp: DateTime.now(),
-        ));
-        _isTyping = false;
-      });
-    }
-    _scrollToBottom();
+    setState(() => _messages.removeAt(idx));
+    await _requestReply();
   }
 
   Widget _buildTypingIndicator(LinguaTokens t) {

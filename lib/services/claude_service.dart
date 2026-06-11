@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../config/app_config.dart';
 import '../models/models.dart';
@@ -396,9 +399,16 @@ Couleurs :
     ];
   }
 
+  /// Envoie la conversation à Noxçi et renvoie sa réponse complète.
+  ///
+  /// Si [onDelta] est fourni, la réponse arrive en **streaming** : le
+  /// callback reçoit le texte accumulé à chaque fragment. Si l'Edge
+  /// Function déployée ne streame pas encore, repli transparent sur la
+  /// réponse JSON classique.
   static Future<String> send({
     required List<ChatMessage> messages,
     required String language,
+    void Function(String accumulated)? onDelta,
   }) async {
     // Fenêtre glissante : seuls les derniers messages partent à l'API.
     final list = messages.length > _historyWindow
@@ -421,34 +431,25 @@ Couleurs :
       throw Exception('Aucun message utilisateur à envoyer.');
     }
 
+    final body = <String, dynamic>{
+      'model': _model,
+      'max_tokens': 1024,
+      'system': _buildSystemBlocks(language),
+      'messages': apiMessages,
+    };
+
+    if (onDelta != null) {
+      return _sendStreaming(body, onDelta);
+    }
+
     try {
       // Appel via l'Edge Function `chat` : la clé Anthropic reste côté
       // serveur, et on contourne les limites CORS du navigateur.
       final res = await Supabase.instance.client.functions
-          .invoke('chat', body: {
-            'model': _model,
-            'max_tokens': 1024,
-            'system': _buildSystemBlocks(language),
-            'messages': apiMessages,
-          })
+          .invoke('chat', body: body)
           .timeout(const Duration(seconds: 60));
 
-      final data = res.data;
-      if (data is Map) {
-        final content = data['content'];
-        if (content is List && content.isNotEmpty) {
-          final first = content.first;
-          if (first is Map && first['text'] is String) {
-            return first['text'] as String;
-          }
-        }
-        final error = data['error'];
-        if (error != null) {
-          final msg = error is Map ? error['message'] : error.toString();
-          throw Exception(msg ?? 'Erreur inconnue.');
-        }
-      }
-      throw Exception('Réponse inattendue du serveur de chat.');
+      return _parseJsonReply(res.data);
     } on FunctionException catch (e) {
       final details = e.details;
       if (details is Map && details['error'] is Map) {
@@ -458,6 +459,99 @@ Couleurs :
         'La fonction « chat » est-elle déployée ? '
         '(supabase functions deploy chat)',
       );
+    }
+  }
+
+  /// Extrait le texte d'une réponse JSON Anthropic (ou lève son erreur).
+  static String _parseJsonReply(dynamic data) {
+    if (data is Map) {
+      final content = data['content'];
+      if (content is List && content.isNotEmpty) {
+        final first = content.first;
+        if (first is Map && first['text'] is String) {
+          return first['text'] as String;
+        }
+      }
+      final error = data['error'];
+      if (error != null) {
+        final msg = error is Map ? error['message'] : error.toString();
+        throw Exception(msg ?? 'Erreur inconnue.');
+      }
+    }
+    throw Exception('Réponse inattendue du serveur de chat.');
+  }
+
+  /// Chemin streaming : POST direct sur l'Edge Function avec
+  /// `stream: true`, lecture du flux SSE Anthropic ligne par ligne.
+  /// Si la fonction renvoie du JSON (pas encore redéployée, ou erreur
+  /// amont), on parse le corps complet comme avant — déploiement sûr.
+  static Future<String> _sendStreaming(
+    Map<String, dynamic> body,
+    void Function(String accumulated) onDelta,
+  ) async {
+    final session = Supabase.instance.client.auth.currentSession;
+    final req = http.Request(
+      'POST',
+      Uri.parse('${AppConfig.supabaseUrl}/functions/v1/chat'),
+    )
+      ..headers.addAll({
+        'Content-Type': 'application/json',
+        'apikey': AppConfig.supabaseAnonKey,
+        'Authorization':
+            'Bearer ${session?.accessToken ?? AppConfig.supabaseAnonKey}',
+      })
+      ..body = jsonEncode({...body, 'stream': true});
+
+    final client = http.Client();
+    try {
+      final res =
+          await client.send(req).timeout(const Duration(seconds: 30));
+      final contentType = res.headers['content-type'] ?? '';
+
+      if (!contentType.contains('text/event-stream')) {
+        // Réponse JSON : fonction non redéployée ou erreur amont.
+        final text = await res.stream
+            .bytesToString()
+            .timeout(const Duration(seconds: 60));
+        return _parseJsonReply(jsonDecode(text));
+      }
+
+      final buffer = StringBuffer();
+      // Timeout INTER-fragments (se réarme à chaque ligne reçue) : un flux
+      // sain ne reste jamais 45 s sans rien émettre.
+      final lines = res.stream
+          .transform(utf8.decoder)
+          .transform(const LineSplitter())
+          .timeout(const Duration(seconds: 45),
+              onTimeout: (sink) => sink.close());
+
+      await for (final line in lines) {
+        if (!line.startsWith('data:')) continue;
+        final payload = line.substring(5).trim();
+        if (payload.isEmpty) continue;
+        final event = jsonDecode(payload);
+        if (event is! Map) continue;
+        switch (event['type']) {
+          case 'content_block_delta':
+            final delta = event['delta'];
+            if (delta is Map && delta['type'] == 'text_delta') {
+              buffer.write(delta['text'] as String? ?? '');
+              onDelta(buffer.toString());
+            }
+          case 'error':
+            final err = event['error'];
+            throw Exception(err is Map
+                ? (err['message'] ?? 'Erreur de flux.')
+                : 'Erreur de flux.');
+        }
+      }
+
+      if (buffer.isEmpty) {
+        throw Exception('Réponse vide du serveur de chat.');
+      }
+      return buffer.toString();
+    } finally {
+      client.close();
     }
   }
 }

@@ -34,7 +34,7 @@ serve(async (req) => {
       );
     }
 
-    const { model, max_tokens, system, messages } = await req.json();
+    const { model, max_tokens, system, messages, stream } = await req.json();
 
     const upstream = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -48,12 +48,26 @@ serve(async (req) => {
         max_tokens: max_tokens ?? 1024,
         system,
         messages,
+        ...(stream ? { stream: true } : {}),
       }),
     });
 
-    // On renvoie le corps Anthropic tel quel (succès comme erreur),
-    // toujours avec un status 200 côté fonction : le client lit `content`
-    // ou `error` dans le JSON.
+    // Streaming demandé et accepté : on pipe le flux SSE Anthropic tel
+    // quel vers le client (la réponse s'affiche au fil des tokens).
+    if (stream && upstream.ok && upstream.body) {
+      return new Response(upstream.body, {
+        status: 200,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+        },
+      });
+    }
+
+    // Sinon (pas de stream demandé, ou erreur amont) : corps JSON tel
+    // quel, toujours en 200 côté fonction — le client lit `content` ou
+    // `error` dans le JSON.
     const data = await upstream.json();
     return json(data, 200);
   } catch (e) {
