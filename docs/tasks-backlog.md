@@ -170,10 +170,103 @@ quel. Tout nouvel exemple ou toute correction doit être marqué
 
 ---
 
+---
+
+# Backend / sécurité (profil systèmes — Postgres, Deno Edge Functions)
+
+> Pas de C/Rust/C++ dans ces tâches (le backend est Supabase), mais elles
+> récompensent un raisonnement systèmes : frontières d'autorité, intégrité
+> transactionnelle, indexation. Disponibles immédiatement, sans dépendance au
+> code propriétaire de translittération.
+
+## 7. Durcir l'Edge Function `chat` (auth + bornes + anti-abus)
+**Labels :** `security`, `backend`, `priority: high`
+
+**Contexte.** `supabase/functions/chat/index.ts` ne vérifie que la présence de
+la clé `ANTHROPIC_API_KEY`. Elle **ne valide pas l'appelant** : la clé `anon`
+Supabase est publique (embarquée dans le client), donc n'importe qui peut
+appeler la fonction et consommer le crédit API Anthropic — c'est un proxy ouvert.
+
+**À faire.**
+- Vérifier le JWT Supabase de l'appelant (header `Authorization: Bearer`) et
+  rejeter les requêtes non authentifiées (401).
+- Borner les entrées : taille de payload, nombre de messages, `max_tokens`
+  plafonné côté serveur (ne pas faire confiance à la valeur client).
+- Rate limiting par utilisateur (p. ex. table Postgres compteur, ou KV) avec
+  réponse 429 explicite.
+- Conserver le comportement de streaming SSE existant (ne pas le casser).
+
+**Critères d'acceptation.**
+- [ ] Une requête sans JWT valide est rejetée (401).
+- [ ] `max_tokens`/taille/nombre de messages sont plafonnés côté serveur.
+- [ ] Au-delà du quota, l'API renvoie 429 ; le client l'affiche proprement.
+- [ ] Le chat (réponse normale + streaming) fonctionne toujours pour un
+      utilisateur connecté.
+
+## 8. Rendre XP / niveau / ligue inviolables côté serveur
+**Labels :** `security`, `backend`, `priority: high`
+
+**Contexte.** La politique RLS `profiles_update_own` autorise un utilisateur à
+mettre à jour **sa propre ligne `profiles`** — colonnes `xp`, `level`, `league`
+comprises. L'XP est aujourd'hui calculée côté client (`ProfileService.addXP`).
+Conséquence : un utilisateur authentifié peut écrire directement `xp = 999999`
+et truster le classement. Les valeurs de progression doivent être
+**autoritatives côté serveur**.
+
+**À faire.**
+- Déplacer l'attribution d'XP dans une fonction Postgres `SECURITY DEFINER`
+  (p. ex. `award_xp(amount int)`) qui : insère dans `xp_events`, incrémente
+  `profiles.xp`, recalcule `level` et `league`, le tout transactionnellement.
+- Restreindre la policy d'update de `profiles` pour que le client ne puisse
+  plus écrire `xp`/`level`/`league` directement (laisser `username`,
+  `interface_language`). Idéalement via une fonction dédiée ou des grants
+  colonne par colonne.
+- Adapter `ProfileService` (`addXP`, `updateLeague`) pour appeler la RPC au
+  lieu d'écrire les colonnes en direct.
+- Gérer l'idempotence de fin de leçon (pas de double crédit — cf. la garde
+  `wasCompleted` actuelle dans `lesson_service.dart`).
+
+**Critères d'acceptation.**
+- [ ] Un `UPDATE profiles SET xp = …` direct depuis un client authentifié est
+      refusé.
+- [ ] L'XP ne s'obtient que via la fonction serveur ; le calcul niveau/ligue
+      est identique à l'actuel.
+- [ ] Terminer une leçon crédite la bonne XP, une seule fois ;
+      `flutter analyze` + `flutter test` verts.
+
+## 9. Rang du classement via fonction Postgres + index
+**Labels :** `backend`, `performance`, `priority: medium`
+
+**Contexte.** `ProfileService.fetchLeaderboard` récupère le top 20 puis, si
+l'utilisateur n'y est pas, fait une **seconde requête** `COUNT(*) WHERE xp > moi`
+pour son rang. Or il n'existe **aucun index sur `profiles.xp`** : le tri du
+classement et ce comptage scannent toute la table.
+
+**À faire.**
+- Ajouter un index sur `profiles (xp desc)` (migration SQL).
+- Exposer une fonction Postgres `get_leaderboard(limit int)` et/ou
+  `get_my_rank()` qui renvoie le top N **et** le rang réel de l'appelant en un
+  aller-retour, avec une règle de départage des ex æquo déterministe.
+- Adapter `fetchLeaderboard` pour consommer la RPC (supprimer la 2ᵉ requête).
+
+**Critères d'acceptation.**
+- [ ] Index présent ; le plan d'exécution du classement l'utilise
+      (`explain analyze` dans la PR).
+- [ ] Le rang de l'utilisateur hors top N est correct, ex æquo gérés.
+- [ ] Un seul aller-retour réseau pour le classement ; `analyze` + `test` verts.
+
+---
+
 ## Ordre conseillé
 
+**Côté app (tâches 1–6) :**
 1. **#6** dès que possible (débloque la Phase 3, corrige un vrai bug) — c'est le
    chantier qui demande de comprendre l'archi services/écrans.
 2. **#1** et **#4** en parallèle (rétention + bug device), indépendants.
 3. **#2**, **#3**, **#5** quand le reste avance (polish), faisables par un
    nouveau venu.
+
+**Côté backend (tâches 7–9, profil systèmes) :**
+1. **#8** d'abord (faille d'intégrité : l'XP est falsifiable) puis **#7**
+   (proxy ouvert) — les deux touchent à la sécurité.
+2. **#9** ensuite (perf + dette du classement).

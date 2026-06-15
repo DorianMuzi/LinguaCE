@@ -20,7 +20,10 @@ $labels = @(
   @{ name = 'priority: low';    color = '0e8a16' },
   @{ name = 'accessibility';    color = '5319e7' },
   @{ name = 'phase-3';          color = '1d76db' },
-  @{ name = 'discussion';       color = 'cccccc' }
+  @{ name = 'discussion';       color = 'cccccc' },
+  @{ name = 'security';         color = 'b60205' },
+  @{ name = 'backend';          color = '006b75' },
+  @{ name = 'performance';      color = '0e8a16' }
 )
 foreach ($l in $labels) {
   try { gh label create $l.name --color $l.color --repo $repo 2>$null } catch {}
@@ -58,6 +61,21 @@ $issues = @(
     title  = '[GROS CHANTIER] Contenu des lecons en base Supabase'
     labels = 'enhancement,priority: high,help wanted,phase-3'
     body   = "Les exercices sont codes en dur (exercise_screen.dart, lecons 1-6) ; toute lecon au-dela de la 6 ouvre un ecran qui se referme. Migrer vers une table Supabase + ExerciseService avec repli hors-ligne. Verrou de la Phase 3.`n`nNE PAS modifier le contenu tchetchene a cette occasion (cf. docs/audit-linguistique-2026-06-11.md).`n`nDetail complet + criteres d'acceptation : docs/tasks-backlog.md (section 6)."
+  },
+  @{
+    title  = "Durcir l'Edge Function chat (auth + bornes + anti-abus)"
+    labels = 'security,backend,priority: high'
+    body   = "La fonction chat ne valide pas l'appelant : la cle anon est publique, donc proxy ouvert sur le credit API Anthropic. Verifier le JWT Supabase, borner payload/messages/max_tokens cote serveur, rate limiting par utilisateur. Conserver le streaming SSE.`n`nDetail complet + criteres d'acceptation : docs/tasks-backlog.md (section 7)."
+  },
+  @{
+    title  = 'Rendre XP / niveau / ligue inviolables cote serveur'
+    labels = 'security,backend,priority: high'
+    body   = "La policy RLS profiles_update_own laisse un client ecrire sa propre colonne xp (falsifiable -> classement truste). Deplacer l'attribution d'XP dans une fonction Postgres SECURITY DEFINER transactionnelle ; verrouiller l'update direct de xp/level/league.`n`nDetail complet + criteres d'acceptation : docs/tasks-backlog.md (section 8)."
+  },
+  @{
+    title  = 'Rang du classement via fonction Postgres + index'
+    labels = 'backend,performance,priority: medium'
+    body   = "fetchLeaderboard fait une 2e requete COUNT pour le rang, et il n'y a aucun index sur profiles.xp (scans complets). Ajouter un index profiles(xp desc) + une RPC get_leaderboard/get_my_rank en un aller-retour, departage des ex aequo deterministe.`n`nDetail complet + criteres d'acceptation : docs/tasks-backlog.md (section 9)."
   }
 )
 
