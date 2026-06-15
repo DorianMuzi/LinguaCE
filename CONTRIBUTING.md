@@ -3,6 +3,10 @@
 Merci de l'intérêt que tu portes à LinguaCE ! Toute contribution — code,
 correction, traduction, contenu linguistique — est la bienvenue.
 
+> 💬 **Une question, envie de te présenter ou de coordonner une tâche ?**
+> Rejoins le Discord du projet : <https://discord.gg/fnPmjfttc>
+> (canaux `#flutter-dart`, `#claude-api`, `#chechen-linguistics`…)
+
 ## 🚀 Mise en route
 
 L'installation (Flutter, `env.json`, schéma Supabase) est décrite dans le
@@ -80,6 +84,9 @@ Ouvre une **issue** en précisant :
 - **Bug** : étapes pour reproduire, comportement attendu vs observé,
   plateforme (Android / iOS / web), thème (clair / sombre).
 - **Fonctionnalité** : le besoin, le cas d'usage, et si possible une piste.
+
+Pour en discuter à chaud, le [Discord](https://discord.gg/fnPmjfttc) est souvent
+plus rapide qu'une issue.
 
 ## 📜 Licence
 
