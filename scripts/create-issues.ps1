@@ -63,9 +63,9 @@ $issues = @(
     body   = "Les exercices sont codes en dur (exercise_screen.dart, lecons 1-6) ; toute lecon au-dela de la 6 ouvre un ecran qui se referme. Migrer vers une table Supabase + ExerciseService avec repli hors-ligne. Verrou de la Phase 3.`n`nNE PAS modifier le contenu tchetchene a cette occasion (cf. docs/audit-linguistique-2026-06-11.md).`n`nDetail complet + criteres d'acceptation : docs/tasks-backlog.md (section 6)."
   },
   @{
-    title  = "Durcir l'Edge Function chat (auth + bornes + anti-abus)"
+    title  = "Durcir l'Edge Function chat (auth + bornes + quota gratuit)"
     labels = 'security,backend,priority: high'
-    body   = "La fonction chat ne valide pas l'appelant : la cle anon est publique, donc proxy ouvert sur le credit API Anthropic. Verifier le JWT Supabase, borner payload/messages/max_tokens cote serveur, rate limiting par utilisateur. Conserver le streaming SSE.`n`nDetail complet + criteres d'acceptation : docs/tasks-backlog.md (section 7)."
+    body   = "La fonction chat ne valide pas l'appelant : la cle anon est publique, donc proxy ouvert sur le credit API Anthropic. Verifier le JWT Supabase (401), borner payload/messages/max_tokens cote serveur, et imposer un quota gratuit quotidien par utilisateur (table Postgres serveur-autoritative, 429 au-dela). Couvre securite ET maitrise des couts sans paywall. Conserver le streaming SSE.`n`nDetail complet + criteres d'acceptation : docs/tasks-backlog.md (section 7)."
   },
   @{
     title  = 'Rendre XP / niveau / ligue inviolables cote serveur'

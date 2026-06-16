@@ -179,7 +179,7 @@ quel. Tout nouvel exemple ou toute correction doit être marqué
 > transactionnelle, indexation. Disponibles immédiatement, sans dépendance au
 > code propriétaire de translittération.
 
-## 7. Durcir l'Edge Function `chat` (auth + bornes + anti-abus)
+## 7. Durcir l'Edge Function `chat` (auth + bornes + quota gratuit)
 **Labels :** `security`, `backend`, `priority: high`
 
 **Contexte.** `supabase/functions/chat/index.ts` ne vérifie que la présence de
@@ -187,21 +187,43 @@ la clé `ANTHROPIC_API_KEY`. Elle **ne valide pas l'appelant** : la clé `anon`
 Supabase est publique (embarquée dans le client), donc n'importe qui peut
 appeler la fonction et consommer le crédit API Anthropic — c'est un proxy ouvert.
 
+Cette tâche couvre **à la fois la sécurité et la maîtrise des coûts** : plutôt
+qu'un paywall (prématuré à ce stade — cf. décision produit), on borne l'usage
+par un **quota gratuit quotidien par utilisateur**. Ça plafonne la facture API
+sans infra de paiement et garde le chat accessible.
+
 **À faire.**
-- Vérifier le JWT Supabase de l'appelant (header `Authorization: Bearer`) et
-  rejeter les requêtes non authentifiées (401).
-- Borner les entrées : taille de payload, nombre de messages, `max_tokens`
-  plafonné côté serveur (ne pas faire confiance à la valeur client).
-- Rate limiting par utilisateur (p. ex. table Postgres compteur, ou KV) avec
-  réponse 429 explicite.
-- Conserver le comportement de streaming SSE existant (ne pas le casser).
+- **Auth** : vérifier le JWT Supabase de l'appelant (header
+  `Authorization: Bearer`, via `supabase.auth.getUser(jwt)`) et rejeter les
+  requêtes non authentifiées (**401**).
+- **Bornes serveur** : plafonner `max_tokens`, le nombre de messages et la
+  taille du payload — sans faire confiance aux valeurs du client.
+- **Quota gratuit quotidien** : compter les requêtes par `user_id` et par jour
+  dans une table Postgres dédiée (p. ex. `chat_usage(user_id, day, count)`,
+  avec RLS et un `upsert` atomique côté serveur). Au-delà du quota (valeur
+  configurable, p. ex. 20/jour via variable d'env), renvoyer **429** avec un
+  message clair et, idéalement, l'heure de réinitialisation.
+- **Client** : afficher proprement le 401 (session expirée → reconnexion) et le
+  429 (quota atteint → message + quand réessayer) dans `ClaudeService` /
+  `chat_screen.dart`. Réutiliser le pattern d'erreur + bouton « Réessayer »
+  existant.
+- **Ne pas casser** le streaming SSE déjà en place.
+
+**Notes d'implémentation.**
+- Le comptage doit être **serveur-autoritatif** : ne jamais se fier au client
+  pour le quota (même esprit que la tâche #8 sur l'XP).
+- Compter idéalement les messages *acceptés* (après bornes), pas les requêtes
+  rejetées, pour ne pas punir une erreur réseau.
+- Penser au fuseau : « par jour » = jour UTC ou local cohérent, à documenter.
 
 **Critères d'acceptation.**
 - [ ] Une requête sans JWT valide est rejetée (401).
-- [ ] `max_tokens`/taille/nombre de messages sont plafonnés côté serveur.
-- [ ] Au-delà du quota, l'API renvoie 429 ; le client l'affiche proprement.
-- [ ] Le chat (réponse normale + streaming) fonctionne toujours pour un
-      utilisateur connecté.
+- [ ] `max_tokens` / taille / nombre de messages sont plafonnés côté serveur.
+- [ ] Au-delà du quota quotidien, l'API renvoie 429 ; le client l'affiche
+      clairement (message + reconnexion ou réessai selon le cas).
+- [ ] Le quota se réinitialise chaque jour et n'est pas contournable côté client.
+- [ ] Le chat (réponse normale **et** streaming) fonctionne toujours pour un
+      utilisateur connecté sous son quota.
 
 ## 8. Rendre XP / niveau / ligue inviolables côté serveur
 **Labels :** `security`, `backend`, `priority: high`
