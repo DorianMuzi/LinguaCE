@@ -18,7 +18,7 @@ tchétchène pour les 8 niveaux de progression (Dözal → Noxčijn Mott).
 
 ## Règles linguistiques (impératives)
 
-1. Le tchétchène a 6 classes nominales (в/й/й-II/д/б/б-II) qui gouvernent l'accord des verbes et adjectifs. Toute phrase d'exemple doit être cohérente en classe. Réfère-toi au system prompt de Noxçi dans `lib/services/claude_service.dart`, qui contient la grammaire de référence du projet (classes, 11 cas, formes du verbe être, pronoms).
+1. Le tchétchène a 6 classes nominales (в/й/й-II/д/б/б-II) qui gouvernent l'accord des verbes et adjectifs. Toute phrase d'exemple doit être cohérente en classe. Réfère-toi au system prompt de Naxçi dans `lib/services/claude_service.dart`, qui contient la grammaire de référence du projet (classes, 11 cas, formes du verbe être, pronoms).
 2. Les verbes transitifs s'accordent avec l'objet direct, les intransitifs avec le sujet.
 3. Écris le contenu en cyrillique tchétchène ; la translittération latine est générée par l'Edge Function `transliterate` (algorithme propriétaire, ne jamais l'implémenter ni le deviner côté client).
 4. Pédagogie type Duolingo : phrases courtes, vocabulaire réutilisé d'une leçon à l'autre, difficulté progressive, exercices variés.

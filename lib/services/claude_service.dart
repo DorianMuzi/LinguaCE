@@ -15,7 +15,7 @@ class ClaudeService {
   static const _historyWindow = 16;
 
   static const _systemBase = """
-Tu es Noxçi, assistant IA spécialisé dans l'enseignement de la langue tchétchène (нохчийн мотт / noxçiyŋ mott).
+Tu es Naxçi, assistant IA spécialisé dans l'enseignement de la langue tchétchène (нохчийн мотт / noxçiyŋ mott).
 
 CONTEXTE HISTORIQUE :
 - Écriture arabe jusqu'en 1925, latine 1925-1938, cyrillique depuis 1938
@@ -399,7 +399,7 @@ Couleurs :
     ];
   }
 
-  /// Envoie la conversation à Noxçi et renvoie sa réponse complète.
+  /// Envoie la conversation à Naxçi et renvoie sa réponse complète.
   ///
   /// Si [onDelta] est fourni, la réponse arrive en **streaming** : le
   /// callback reçoit le texte accumulé à chaque fragment. Si l'Edge

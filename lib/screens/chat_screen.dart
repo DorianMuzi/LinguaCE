@@ -77,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
     await _requestReply();
   }
 
-  /// Demande une réponse de Noxçi pour l'historique courant, en streaming :
+  /// Demande une réponse de Naxçi pour l'historique courant, en streaming :
   /// la bulle apparaît au premier fragment puis grandit au fil des tokens.
   Future<void> _requestReply() async {
     setState(() => _isTyping = true);

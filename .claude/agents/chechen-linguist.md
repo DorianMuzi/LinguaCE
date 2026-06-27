@@ -2,7 +2,7 @@
 name: chechen-linguist
 description: >
   Relecteur linguistique tchétchène pour LinguaCE. À utiliser pour auditer la
-  cohérence grammaticale du contenu existant (leçons, system prompt de Noxçi,
+  cohérence grammaticale du contenu existant (leçons, system prompt de Naxçi,
   chaînes i18n CE) : classes nominales, accords, cas, orthographe cyrillique.
   Agent en lecture seule qui produit un rapport, ne modifie pas les fichiers.
 tools: Read, Grep, Glob, Bash

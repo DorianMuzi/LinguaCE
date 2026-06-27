@@ -26,13 +26,13 @@ language spoken by ~1.5 million people with almost no digital learning tools. Th
 app is powered by Flutter, the Claude AI API, and a custom Latin transliteration
 system called the **Chechen Latin Script**.
 
-It features **Noxçi**, an AI language assistant with a deep understanding of
+It features **Naxçi**, an AI language assistant with a deep understanding of
 Chechen grammar, culture, and oral tradition.
 
 ## Features
 
 - 🎓 **Gamified learning** — XP, streaks, 8 progression levels (Dözal → Noxčijn Mott)
-- 🤖 **Noxçi AI assistant** — powered by Claude API with a Chechen-specific grammar system prompt
+- 🤖 **Naxçi AI assistant** — powered by Claude API with a Chechen-specific grammar system prompt
 - 🔤 **Chechen Latin Script** — a proprietary Latin transliteration system for the Chechen language
 - 🏆 **5 cultural leagues** — Stone, Forest, Mountain, Eagle, Noxčo
 - 🔐 **Auth & database** — Supabase authentication and real-time data
@@ -52,7 +52,7 @@ Chechen grammar, culture, and oral tradition.
 
 ```
 ✅  PHASE 1 — Core
-    Flutter app structure, Claude API integration (Noxçi),
+    Flutter app structure, Claude API integration (Naxçi),
     Supabase auth, Chechen Latin Script, app icon & UI
 
 🔧  PHASE 2 — Stability (current)
@@ -80,7 +80,7 @@ curious — there's a place for you.
 On the server you'll find:
 
 - **#flutter-dart** — technical discussions & bug tracking
-- **#claude-api** — AI integration & Noxçi development
+- **#claude-api** — AI integration & Naxçi development
 - **#chechen-linguistics** — language validation & corpus building
 - **#chechen-latin-script** — transliteration system discussions
 - **#general** — open to everyone

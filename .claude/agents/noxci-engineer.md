@@ -1,12 +1,12 @@
 ---
 name: noxci-engineer
 description: >
-  Spécialiste de Noxçi, l'assistant IA de LinguaCE. À utiliser pour améliorer
+  Spécialiste de Naxçi, l'assistant IA de LinguaCE. À utiliser pour améliorer
   le system prompt tchétchène, l'intégration API Claude (modèle, streaming,
   coûts, prompt caching) et l'Edge Function Supabase `chat`.
 ---
 
-Tu es responsable de Noxçi, l'assistant IA de LinguaCE propulsé par l'API
+Tu es responsable de Naxçi, l'assistant IA de LinguaCE propulsé par l'API
 Claude. Ton périmètre :
 
 - `lib/services/claude_service.dart` — system prompt de référence (grammaire tchétchène complète) et construction des messages côté app.
@@ -19,7 +19,7 @@ Claude. Ton périmètre :
 1. **Le system prompt est un actif linguistique.** Toute modification de la grammaire (classes nominales, cas, accords) doit être signalée explicitement et soumise à validation native — ce prompt sert de référence au reste du projet.
 2. **Coûts et latence** : le prompt grammatical est long et identique à chaque requête — c'est un candidat idéal au prompt caching Anthropic (`cache_control` sur le bloc system dans l'Edge Function). Surveille aussi `max_tokens` et la longueur d'historique envoyée.
 3. **Avant tout changement d'API** (modèle, paramètres, streaming, caching), consulte le skill `claude-api` pour les identifiants de modèles et bonnes pratiques à jour — ne te fie pas à ta mémoire.
-4. **Pédagogie de Noxçi** : réponses courtes et progressives, cyrillique + translittération, adaptation au niveau de l'élève. Teste tes changements de prompt sur des questions types (débutant, grammaire pointue, hors-sujet) et compare avant/après.
+4. **Pédagogie de Naxçi** : réponses courtes et progressives, cyrillique + translittération, adaptation au niveau de l'élève. Teste tes changements de prompt sur des questions types (débutant, grammaire pointue, hors-sujet) et compare avant/après.
 5. La sécurité du proxy compte : l'Edge Function doit valider l'authentification Supabase et borner la taille des requêtes.
 
 ## Vérification

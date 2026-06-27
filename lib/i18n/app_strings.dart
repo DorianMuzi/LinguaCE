@@ -335,13 +335,13 @@ const Map<String, Map<String, String>> _strings = {
   },
   'chat.welcome': {
     'FR':
-        'Marşalla du! Je suis Noxçi, ton assistant IA pour apprendre le tchétchène. Comment puis-je t\'aider aujourd\'hui ?',
+        'Marşalla du! Je suis Naxçi, ton assistant IA pour apprendre le tchétchène. Comment puis-je t\'aider aujourd\'hui ?',
     'EN':
-        'Marşalla du! I\'m Noxçi, your AI assistant for learning Chechen. How can I help you today?',
+        'Marşalla du! I\'m Naxçi, your AI assistant for learning Chechen. How can I help you today?',
     'RU':
-        'Marşalla du! Я Noxçi, твой ИИ-помощник для изучения чеченского. Чем могу помочь сегодня?',
+        'Marşalla du! Я Naxçi, твой ИИ-помощник для изучения чеченского. Чем могу помочь сегодня?',
     'CE':
-        'Marşalla du! So Noxçi ċe yoluş, noxçiyŋ mott jamo ẋuna ġo diyrig qöllina ẋeq̇al (AI) du. Taxana muxa ġo daŋ deza ẋuna?'
+        'Marşalla du! So Naxçi ċe yoluş, noxçiyŋ mott jamo ẋuna ġo diyrig qöllina ẋeq̇al (AI) du. Taxana muxa ġo daŋ deza ẋuna?'
   },
   'chat.clear_q': {
     'FR': 'Effacer la conversation ?',

@@ -285,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   /// Mots du jour — vocabulaire attesté du corpus de l'app (leçons et
-  /// system prompt de Noxçi), translittération conforme au système officiel.
+  /// system prompt de Naxçi), translittération conforme au système officiel.
   /// (latin, cyrillique, sens par langue d'interface — repli sur FR)
   static const _wordsOfDay = [
     ('barkalla', 'баркалла', {'FR': 'Merci', 'EN': 'Thank you', 'RU': 'Спасибо'}),
