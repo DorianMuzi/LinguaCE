@@ -40,7 +40,7 @@ class CopilotCard extends StatelessWidget {
   const CopilotCard({
     super.key,
     required this.child,
-    this.padding = LinguaSpacing.card,
+    this.padding = LinguaSpacing.cardPad,
     this.onTap,
     this.elevated = true,
     this.color,
@@ -226,7 +226,7 @@ class GlassPanel extends StatelessWidget {
   const GlassPanel({
     super.key,
     required this.child,
-    this.padding = LinguaSpacing.card,
+    this.padding = LinguaSpacing.cardPad,
     this.blur = 18,
   });
 

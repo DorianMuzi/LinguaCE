@@ -9,6 +9,12 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
+analyzer:
+  exclude:
+    # Archive de handoff du design system : fichiers Dart de RÉFÉRENCE, pas du
+    # code d'app. Leurs imports relatifs ne résolvent pas depuis ce dossier.
+    - "LinguaCE Design System/**"
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
