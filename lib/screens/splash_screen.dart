@@ -116,7 +116,7 @@ class _SplashScreenState extends State<SplashScreen>
                           width: 112,
                           height: 112,
                           decoration: BoxDecoration(
-                            color: t.accentSoft,
+                            color: t.accentTint,
                             borderRadius: BorderRadius.circular(28),
                           ),
                           child: Icon(Icons.language_rounded,
@@ -139,7 +139,7 @@ class _SplashScreenState extends State<SplashScreen>
                     children: [
                       Text(
                         'LinguaCE',
-                        style: GoogleFonts.spaceMono(
+                        style: GoogleFonts.jetBrainsMono(
                           color: t.accent,
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -149,7 +149,7 @@ class _SplashScreenState extends State<SplashScreen>
                       const SizedBox(height: 8),
                       Text(
                         'Noxçiyŋ mott',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           color: t.textSecondary,
                           fontSize: 13,
                           letterSpacing: 0.5,
@@ -158,7 +158,7 @@ class _SplashScreenState extends State<SplashScreen>
                       const SizedBox(height: 4),
                       Text(
                         tr('drawer.tagline'),
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           color: t.textTertiary,
                           fontSize: 12,
                         ),

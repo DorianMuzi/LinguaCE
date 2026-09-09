@@ -108,12 +108,12 @@ class _LearnScreenState extends State<LearnScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(tr('learn.title1'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary,
                 fontSize: 28,
                 fontWeight: FontWeight.bold)),
         Text(tr('learn.title2'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.accent, fontSize: 28, fontWeight: FontWeight.bold)),
       ],
     );
@@ -133,13 +133,13 @@ class _LearnScreenState extends State<LearnScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(tr('learn.lessons_count', {'c': '$completed', 't': '$total'}),
-                    style: GoogleFonts.playfairDisplay(
+                    style: GoogleFonts.oswald(
                         color: t.textPrimary,
                         fontSize: 22,
                         fontWeight: FontWeight.bold)),
                 Text(tr('learn.completed'),
                     style:
-                        GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
+                        GoogleFonts.manrope(color: t.textSecondary, fontSize: 14)),
                 const SizedBox(height: 12),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4),
@@ -158,13 +158,13 @@ class _LearnScreenState extends State<LearnScreen> {
           const SizedBox(width: 20),
           Column(
             children: [
-              const Text('🏅', style: TextStyle(fontSize: 40)),
+              Icon(Icons.military_tech_rounded, size: 34, color: t.goldInk),
               const SizedBox(height: 4),
               Text(
                   tr(completed == total && total > 0
                       ? 'learn.finished'
                       : 'learn.beginner'),
-                  style: GoogleFonts.spaceMono(color: t.accent, fontSize: 11)),
+                  style: GoogleFonts.jetBrainsMono(color: t.accent, fontSize: 11)),
             ],
           ),
         ],
@@ -219,7 +219,7 @@ class _LessonCard extends StatelessWidget {
                             lesson.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.playfairDisplay(
+                            style: GoogleFonts.oswald(
                               color:
                                   isLocked ? t.textTertiary : t.textPrimary,
                               fontSize: 16,
@@ -233,12 +233,12 @@ class _LessonCard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
-                              color: t.accentSoft,
+                              color: t.accentTint,
                               borderRadius: LinguaRadius.rPill,
                               border: Border.all(color: t.accent),
                             ),
                             child: Text(tr('learn.in_progress'),
-                                style: GoogleFonts.spaceMono(
+                                style: GoogleFonts.jetBrainsMono(
                                     color: t.accentStrong,
                                     fontSize: 9,
                                     letterSpacing: 1)),
@@ -250,7 +250,7 @@ class _LessonCard extends StatelessWidget {
                     Text(lesson.subtitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                             color: t.textSecondary, fontSize: 13)),
                     if (isActive && lesson.completedExercises > 0) ...[
                       const SizedBox(height: 8),
@@ -272,7 +272,7 @@ class _LessonCard extends StatelessWidget {
                           'c': '${lesson.completedExercises}',
                           't': '${lesson.totalExercises}'
                         }),
-                        style: GoogleFonts.spaceMono(
+                        style: GoogleFonts.jetBrainsMono(
                             color: t.textTertiary, fontSize: 10),
                       ),
                     ],
@@ -284,7 +284,7 @@ class _LessonCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text('+${lesson.xpReward} XP',
-                      style: GoogleFonts.spaceMono(
+                      style: GoogleFonts.jetBrainsMono(
                           color: isLocked ? t.textTertiary : t.accent,
                           fontSize: 12,
                           fontWeight: FontWeight.bold)),
@@ -299,7 +299,7 @@ class _LessonCard extends StatelessWidget {
                       ),
                       child: Text(
                         tr(isCompleted ? 'learn.review' : 'learn.start'),
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           color: isCompleted ? t.textSecondary : t.onAccent,
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
@@ -322,7 +322,7 @@ class _LessonCard extends StatelessWidget {
       width: 44,
       height: 44,
       decoration: BoxDecoration(
-        color: isCompleted ? t.accentSoft : t.surfaceSunken,
+        color: isCompleted ? t.accentTint : t.surfaceSunken,
         shape: BoxShape.circle,
         border: Border.all(color: isCompleted ? t.accent : t.outline),
       ),

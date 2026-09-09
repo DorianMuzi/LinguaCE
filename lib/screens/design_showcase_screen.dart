@@ -100,18 +100,18 @@ class _DesignShowcaseScreenState extends State<DesignShowcaseScreen> {
       child: Row(
         children: [
           Text('Lingua',
-              style: GoogleFonts.playfairDisplay(
+              style: GoogleFonts.oswald(
                   color: t.textPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold)),
           Text('CE',
-              style: GoogleFonts.playfairDisplay(
+              style: GoogleFonts.oswald(
                   color: t.accent,
                   fontSize: 20,
                   fontWeight: FontWeight.bold)),
           const SizedBox(width: 10),
           Text('· Design system',
-              style: GoogleFonts.spaceMono(
+              style: GoogleFonts.jetBrainsMono(
                   color: t.textTertiary, fontSize: 11)),
           const Spacer(),
           _themeToggle(context),
@@ -141,7 +141,7 @@ class _DesignShowcaseScreenState extends State<DesignShowcaseScreen> {
                   color: active ? t.onAccent : t.textSecondary),
               const SizedBox(width: 6),
               Text(label,
-                  style: GoogleFonts.spaceMono(
+                  style: GoogleFonts.jetBrainsMono(
                       color: active ? t.onAccent : t.textSecondary,
                       fontSize: 11,
                       fontWeight: FontWeight.bold)),
@@ -189,7 +189,7 @@ class _DesignShowcaseScreenState extends State<DesignShowcaseScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AccentChip(label: 'НОХЧИЙН МОТТ', emoji: '🏔'),
+          const AccentChip(label: 'NOXÇIYN MOTT', icon: Icons.landscape_rounded),
           const SizedBox(height: LinguaSpacing.md),
           Text('Apprends le tchétchène',
               style: Theme.of(context).textTheme.displaySmall),
@@ -222,7 +222,7 @@ class _DesignShowcaseScreenState extends State<DesignShowcaseScreen> {
     final t = context.tokens;
     final swatches = <(String, Color)>[
       ('accent', t.accent),
-      ('accentSoft', t.accentSoft),
+      ('accentSoft', t.accentTint),
       ('accentStrong', t.accentStrong),
       ('surfaceRaised', t.surfaceRaised),
       ('surfaceSunken', t.surfaceSunken),
@@ -247,7 +247,7 @@ class _DesignShowcaseScreenState extends State<DesignShowcaseScreen> {
             ),
             const SizedBox(height: 6),
             Text(s.$1,
-                style: GoogleFonts.spaceMono(
+                style: GoogleFonts.jetBrainsMono(
                     color: t.textSecondary, fontSize: 9)),
           ],
         );
@@ -301,10 +301,14 @@ class _DesignShowcaseScreenState extends State<DesignShowcaseScreen> {
 
   Widget _stats(BuildContext context) {
     final tiles = const [
-      StatTile(emoji: '⭐', value: '2 847', label: 'XP TOTAL'),
-      StatTile(emoji: '🔥', value: '12 j', label: 'SÉRIE'),
-      StatTile(emoji: '🏆', value: 'Niv. 4', label: 'NIVEAU'),
-      StatTile(emoji: '📚', value: '18', label: 'LEÇONS'),
+      StatTile(icon: Icons.star_rounded, value: '2 847', label: 'XP total',
+          tone: ChipTone.reward),
+      StatTile(icon: Icons.local_fire_department_rounded, value: '12 j',
+          label: 'Série', tone: ChipTone.streak),
+      StatTile(icon: Icons.emoji_events_rounded, value: 'Niv. 4',
+          label: 'Niveau', tone: ChipTone.reward),
+      StatTile(icon: Icons.menu_book_rounded, value: '18', label: 'Leçons',
+          tone: ChipTone.accent),
     ];
     final cols = Responsive.value(context, mobile: 2, tablet: 4, desktop: 4);
     return GridView.count(
@@ -323,9 +327,11 @@ class _DesignShowcaseScreenState extends State<DesignShowcaseScreen> {
       spacing: LinguaSpacing.sm,
       runSpacing: LinguaSpacing.sm,
       children: const [
-        AccentChip(label: 'Ligue Aigle', emoji: '🦅'),
+        AccentChip(label: 'Ligue Aigle', icon: Icons.shield_rounded,
+            tone: ChipTone.reward),
         AccentChip(label: 'Niveau 4', icon: Icons.star_rounded),
-        AccentChip(label: '12 jours', emoji: '🔥'),
+        AccentChip(label: '12 jours', icon: Icons.local_fire_department_rounded,
+            tone: ChipTone.streak),
         AccentChip(label: 'IA Tchétchène', icon: Icons.psychology_outlined),
       ],
     );
@@ -376,7 +382,7 @@ class _DesignShowcaseScreenState extends State<DesignShowcaseScreen> {
               Text('Classe : ${cls.name}',
                   style: Theme.of(context).textTheme.titleLarge),
               Text('Largeur : ${width.toInt()} px',
-                  style: GoogleFonts.spaceMono(
+                  style: GoogleFonts.jetBrainsMono(
                       color: t.textSecondary, fontSize: 12)),
             ],
           ),

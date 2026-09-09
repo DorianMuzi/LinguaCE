@@ -53,15 +53,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
         title: Text(tr('profile.edit_name'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary, fontSize: 18)),
         content: TextField(
           controller: controller,
           autofocus: true,
-          style: GoogleFonts.inter(color: t.textPrimary, fontSize: 14),
+          style: GoogleFonts.manrope(color: t.textPrimary, fontSize: 14),
           decoration: InputDecoration(
             hintText: tr('profile.username'),
-            hintStyle: GoogleFonts.inter(color: t.textTertiary),
+            hintStyle: GoogleFonts.manrope(color: t.textTertiary),
             filled: true,
             fillColor: t.surfaceSunken,
             border: OutlineInputBorder(
@@ -83,12 +83,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           TextButton(
             onPressed: () => Navigator.pop(ctx),
             child: Text(tr('common.cancel'),
-                style: GoogleFonts.inter(color: t.textSecondary)),
+                style: GoogleFonts.manrope(color: t.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, controller.text.trim()),
             child: Text(tr('common.save'),
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                     color: t.accent, fontWeight: FontWeight.bold)),
           ),
         ],
@@ -109,20 +109,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
         title: Text(tr('profile.logout_q'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary, fontSize: 18)),
         content: Text(tr('profile.logout_desc'),
-            style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
+            style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 14)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
             child: Text(tr('common.cancel'),
-                style: GoogleFonts.inter(color: t.textSecondary)),
+                style: GoogleFonts.manrope(color: t.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(tr('profile.logout'),
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                     color: t.danger, fontWeight: FontWeight.bold)),
           ),
         ],
@@ -151,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(tr('title.profile'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary,
                 fontSize: 20,
                 fontWeight: FontWeight.bold)),
@@ -198,14 +198,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: 90,
               height: 90,
               decoration: BoxDecoration(
-                color: t.accentSoft,
+                color: t.accentTint,
                 shape: BoxShape.circle,
                 border: Border.all(color: t.accent, width: 3),
               ),
               child: Center(
                 child: Text(
                   _initials,
-                  style: GoogleFonts.playfairDisplay(
+                  style: GoogleFonts.oswald(
                     color: t.accentStrong,
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
@@ -235,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         const SizedBox(height: 12),
         Text(_username,
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary,
                 fontSize: 24,
                 fontWeight: FontWeight.bold)),
@@ -257,7 +257,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               child: Text(
                   '🔥 $_streak ${tr(_streak != 1 ? 'profile.days' : 'profile.day')}',
-                  style: GoogleFonts.spaceMono(
+                  style: GoogleFonts.jetBrainsMono(
                       color: t.textSecondary, fontSize: 11)),
             ),
           ],
@@ -268,11 +268,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildStatsGrid() {
     final cols = Responsive.value(context, mobile: 2, tablet: 4, desktop: 4);
-    final stats = [
-      ('⭐', '$_xp', tr('stat.xp_total')),
-      ('🏆', '$_level', tr('stat.level')),
-      ('🔥', '${_streak}j', tr('stat.streak')),
-      ('📚', '$_lessonsCompleted', tr('stat.lessons')),
+    // Chaque compteur prend le registre de ce qu'il mesure : l'or pour la
+    // récompense, la flamme pour la série, le bleu pour ce qui est consulté.
+    final stats = <(IconData, String, String, ChipTone)>[
+      (Icons.star_rounded, '$_xp', tr('stat.xp_total'), ChipTone.reward),
+      (Icons.emoji_events_rounded, '$_level', tr('stat.level'), ChipTone.reward),
+      (Icons.local_fire_department_rounded, '${_streak}j', tr('stat.streak'), ChipTone.streak),
+      (Icons.menu_book_rounded, '$_lessonsCompleted', tr('stat.lessons'), ChipTone.accent),
     ];
     return GridView.count(
       crossAxisCount: cols,
@@ -282,7 +284,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       mainAxisSpacing: 12,
       childAspectRatio: 2.2,
       children: stats
-          .map((s) => StatTile(emoji: s.$1, value: s.$2, label: s.$3))
+          .map((s) => StatTile(icon: s.$1, value: s.$2, label: s.$3, tone: s.$4))
           .toList(),
     );
   }
@@ -307,7 +309,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 leading: Icon(icon, color: t.textSecondary, size: 20),
                 title: Text(label,
                     style:
-                        GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
+                        GoogleFonts.manrope(color: t.textPrimary, fontSize: 15)),
                 trailing: hasSwitch
                     ? Switch(
                         value: true,
@@ -354,7 +356,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Icon(Icons.logout_rounded, color: t.danger, size: 18),
                   const SizedBox(width: 8),
                   Text(tr('profile.logout_btn'),
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                           color: t.danger,
                           fontSize: 15,
                           fontWeight: FontWeight.w500)),

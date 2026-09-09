@@ -62,7 +62,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final t = context.tokens;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: GoogleFonts.inter(color: Colors.white)),
+        content: Text(message, style: GoogleFonts.manrope(color: Colors.white)),
         backgroundColor: t.danger,
         behavior: SnackBarBehavior.floating,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rMd),
@@ -106,7 +106,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           width: 64,
           height: 64,
           decoration: BoxDecoration(
-            color: t.accentSoft,
+            color: t.accentTint,
             shape: BoxShape.circle,
             border: Border.all(color: t.accent.withValues(alpha: 0.4), width: 1.5),
           ),
@@ -114,7 +114,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
         const SizedBox(height: 24),
         Text(tr('forgot.title'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary,
                 fontSize: 26,
                 fontWeight: FontWeight.bold)),
@@ -122,16 +122,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         Text(
           tr('forgot.desc'),
           style:
-              GoogleFonts.inter(color: t.textSecondary, fontSize: 14, height: 1.5),
+              GoogleFonts.manrope(color: t.textSecondary, fontSize: 14, height: 1.5),
         ),
         const SizedBox(height: 36),
         TextField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
-          style: GoogleFonts.inter(color: t.textPrimary, fontSize: 14),
+          style: GoogleFonts.manrope(color: t.textPrimary, fontSize: 14),
           decoration: InputDecoration(
             labelText: tr('forgot.email'),
-            labelStyle: GoogleFonts.inter(color: t.textTertiary, fontSize: 14),
+            labelStyle: GoogleFonts.manrope(color: t.textTertiary, fontSize: 14),
             prefixIcon:
                 Icon(Icons.email_outlined, color: t.textTertiary, size: 20),
             filled: true,
@@ -166,7 +166,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(tr('forgot.back'),
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   color: t.textSecondary,
                   fontSize: 13,
                   decoration: TextDecoration.underline,
@@ -187,7 +187,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           width: 88,
           height: 88,
           decoration: BoxDecoration(
-            color: t.accentSoft,
+            color: t.accentTint,
             shape: BoxShape.circle,
             border: Border.all(color: t.accent, width: 2),
           ),
@@ -196,25 +196,25 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
         const SizedBox(height: 28),
         Text(tr('forgot.sent_title'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary,
                 fontSize: 26,
                 fontWeight: FontWeight.bold),
             textAlign: TextAlign.center),
         const SizedBox(height: 14),
         Text(tr('forgot.sent_to'),
-            style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14),
+            style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 14),
             textAlign: TextAlign.center),
         const SizedBox(height: 6),
         Text(_emailController.text.trim(),
-            style: GoogleFonts.spaceMono(
+            style: GoogleFonts.jetBrainsMono(
                 color: t.accent, fontSize: 14, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center),
         const SizedBox(height: 16),
         Text(
           tr('forgot.check_inbox'),
           style:
-              GoogleFonts.inter(color: t.textTertiary, fontSize: 13, height: 1.5),
+              GoogleFonts.manrope(color: t.textTertiary, fontSize: 13, height: 1.5),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 48),
@@ -230,7 +230,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             _emailController.clear();
           }),
           child: Text(tr('forgot.other_email'),
-              style: GoogleFonts.inter(
+              style: GoogleFonts.manrope(
                 color: t.textSecondary,
                 fontSize: 13,
                 decoration: TextDecoration.underline,

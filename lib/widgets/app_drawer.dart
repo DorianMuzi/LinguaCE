@@ -51,7 +51,7 @@ class _AppDrawerState extends State<AppDrawer> {
     ));
     messenger.showSnackBar(SnackBar(
       content: Text(tr('chat.copied'),
-          style: GoogleFonts.inter(color: Colors.white)),
+          style: GoogleFonts.manrope(color: Colors.white)),
       backgroundColor: t.accentStrong,
       behavior: SnackBarBehavior.floating,
       shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rMd),
@@ -64,7 +64,7 @@ class _AppDrawerState extends State<AppDrawer> {
     final t = context.tokens;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content:
-          Text(message, style: GoogleFonts.inter(color: Colors.white)),
+          Text(message, style: GoogleFonts.manrope(color: Colors.white)),
       backgroundColor: t.accentStrong,
       behavior: SnackBarBehavior.floating,
       shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rMd),
@@ -81,20 +81,20 @@ class _AppDrawerState extends State<AppDrawer> {
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
         title: Text(tr('profile.logout_q'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary, fontSize: 18)),
         content: Text(tr('profile.logout_desc'),
-            style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
+            style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 14)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
             child: Text(tr('common.cancel'),
-                style: GoogleFonts.inter(color: t.textSecondary)),
+                style: GoogleFonts.manrope(color: t.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(tr('profile.logout'),
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                     color: t.danger, fontWeight: FontWeight.bold)),
           ),
         ],
@@ -119,12 +119,12 @@ class _AppDrawerState extends State<AppDrawer> {
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
         title: Row(children: [
           Text('Lingua',
-              style: GoogleFonts.playfairDisplay(
+              style: GoogleFonts.oswald(
                   color: t.textPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold)),
           Text('CE',
-              style: GoogleFonts.playfairDisplay(
+              style: GoogleFonts.oswald(
                   color: t.accent,
                   fontSize: 20,
                   fontWeight: FontWeight.bold)),
@@ -135,17 +135,17 @@ class _AppDrawerState extends State<AppDrawer> {
           children: [
             Text(tr('about.version'),
                 style:
-                    GoogleFonts.spaceMono(color: t.accent, fontSize: 12)),
+                    GoogleFonts.jetBrainsMono(color: t.accent, fontSize: 12)),
             const SizedBox(height: 12),
             Text(
               tr('about.desc'),
-              style: GoogleFonts.inter(
+              style: GoogleFonts.manrope(
                   color: t.textSecondary, fontSize: 13, height: 1.5),
             ),
             const SizedBox(height: 12),
             Text(
               tr('about.made'),
-              style: GoogleFonts.inter(
+              style: GoogleFonts.manrope(
                   color: t.textTertiary, fontSize: 12, height: 1.4),
             ),
           ],
@@ -154,7 +154,7 @@ class _AppDrawerState extends State<AppDrawer> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(tr('common.close'),
-                style: GoogleFonts.inter(color: t.accent)),
+                style: GoogleFonts.manrope(color: t.accent)),
           ),
         ],
       ),
@@ -172,7 +172,7 @@ class _AppDrawerState extends State<AppDrawer> {
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
         title: Text(tr('set.interface_lang'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary, fontSize: 18)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -180,7 +180,7 @@ class _AppDrawerState extends State<AppDrawer> {
             final selected = localeController.value == code;
             return ListTile(
               title: Text('$code — ${LocaleController.names[code]}',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                       color: selected ? t.accent : t.textPrimary,
                       fontSize: 14,
                       fontWeight:
@@ -195,7 +195,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   content: Text(
                       tr('lang.selected',
                           {'lang': LocaleController.names[code]!}),
-                      style: GoogleFonts.inter(color: Colors.white)),
+                      style: GoogleFonts.manrope(color: Colors.white)),
                   backgroundColor: t.accentStrong,
                   behavior: SnackBarBehavior.floating,
                   shape: const RoundedRectangleBorder(
@@ -226,19 +226,19 @@ class _AppDrawerState extends State<AppDrawer> {
                 children: [
                   Row(children: [
                     Text('Lingua',
-                        style: GoogleFonts.playfairDisplay(
+                        style: GoogleFonts.oswald(
                             color: t.textPrimary,
                             fontSize: 28,
                             fontWeight: FontWeight.bold)),
                     Text('CE',
-                        style: GoogleFonts.playfairDisplay(
+                        style: GoogleFonts.oswald(
                             color: t.accent,
                             fontSize: 28,
                             fontWeight: FontWeight.bold)),
                   ]),
                   const SizedBox(height: 4),
                   Text(tr('drawer.tagline'),
-                      style: GoogleFonts.spaceMono(
+                      style: GoogleFonts.jetBrainsMono(
                           color: t.textSecondary,
                           fontSize: 11,
                           letterSpacing: 0.5)),
@@ -259,7 +259,7 @@ class _AppDrawerState extends State<AppDrawer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(_username,
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.manrope(
                                     color: t.textPrimary,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600)),
@@ -269,7 +269,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                 'l': '$_level',
                                 'league': tr('league.$_league'),
                               }),
-                              style: GoogleFonts.spaceMono(
+                              style: GoogleFonts.jetBrainsMono(
                                   color: t.accent, fontSize: 11),
                             ),
                           ],
@@ -353,7 +353,7 @@ class _AppDrawerState extends State<AppDrawer> {
                       Icon(Icons.logout_rounded, color: t.danger, size: 16),
                       const SizedBox(width: 8),
                       Text(tr('profile.logout_btn'),
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.manrope(
                               color: t.danger,
                               fontSize: 14,
                               fontWeight: FontWeight.w500)),
@@ -366,7 +366,7 @@ class _AppDrawerState extends State<AppDrawer> {
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Text('LinguaCE v1.0.0',
-                  style: GoogleFonts.spaceMono(
+                  style: GoogleFonts.jetBrainsMono(
                       color: t.textTertiary, fontSize: 11)),
             ),
           ],
@@ -397,7 +397,7 @@ class _DrawerItem extends StatelessWidget {
     return ListTile(
       leading: Icon(icon, color: t.textSecondary, size: 20),
       title: Text(label,
-          style: GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
+          style: GoogleFonts.manrope(color: t.textPrimary, fontSize: 15)),
       trailing: trailing,
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(horizontal: 24),
@@ -418,14 +418,14 @@ class _Avatar extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: t.accentSoft,
+        color: t.accentTint,
         shape: BoxShape.circle,
         border: Border.all(color: t.accent, width: 2),
       ),
       child: Center(
         child: Text(
           initials,
-          style: GoogleFonts.playfairDisplay(
+          style: GoogleFonts.oswald(
             color: t.accentStrong,
             fontSize: size * 0.4,
             fontWeight: FontWeight.bold,

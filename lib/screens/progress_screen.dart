@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../design/lingua_tokens.dart';
-import '../design/lingua_scale.dart';
+
 import '../design/lingua_components.dart';
+import '../design/lingua_scale.dart';
+import '../design/lingua_theme.dart';
+import '../design/lingua_tokens.dart';
 import '../design/responsive.dart';
 import '../i18n/app_strings.dart';
 import '../models/models.dart';
@@ -65,25 +67,29 @@ class _ProgressScreenState extends State<ProgressScreen> {
       padding: const EdgeInsets.only(bottom: 100),
       child: ContentClamp(
         padding: EdgeInsets.fromLTRB(
-          Responsive.isMobile(context) ? 20 : 32,
-          8,
-          Responsive.isMobile(context) ? 20 : 32,
+          Responsive.isMobile(context)
+              ? LinguaSpacing.screen
+              : LinguaSpacing.xxxl,
+          LinguaSpacing.sm,
+          Responsive.isMobile(context)
+              ? LinguaSpacing.screen
+              : LinguaSpacing.xxxl,
           0,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 20),
+            const SizedBox(height: LinguaSpacing.xl),
             _buildWeeklyChart(),
-            const SizedBox(height: 28),
-            SectionLabel(
-                '${tr('progress.league', {'l': tr('league.$_league')})} ${ProfileService.leagueEmoji(_league)}'),
-            const SizedBox(height: 12),
+            const SizedBox(height: LinguaSpacing.stackSection),
+            // L'emoji de ligue disparaît du libellé : l'écusson le porte.
+            SectionLabel(tr('progress.league', {'l': tr('league.$_league')})),
+            const SizedBox(height: LinguaSpacing.md),
             _buildLeague(),
-            const SizedBox(height: 28),
+            const SizedBox(height: LinguaSpacing.stackSection),
             SectionLabel(tr('progress.stats')),
-            const SizedBox(height: 12),
+            const SizedBox(height: LinguaSpacing.md),
             _loading ? _buildStatsLoading() : _buildStats(),
           ],
         ),
@@ -96,13 +102,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(tr('progress.title'),
-            style: GoogleFonts.playfairDisplay(
-                color: t.textPrimary,
-                fontSize: 28,
-                fontWeight: FontWeight.bold)),
-        Text(tr('progress.this_week'),
-            style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
+        ScreenTitle(tr('progress.title'), size: 30),
+        const SizedBox(height: 2),
+        Text(
+          tr('progress.this_week'),
+          style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 14),
+        ),
       ],
     );
   }
@@ -120,30 +125,36 @@ class _ProgressScreenState extends State<ProgressScreen> {
     final totalWeek = xpData.fold(0, (a, b) => a + b);
 
     return CopilotCard(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(LinguaSpacing.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('$totalWeek XP',
-                      style: GoogleFonts.playfairDisplay(
-                          color: t.accent,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold)),
-                  Text(tr('progress.week_xp'),
-                      style: GoogleFonts.inter(
-                          color: t.textSecondary, fontSize: 13)),
+                  // L'XP est or, pas bleu : le bleu est la couleur de
+                  // l'interaction.
+                  Text(
+                    '$totalWeek XP',
+                    style: LinguaType.number(t.goldInk, size: 26),
+                  ),
+                  Text(
+                    tr('progress.week_xp'),
+                    style: GoogleFonts.manrope(
+                      color: t.textSecondary,
+                      fontSize: 13,
+                    ),
+                  ),
                 ],
               ),
-              const Text('📈', style: TextStyle(fontSize: 24)),
+              Icon(Icons.trending_up_rounded, size: 22, color: t.textTertiary),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: LinguaSpacing.xl),
           SizedBox(
             height: 110,
             child: Row(
@@ -154,31 +165,39 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 final isToday = i == 6;
                 return Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: LinguaSpacing.xs,
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         if (isToday)
-                          Text('$xp',
-                              style: GoogleFonts.spaceMono(
-                                  color: t.accent, fontSize: 9)),
+                          Text(
+                            '$xp',
+                            style: LinguaType.number(t.goldInk, size: 9),
+                          ),
                         const SizedBox(height: 2),
                         AnimatedContainer(
                           duration: Duration(milliseconds: 400 + i * 60),
+                          curve: LinguaCurves.out,
                           height: height,
                           decoration: BoxDecoration(
                             color: isToday
-                                ? t.accent
-                                : t.accent.withValues(alpha: 0.4),
-                            borderRadius: BorderRadius.circular(4),
+                                ? t.gold
+                                : t.gold.withValues(alpha: 0.35),
+                            borderRadius: LinguaRadius.rXs,
                           ),
                         ),
                         const SizedBox(height: 6),
-                        Text(_dayLabel(i),
-                            style: GoogleFonts.spaceMono(
-                                color:
-                                    isToday ? t.accent : t.textSecondary,
-                                fontSize: 11)),
+                        Text(
+                          _dayLabel(i),
+                          style: GoogleFonts.jetBrainsMono(
+                            color: isToday ? t.goldInk : t.textTertiary,
+                            fontSize: 11,
+                            fontWeight:
+                                isToday ? FontWeight.w700 : FontWeight.w400,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -197,12 +216,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
       return CopilotCard(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(LinguaSpacing.lg),
             child: SizedBox(
               width: 22,
               height: 22,
-              child:
-                  CircularProgressIndicator(strokeWidth: 2, color: t.accent),
+              child: CircularProgressIndicator(strokeWidth: 2, color: t.accent),
             ),
           ),
         ),
@@ -210,8 +228,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
     }
     if (_leaderboard.isEmpty) {
       return CopilotCard(
-        child: Text(tr('progress.empty_league'),
-            style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
+        child: Text(
+          tr('progress.empty_league'),
+          style: GoogleFonts.manrope(
+            color: t.textSecondary,
+            fontSize: 14,
+            height: 1.55,
+          ),
+        ),
       );
     }
     return CopilotCard(
@@ -223,10 +247,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
             if (i > 0)
               if (_leaderboard[i].rank > _leaderboard[i - 1].rank + 1)
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2),
-                  child: Text('· · ·',
-                      style: GoogleFonts.inter(
-                          color: t.textTertiary, fontSize: 12)),
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  child: Text(
+                    '· · ·',
+                    style: GoogleFonts.jetBrainsMono(
+                      color: t.textFaint,
+                      fontSize: 12,
+                    ),
+                  ),
                 )
               else
                 Divider(height: 1, color: t.outlineSubtle),
@@ -242,21 +270,21 @@ class _ProgressScreenState extends State<ProgressScreen> {
     return Row(
       children: List.generate(
         3,
-        (_) => Expanded(
+        (i) => Expanded(
           child: Container(
             height: 90,
-            margin: const EdgeInsets.only(right: 12),
+            margin: EdgeInsets.only(right: i == 2 ? 0 : LinguaSpacing.md),
             decoration: BoxDecoration(
               color: t.surfaceRaised,
-              borderRadius: LinguaRadius.rMd,
+              borderRadius: LinguaRadius.rCard,
               border: Border.all(color: t.outlineSubtle),
             ),
             child: Center(
               child: SizedBox(
                 width: 18,
                 height: 18,
-                child: CircularProgressIndicator(
-                    strokeWidth: 2, color: t.accent),
+                child:
+                    CircularProgressIndicator(strokeWidth: 2, color: t.accent),
               ),
             ),
           ),
@@ -266,21 +294,36 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   Widget _buildStats() {
+    // Chaque compteur prend le registre de ce qu'il mesure : la série la
+    // flamme, l'XP et le niveau l'or.
     return Row(
       children: [
         Expanded(
-            child: StatTile(
-                emoji: '🔥',
-                value: '${_streak}j',
-                label: tr('stat.streak'))),
-        const SizedBox(width: 12),
+          child: StatTile(
+            icon: Icons.local_fire_department_rounded,
+            value: '${_streak}j',
+            label: tr('stat.streak'),
+            tone: ChipTone.streak,
+          ),
+        ),
+        const SizedBox(width: LinguaSpacing.md),
         Expanded(
-            child: StatTile(
-                emoji: '⭐', value: '$_xp', label: tr('stat.xp_total'))),
-        const SizedBox(width: 12),
+          child: StatTile(
+            icon: Icons.star_rounded,
+            value: '$_xp',
+            label: tr('stat.xp_total'),
+            tone: ChipTone.reward,
+          ),
+        ),
+        const SizedBox(width: LinguaSpacing.md),
         Expanded(
-            child: StatTile(
-                emoji: '🏆', value: '$_level', label: tr('stat.level'))),
+          child: StatTile(
+            icon: Icons.military_tech_rounded,
+            value: '$_level',
+            label: tr('stat.level'),
+            tone: ChipTone.reward,
+          ),
+        ),
       ],
     );
   }
@@ -290,74 +333,107 @@ class _LeagueRow extends StatelessWidget {
   final dynamic user;
   const _LeagueRow({required this.user});
 
+  /// Le podium dans les rampes de marque plutôt qu'en emoji : or, acier,
+  /// flamme. Un emoji ne suit ni le thème ni la couleur de marque, et son
+  /// dessin change d'un appareil à l'autre.
+  static Color? _podium(int rank, LinguaTokens t) => switch (rank) {
+        1 => t.gold,
+        2 => t.steel,
+        3 => t.ember,
+        _ => null,
+      };
+
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
     final rank = user.rank as int;
     final isCurrentUser = user.isCurrentUser as bool;
+    final podium = _podium(rank, t);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: LinguaSpacing.lg,
+        vertical: LinguaSpacing.md,
+      ),
       decoration: isCurrentUser
           ? BoxDecoration(
-              color: t.accentSoft,
-              borderRadius: LinguaRadius.rLg,
+              color: t.accentTint,
+              borderRadius: LinguaRadius.rCard,
             )
           : null,
       child: Row(
         children: [
           SizedBox(
-            width: 28,
-            child: Text(
-              rank <= 3 ? ['🥇', '🥈', '🥉'][rank - 1] : '#$rank',
-              style: GoogleFonts.spaceMono(
-                color: rank <= 3 ? null : t.textSecondary,
-                fontSize: rank <= 3 ? 18 : 13,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            width: 30,
+            child: podium != null
+                ? Center(
+                    child: Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        color: podium.withValues(alpha: 0.2),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: podium, width: 1.5),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        '$rank',
+                        style: GoogleFonts.jetBrainsMono(
+                          color: t.isDark ? podium : t.textPrimary,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  )
+                : Text(
+                    '$rank',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.jetBrainsMono(
+                      color: t.textTertiary,
+                      fontSize: 13,
+                    ),
+                  ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: LinguaSpacing.md),
           Container(
             width: 38,
             height: 38,
             decoration: BoxDecoration(
               color: user.avatarColor as Color,
               shape: BoxShape.circle,
-              border: isCurrentUser
-                  ? Border.all(color: t.accent, width: 2)
-                  : null,
+              border:
+                  isCurrentUser ? Border.all(color: t.accent, width: 2) : null,
             ),
             child: Center(
               child: Text(
                 user.avatarInitials as String,
-                style: GoogleFonts.playfairDisplay(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
+                style: GoogleFonts.oswald(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: LinguaSpacing.md),
           Expanded(
             child: Text(
               user.name as String,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.manrope(
                 color: isCurrentUser ? t.textPrimary : t.textSecondary,
                 fontSize: 15,
-                fontWeight:
-                    isCurrentUser ? FontWeight.w600 : FontWeight.normal,
+                fontWeight: isCurrentUser ? FontWeight.w700 : FontWeight.w400,
               ),
             ),
           ),
           Text(
             '${user.xp} XP',
-            style: GoogleFonts.spaceMono(
-              color: isCurrentUser ? t.accent : t.textSecondary,
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
+            style: LinguaType.number(
+              isCurrentUser ? t.goldInk : t.textTertiary,
+              size: 13,
             ),
           ),
         ],

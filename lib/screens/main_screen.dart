@@ -165,7 +165,7 @@ class _MainScreenState extends State<MainScreen> {
           ? null
           : Text(
               tr(_titleKeys[_currentIndex]),
-              style: GoogleFonts.playfairDisplay(
+              style: GoogleFonts.oswald(
                 color: t.textPrimary,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -204,14 +204,14 @@ class _MainScreenState extends State<MainScreen> {
       width: 36,
       height: 36,
       decoration: BoxDecoration(
-        color: t.accentSoft,
+        color: t.accentTint,
         shape: BoxShape.circle,
         border: Border.all(color: t.accent, width: 1.5),
       ),
       child: Center(
         child: Text(
           _avatarInitial,
-          style: GoogleFonts.playfairDisplay(
+          style: GoogleFonts.oswald(
             color: t.accentStrong,
             fontSize: 14,
             fontWeight: FontWeight.bold,

@@ -103,7 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final t = context.tokens;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: GoogleFonts.inter(color: Colors.white)),
+        content: Text(message, style: GoogleFonts.manrope(color: Colors.white)),
         backgroundColor: t.danger,
         behavior: SnackBarBehavior.floating,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rMd),
@@ -149,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Vérifie ton email pour confirmer ton compte.',
-                style: GoogleFonts.inter(color: Colors.white)),
+                style: GoogleFonts.manrope(color: Colors.white)),
             backgroundColor: t.accentStrong,
             behavior: SnackBarBehavior.floating,
             shape:
@@ -191,13 +191,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(_title,
-                    style: GoogleFonts.playfairDisplay(
+                    style: GoogleFonts.oswald(
                         color: t.textPrimary,
                         fontSize: 28,
                         fontWeight: FontWeight.bold)),
                 const SizedBox(height: 6),
                 Text(_subtitle,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                         color: t.textSecondary, fontSize: 14, height: 1.4)),
                 const SizedBox(height: 36),
 
@@ -234,7 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 4),
                   child: Text(_passwordHint,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                           color: t.textTertiary, fontSize: 12)),
                 ),
                 const SizedBox(height: 14),
@@ -272,13 +272,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onPressed: () => Navigator.pop(context),
                     child: RichText(
                       text: TextSpan(
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                             fontSize: 13, color: t.textSecondary),
                         children: [
                           TextSpan(text: _alreadyLabel),
                           TextSpan(
                             text: _signInLabel,
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                                 color: t.accent,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 13),
@@ -309,10 +309,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       controller: controller,
       obscureText: obscure,
       keyboardType: keyboardType,
-      style: GoogleFonts.inter(color: t.textPrimary, fontSize: 14),
+      style: GoogleFonts.manrope(color: t.textPrimary, fontSize: 14),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: GoogleFonts.inter(color: t.textTertiary, fontSize: 14),
+        labelStyle: GoogleFonts.manrope(color: t.textTertiary, fontSize: 14),
         prefixIcon: Icon(icon, color: t.textTertiary, size: 20),
         suffixIcon: suffix,
         filled: true,

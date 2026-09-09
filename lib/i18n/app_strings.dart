@@ -24,6 +24,9 @@ const Map<String, Map<String, String>> _strings = {
   'nav.learn': {'FR': 'Apprendre', 'EN': 'Learn', 'RU': 'Учить', 'CE': 'Jamar'},
   'nav.progress':
       {'FR': 'Progrès', 'EN': 'Progress', 'RU': 'Прогресс', 'CE': 'Progress'},
+  // Label d'accessibilité + infobulle du bouton profil de l'AppBar.
+  'nav.profile':
+      {'FR': 'Profil', 'EN': 'Profile', 'RU': 'Профиль', 'CE': 'Profil'},
 
   // ── Titres d'écran ────────────────────────────────────────────────────────
   'title.chat':

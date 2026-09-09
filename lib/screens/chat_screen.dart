@@ -152,20 +152,20 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
         title: Text(tr('chat.clear_q'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary, fontSize: 17)),
         content: Text(tr('chat.clear_desc'),
-            style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
+            style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 14)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
             child: Text(tr('common.cancel'),
-                style: GoogleFonts.inter(color: t.textSecondary)),
+                style: GoogleFonts.manrope(color: t.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(tr('common.delete'),
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                     color: t.danger, fontWeight: FontWeight.bold)),
           ),
         ],
@@ -235,7 +235,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ActionChip(
               label: Text(s,
                   style:
-                      GoogleFonts.inter(fontSize: 13, color: t.textPrimary)),
+                      GoogleFonts.manrope(fontSize: 13, color: t.textPrimary)),
               backgroundColor: t.surfaceRaised,
               side: BorderSide(color: t.outline),
               shape: const RoundedRectangleBorder(
@@ -262,7 +262,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Icon(Icons.psychology_outlined, color: t.accent, size: 18),
           const SizedBox(width: 6),
           Text(tr('chat.ai_label'),
-              style: GoogleFonts.spaceMono(color: t.accent, fontSize: 12)),
+              style: GoogleFonts.jetBrainsMono(color: t.accent, fontSize: 12)),
           const Spacer(),
           IconButton(
             onPressed: _clearHistory,
@@ -304,7 +304,7 @@ class _ChatScreenState extends State<ChatScreen> {
               leading:
                   Icon(Icons.copy_rounded, color: t.textSecondary, size: 20),
               title: Text(tr('chat.copy'),
-                  style: GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
+                  style: GoogleFonts.manrope(color: t.textPrimary, fontSize: 15)),
               onTap: () {
                 Navigator.pop(ctx);
                 _copyMessage(msg);
@@ -316,7 +316,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     Icon(Icons.edit_rounded, color: t.textSecondary, size: 20),
                 title: Text(tr('chat.edit'),
                     style:
-                        GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
+                        GoogleFonts.manrope(color: t.textPrimary, fontSize: 15)),
                 onTap: () {
                   Navigator.pop(ctx);
                   _editMessage(msg);
@@ -328,7 +328,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     color: t.textSecondary, size: 20),
                 title: Text(tr('chat.regenerate'),
                     style:
-                        GoogleFonts.inter(color: t.textPrimary, fontSize: 15)),
+                        GoogleFonts.manrope(color: t.textPrimary, fontSize: 15)),
                 onTap: () {
                   Navigator.pop(ctx);
                   _regenerate(msg);
@@ -347,7 +347,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final t = context.tokens;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content:
-          Text(tr('chat.copied'), style: GoogleFonts.inter(color: Colors.white)),
+          Text(tr('chat.copied'), style: GoogleFonts.manrope(color: Colors.white)),
       backgroundColor: t.accentStrong,
       behavior: SnackBarBehavior.floating,
       duration: const Duration(seconds: 1),
@@ -399,11 +399,13 @@ class _ChatScreenState extends State<ChatScreen> {
                   width: 32,
                   height: 32,
                   decoration: BoxDecoration(
-                    color: t.accentSoft,
+                    color: t.accentTint,
                     shape: BoxShape.circle,
                   ),
-                  child: const Center(
-                      child: Text('🤖', style: TextStyle(fontSize: 16))),
+                  child: Center(
+                    child: Icon(Icons.smart_toy_rounded,
+                        size: 14, color: t.textAccent),
+                  ),
                 ),
                 const SizedBox(width: 8),
               ],
@@ -428,7 +430,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: isUser
                       ? Text(
                           msg.text,
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.manrope(
                             color: t.onAccent,
                             fontSize: 14,
                             height: 1.4,
@@ -438,19 +440,19 @@ class _ChatScreenState extends State<ChatScreen> {
                           data: msg.text,
                           softLineBreak: true,
                           styleSheet: MarkdownStyleSheet(
-                            p: GoogleFonts.inter(
+                            p: GoogleFonts.manrope(
                                 color: t.textPrimary,
                                 fontSize: 14,
                                 height: 1.4),
-                            strong: GoogleFonts.inter(
+                            strong: GoogleFonts.manrope(
                                 color: t.textPrimary,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold),
-                            em: GoogleFonts.inter(
+                            em: GoogleFonts.manrope(
                                 color: t.textPrimary,
                                 fontSize: 14,
                                 fontStyle: FontStyle.italic),
-                            code: GoogleFonts.spaceMono(
+                            code: GoogleFonts.jetBrainsMono(
                                 color: t.accentStrong,
                                 fontSize: 12,
                                 backgroundColor: t.surfaceSunken),
@@ -458,7 +460,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               color: t.surfaceSunken,
                               borderRadius: LinguaRadius.rSm,
                             ),
-                            listBullet: GoogleFonts.inter(
+                            listBullet: GoogleFonts.manrope(
                                 color: t.textPrimary, fontSize: 14),
                           ),
                         ),
@@ -476,7 +478,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 onPressed: () => _retryAfterError(msg),
                 icon: Icon(Icons.refresh_rounded, size: 16, color: t.accent),
                 label: Text(tr('common.retry'),
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                         color: t.accent,
                         fontSize: 13,
                         fontWeight: FontWeight.w600)),
@@ -506,9 +508,11 @@ class _ChatScreenState extends State<ChatScreen> {
             width: 32,
             height: 32,
             decoration:
-                BoxDecoration(color: t.accentSoft, shape: BoxShape.circle),
-            child: const Center(
-                child: Text('🤖', style: TextStyle(fontSize: 16))),
+                BoxDecoration(color: t.accentTint, shape: BoxShape.circle),
+            child: Center(
+              child:
+                  Icon(Icons.smart_toy_rounded, size: 14, color: t.textAccent),
+            ),
           ),
           const SizedBox(width: 8),
           Container(
@@ -544,11 +548,11 @@ class _ChatScreenState extends State<ChatScreen> {
             child: TextField(
               controller: _controller,
               focusNode: _inputFocus,
-              style: GoogleFonts.inter(color: t.textPrimary, fontSize: 14),
+              style: GoogleFonts.manrope(color: t.textPrimary, fontSize: 14),
               decoration: InputDecoration(
                 hintText: tr('chat.hint'),
                 hintStyle:
-                    GoogleFonts.inter(color: t.textTertiary, fontSize: 14),
+                    GoogleFonts.manrope(color: t.textTertiary, fontSize: 14),
                 filled: true,
                 fillColor: t.surfaceSunken,
                 border: OutlineInputBorder(

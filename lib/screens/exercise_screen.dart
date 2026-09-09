@@ -447,21 +447,21 @@ class _ExerciseScreenState extends State<ExerciseScreen>
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
         title: Text(tr('ex.quit_q'),
-            style: GoogleFonts.playfairDisplay(
+            style: GoogleFonts.oswald(
                 color: t.textPrimary, fontSize: 17)),
         content: Text(tr('ex.quit_desc'),
-            style: GoogleFonts.inter(color: t.textSecondary, fontSize: 14)),
+            style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 14)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
             child: Text(tr('common.continue'),
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                     color: t.accentStrong, fontWeight: FontWeight.bold)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(tr('ex.quit_leave'),
-                style: GoogleFonts.inter(color: t.textSecondary)),
+                style: GoogleFonts.manrope(color: t.textSecondary)),
           ),
         ],
       ),
@@ -542,7 +542,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
           ),
           const SizedBox(width: 16),
           Text('+$_xpEarned XP',
-              style: GoogleFonts.spaceMono(
+              style: GoogleFonts.jetBrainsMono(
                   color: t.accent, fontSize: 13, fontWeight: FontWeight.bold)),
         ],
       ),
@@ -576,7 +576,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
           ),
           child: Text(tr(_isLast ? 'ex.finish' : 'ex.next'),
               style:
-                  GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold)),
+                  GoogleFonts.manrope(fontSize: 16, fontWeight: FontWeight.bold)),
         ),
       ),
     );
@@ -589,7 +589,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
       child: Column(
         children: [
           Text(tr('ex.tap_flip'),
-              style: GoogleFonts.inter(color: t.textSecondary, fontSize: 13)),
+              style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 13)),
           const SizedBox(height: 16),
           Expanded(
             child: GestureDetector(
@@ -632,7 +632,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                   elevation: 0,
                 ),
                 child: Text(tr('ex.understood'),
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                         fontSize: 15, fontWeight: FontWeight.bold)),
               ),
             ),
@@ -653,20 +653,20 @@ class _ExerciseScreenState extends State<ExerciseScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('📖', style: TextStyle(fontSize: 48)),
+            Icon(Icons.auto_stories_rounded, size: 41, color: t.textAccent),
             const SizedBox(height: 16),
             Text(_current.translit,
-                style: GoogleFonts.playfairDisplay(
+                style: GoogleFonts.oswald(
                     color: t.textPrimary,
                     fontSize: 48,
                     fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center),
             const SizedBox(height: 8),
             Text(_current.cyrillic,
-                style: GoogleFonts.inter(color: t.textTertiary, fontSize: 16)),
+                style: GoogleFonts.manrope(color: t.textTertiary, fontSize: 16)),
             const SizedBox(height: 16),
             Text(tr('ex.tap_translate'),
-                style: GoogleFonts.inter(color: t.textTertiary, fontSize: 13)),
+                style: GoogleFonts.manrope(color: t.textTertiary, fontSize: 13)),
           ],
         ),
       );
@@ -674,7 +674,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   Widget _cardBack(LinguaTokens t) => Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: t.accentSoft,
+          color: t.accentTint,
           borderRadius: LinguaRadius.rXl,
           border: Border.all(color: t.accent, width: 1.5),
           boxShadow: t.shadowMd,
@@ -683,13 +683,13 @@ class _ExerciseScreenState extends State<ExerciseScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(_current.translit,
-                style: GoogleFonts.spaceMono(
+                style: GoogleFonts.jetBrainsMono(
                     color: t.accentStrong,
                     fontSize: 34,
                     fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             Text(_current.cyrillic,
-                style: GoogleFonts.playfairDisplay(
+                style: GoogleFonts.oswald(
                     color: t.textSecondary, fontSize: 22)),
             const SizedBox(height: 16),
             Container(
@@ -700,7 +700,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                 borderRadius: LinguaRadius.rPill,
               ),
               child: Text(_current.french,
-                  style: GoogleFonts.playfairDisplay(
+                  style: GoogleFonts.oswald(
                       color: t.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.w600)),
@@ -717,7 +717,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(_current.prompt ?? '',
-              style: GoogleFonts.playfairDisplay(
+              style: GoogleFonts.oswald(
                   color: t.textPrimary,
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
@@ -742,7 +742,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               }
             } else if (isSelected) {
               border = t.accent;
-              bg = t.accentSoft;
+              bg = t.accentTint;
             }
 
             return Padding(
@@ -762,7 +762,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                     children: [
                       Expanded(
                         child: Text(_current.choices![i],
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               color: fg,
                               fontSize: 16,
                               fontWeight: (isSelected ||
@@ -818,10 +818,10 @@ class _ExerciseScreenState extends State<ExerciseScreen>
             ),
             child: Column(
               children: [
-                const Text('✍️', style: TextStyle(fontSize: 40)),
+                Icon(Icons.edit_note_rounded, size: 36, color: t.textAccent),
                 const SizedBox(height: 12),
                 Text(_current.prompt ?? '',
-                    style: GoogleFonts.playfairDisplay(
+                    style: GoogleFonts.oswald(
                         color: t.textPrimary,
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -836,18 +836,18 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               alignment: Alignment.centerLeft,
               child: Text(tr('ex.hint', {'x': _current.cyrillic}),
                   style:
-                      GoogleFonts.spaceMono(color: t.accent, fontSize: 12)),
+                      GoogleFonts.jetBrainsMono(color: t.accent, fontSize: 12)),
             ),
             const SizedBox(height: 10),
             TextField(
               controller: _translCtrl,
-              style: GoogleFonts.inter(color: t.textPrimary, fontSize: 20),
+              style: GoogleFonts.manrope(color: t.textPrimary, fontSize: 20),
               textAlign: TextAlign.center,
               maxLines: 2,
               decoration: InputDecoration(
                 hintText: tr('ex.answer_hint'),
                 hintStyle:
-                    GoogleFonts.inter(color: t.textTertiary, fontSize: 14),
+                    GoogleFonts.manrope(color: t.textTertiary, fontSize: 14),
                 filled: true,
                 fillColor: t.surfaceSunken,
                 border: OutlineInputBorder(
@@ -882,7 +882,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                   elevation: 0,
                 ),
                 child: Text(tr('ex.check'),
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                         fontSize: 15, fontWeight: FontWeight.bold)),
               ),
             ),
@@ -901,27 +901,27 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               child: Column(
                 children: [
                   Text(tr(_isCorrect ? 'ex.perfect' : 'ex.correct_answer'),
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                           color: _isCorrect ? t.success : t.danger,
                           fontWeight: FontWeight.bold,
                           fontSize: 16)),
                   const SizedBox(height: 12),
                   Text(_current.translit,
-                      style: GoogleFonts.playfairDisplay(
+                      style: GoogleFonts.oswald(
                           color: t.textPrimary,
                           fontSize: 30,
                           fontWeight: FontWeight.bold)),
                   Text(_current.cyrillic,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                           color: t.textTertiary, fontSize: 15)),
                   const SizedBox(height: 4),
                   Text(_current.french,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                           color: t.textSecondary, fontSize: 14)),
                   if (_isCorrect) ...[
                     const SizedBox(height: 8),
                     Text('+20 XP',
-                        style: GoogleFonts.spaceMono(
+                        style: GoogleFonts.jetBrainsMono(
                             color: t.success,
                             fontWeight: FontWeight.bold,
                             fontSize: 14)),
@@ -952,27 +952,31 @@ class _ExerciseScreenState extends State<ExerciseScreen>
       ),
       child: Row(
         children: [
-          Text(isCorrect ? '🎉' : '💡', style: const TextStyle(fontSize: 24)),
+          Icon(
+            isCorrect ? Icons.check_circle_rounded : Icons.lightbulb_rounded,
+            size: 22,
+            color: isCorrect ? t.success : t.goldInk,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(tr(isCorrect ? 'ex.correct' : 'ex.not_quite'),
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                         color: isCorrect ? t.success : t.danger,
                         fontWeight: FontWeight.bold,
                         fontSize: 15)),
                 if (correctLabel != null)
                   Text(correctLabel,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                           color: t.textSecondary, fontSize: 13)),
               ],
             ),
           ),
           if (xp != null)
             Text(xp,
-                style: GoogleFonts.spaceMono(
+                style: GoogleFonts.jetBrainsMono(
                     color: t.success,
                     fontWeight: FontWeight.bold,
                     fontSize: 13)),
@@ -990,16 +994,20 @@ class _ExerciseScreenState extends State<ExerciseScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(perfect ? '🏆' : '🎓', style: const TextStyle(fontSize: 80)),
+            Icon(
+              perfect ? Icons.emoji_events_rounded : Icons.school_rounded,
+              size: 76,
+              color: perfect ? t.goldInk : t.textAccent,
+            ),
             const SizedBox(height: 24),
             Text(tr(perfect ? 'ex.done_perfect' : 'ex.done'),
-                style: GoogleFonts.playfairDisplay(
+                style: GoogleFonts.oswald(
                     color: t.textPrimary,
                     fontSize: 32,
                     fontWeight: FontWeight.bold)),
             const SizedBox(height: 6),
             Text(widget.lesson.title,
-                style: GoogleFonts.inter(color: t.textSecondary, fontSize: 16)),
+                style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 16)),
             const SizedBox(height: 36),
             Container(
               padding: const EdgeInsets.all(24),
@@ -1012,12 +1020,19 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _stat(t, tr('ex.xp_earned'), '+$_xpEarned', '⭐'),
+                  _stat(t, tr('ex.xp_earned'), '+$_xpEarned',
+                      Icons.star_rounded),
                   Container(width: 1, height: 40, color: t.outlineSubtle),
+                  // Sans faute, le compteur passe au vert : c'est là que le
+                  // succès se lit d'un coup d'œil.
                   _stat(t, tr('ex.mistakes'), '$_mistakes',
-                      _mistakes == 0 ? '✨' : '💡'),
+                      _mistakes == 0
+                          ? Icons.check_circle_rounded
+                          : Icons.lightbulb_rounded,
+                      tint: _mistakes == 0 ? t.success : null),
                   Container(width: 1, height: 40, color: t.outlineSubtle),
-                  _stat(t, tr('ex.exercises'), '${_exercises.length}', '📚'),
+                  _stat(t, tr('ex.exercises'), '${_exercises.length}',
+                      Icons.menu_book_rounded, tint: t.textAccent),
                 ],
               ),
             ),
@@ -1038,7 +1053,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(tr('ex.save_failed'),
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.manrope(
                               color: t.textPrimary, fontSize: 13)),
                     ),
                     TextButton(
@@ -1051,7 +1066,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                                   strokeWidth: 2, color: t.danger),
                             )
                           : Text(tr('common.retry'),
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                   color: t.danger,
                                   fontWeight: FontWeight.bold)),
                     ),
@@ -1073,7 +1088,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                   elevation: 0,
                 ),
                 child: Text(tr('common.continue'),
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                         fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
@@ -1083,16 +1098,20 @@ class _ExerciseScreenState extends State<ExerciseScreen>
     );
   }
 
-  Widget _stat(LinguaTokens t, String label, String value, String emoji) {
+  Widget _stat(LinguaTokens t, String label, String value, IconData icon,
+      {Color? tint}) {
     return Column(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 28)),
-        const SizedBox(height: 4),
+        Icon(icon, size: 24, color: tint ?? t.goldInk),
+        const SizedBox(height: 5),
         Text(value,
-            style: GoogleFonts.playfairDisplay(
-                color: t.accent, fontSize: 22, fontWeight: FontWeight.bold)),
+            style: GoogleFonts.oswald(
+                color: tint ?? t.goldInk,
+                fontSize: 22,
+                fontWeight: FontWeight.w700)),
         Text(label,
-            style: GoogleFonts.spaceMono(color: t.textSecondary, fontSize: 10)),
+            style: GoogleFonts.jetBrainsMono(
+                color: t.textTertiary, fontSize: 10, letterSpacing: 1.1)),
       ],
     );
   }

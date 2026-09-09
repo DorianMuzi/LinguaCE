@@ -91,7 +91,7 @@ class _AuthScreenState extends State<AuthScreen> {
     final t = context.tokens;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: GoogleFonts.inter(color: Colors.white)),
+        content: Text(message, style: GoogleFonts.manrope(color: Colors.white)),
         backgroundColor: t.danger,
         behavior: SnackBarBehavior.floating,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rMd),
@@ -182,7 +182,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) => Container(
                           decoration: BoxDecoration(
-                            color: t.accentSoft,
+                            color: t.accentTint,
                             borderRadius: BorderRadius.circular(22),
                           ),
                           child: Icon(Icons.language, size: 44, color: t.accent),
@@ -193,7 +193,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   const SizedBox(height: 18),
                   Text(
                     'LinguaCE',
-                    style: GoogleFonts.spaceMono(
+                    style: GoogleFonts.jetBrainsMono(
                       color: t.accent,
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
@@ -202,7 +202,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   const SizedBox(height: 6),
                   Text(_tagline,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                           color: t.textSecondary, fontSize: 14)),
 
                   const SizedBox(height: 36),
@@ -252,7 +252,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(_forgotLabel,
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.manrope(
                               color: t.accent, fontSize: 13)),
                     ),
                   ),
@@ -348,7 +348,7 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
         child: Text(
           lang,
-          style: GoogleFonts.spaceMono(
+          style: GoogleFonts.jetBrainsMono(
             color: selected ? t.onAccent : t.accent,
             fontSize: 11,
             fontWeight: FontWeight.bold,
@@ -372,10 +372,10 @@ class _AuthScreenState extends State<AuthScreen> {
       controller: controller,
       obscureText: obscure,
       keyboardType: keyboardType,
-      style: GoogleFonts.inter(color: t.textPrimary, fontSize: 14),
+      style: GoogleFonts.manrope(color: t.textPrimary, fontSize: 14),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: GoogleFonts.inter(color: t.textTertiary, fontSize: 14),
+        labelStyle: GoogleFonts.manrope(color: t.textTertiary, fontSize: 14),
         prefixIcon: Icon(icon, color: t.textTertiary, size: 20),
         suffixIcon: suffix,
         filled: true,
@@ -405,7 +405,7 @@ class _AuthScreenState extends State<AuthScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(_orLabel,
-              style: GoogleFonts.inter(color: t.textTertiary, fontSize: 13)),
+              style: GoogleFonts.manrope(color: t.textTertiary, fontSize: 13)),
         ),
         Expanded(child: Divider(color: t.outline, thickness: 1)),
       ],
@@ -449,7 +449,7 @@ class _AuthScreenState extends State<AuthScreen> {
             const SizedBox(width: 12),
             Text(
               _googleLabel,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.manrope(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: t.textSecondary,
