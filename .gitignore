@@ -15,6 +15,11 @@ supabase/config.toml
 # (Le proxy `chat`, lui, est public : c'est un simple relais vers Anthropic.)
 supabase/functions/transliterate/
 
+# ─── Handoff design system (dossier de travail, hors app) ─────────
+# Contient guidelines/translit.js = l'algorithme PROPRIÉTAIRE, ainsi que
+# les tokens sources et un portage Dart de référence. NE PAS publier.
+LinguaCE Design System/
+
 # Miscellaneous
 *.class
 *.log
