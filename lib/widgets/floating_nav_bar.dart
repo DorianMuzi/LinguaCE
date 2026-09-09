@@ -1,10 +1,19 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../design/lingua_tokens.dart';
+
+import '../design/lingua_components.dart';
 import '../design/lingua_scale.dart';
+import '../design/lingua_tokens.dart';
 import '../i18n/app_strings.dart';
 
+/// La barre de navigation flottante, en liquid glass.
+///
+/// Elle flotte au-dessus du contenu avec un retrait de 14 px des bords
+/// (`--tabbar-inset`) : c'est ce retrait qui la fait lire comme un objet posé
+/// sur la page plutôt que comme un bord d'écran.
+///
+/// Les couleurs viennent des tokens — plus de valeurs codées en dur, donc la
+/// barre suit le thème clair sans correctif.
 class FloatingNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
@@ -24,37 +33,20 @@ class FloatingNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = context.tokens;
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(26),
-        boxShadow: t.shadowLg,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(26),
-        child: BackdropFilter(
-          // Sigma modéré : un blur de 30 est sensiblement plus coûteux sur
-          // les Android d'entrée de gamme pour un rendu quasi identique.
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-          child: Container(
-            height: 64,
-            decoration: BoxDecoration(
-              color: t.isDark
-                  ? const Color(0xCC26262B)
-                  : const Color(0xF2FFFFFF),
-              borderRadius: BorderRadius.circular(26),
-              border: Border.all(color: t.outline, width: 1),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: List.generate(
-                _items.length,
-                (i) => _NavButton(
-                  item: _items[i],
-                  isSelected: currentIndex == i,
-                  onTap: () => onTap(i),
-                ),
-              ),
+    return GlassPanel(
+      padding: const EdgeInsets.symmetric(horizontal: LinguaSpacing.sm),
+      radius: LinguaRadius.rXl,
+      strong: true,
+      child: SizedBox(
+        height: LinguaFrame.tabBarHeight,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(
+            _items.length,
+            (i) => _NavButton(
+              item: _items[i],
+              isSelected: currentIndex == i,
+              onTap: () => onTap(i),
             ),
           ),
         ),
@@ -83,8 +75,8 @@ class _NavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
-    // Semantics : les lecteurs d'écran annoncent un bouton et l'onglet
-    // actif ; InkWell remplace GestureDetector pour le retour visuel.
+    final ink = isSelected ? t.textAccent : t.textTertiary;
+
     return Semantics(
       button: true,
       selected: isSelected,
@@ -94,31 +86,36 @@ class _NavButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: LinguaRadius.rMd,
+          // La cible fait 44 px de haut même si le contenu est plus petit.
           child: AnimatedContainer(
             duration: LinguaDuration.base,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: isSelected
-                ? BoxDecoration(
-                    color: t.accentSoft,
-                    borderRadius: BorderRadius.circular(20),
-                  )
-                : null,
+            curve: LinguaCurves.out,
+            constraints: const BoxConstraints(
+              minWidth: LinguaFrame.minTarget + 8,
+              minHeight: LinguaFrame.minTarget,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: LinguaSpacing.md,
+              vertical: 6,
+            ),
+            decoration: BoxDecoration(
+              color: isSelected ? t.accentTint : Colors.transparent,
+              borderRadius: LinguaRadius.rMd,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  item.icon,
-                  color: isSelected ? t.accentStrong : t.textSecondary,
-                  size: 22,
-                ),
-                const SizedBox(height: 2),
+                Icon(item.icon, color: ink, size: 22),
+                const SizedBox(height: 3),
                 Text(
-                  tr(item.label),
-                  style: GoogleFonts.spaceMono(
-                    color: isSelected ? t.accentStrong : t.textSecondary,
-                    fontSize: 10.5,
-                    letterSpacing: 0.2,
+                  tr(item.label).toUpperCase(),
+                  style: GoogleFonts.jetBrainsMono(
+                    color: ink,
+                    fontSize: 9.5,
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                    letterSpacing: 0.9,
                   ),
                 ),
               ],
