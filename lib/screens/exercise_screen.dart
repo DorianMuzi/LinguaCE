@@ -2,246 +2,13 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../design/lingua_components.dart';
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../i18n/app_strings.dart';
 import '../models/models.dart';
+import '../services/exercise_service.dart';
 import '../services/lesson_service.dart';
-
-// ═══════════════════════════════════════════════════════════
-// MODELS
-// ═══════════════════════════════════════════════════════════
-
-enum ExerciseType { flashcard, qcm, translation }
-
-class Exercise {
-  final ExerciseType type;
-  final String cyrillic;
-  final String translit;
-  final String french;
-  final String? prompt;
-  final List<String>? choices;
-  final int? correctIndex;
-
-  const Exercise({
-    required this.type,
-    required this.cyrillic,
-    required this.translit,
-    required this.french,
-    this.prompt,
-    this.choices,
-    this.correctIndex,
-  });
-}
-
-// ═══════════════════════════════════════════════════════════
-// EXERCISE DATA
-// ═══════════════════════════════════════════════════════════
-
-class _Data {
-  static const Map<String, List<Exercise>> _byLesson = {
-    '1': [
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'Салам', translit: 'Salam', french: 'Salut (informel)'),
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'Баркалла', translit: 'Barkalla', french: 'Merci'),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'Баркалла', translit: 'Barkalla', french: 'Merci',
-        prompt: 'Comment dit-on "Merci" en tchétchène ?',
-        choices: ['Salam', 'Barkalla', 'Dika', 'Voŋ'],
-        correctIndex: 1,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'Дика', translit: 'Dika', french: 'Bien / Bon',
-        prompt: 'Que signifie "Dika" ?',
-        choices: ['Mauvais', 'Beaucoup', 'Bien / Bon', 'Peu'],
-        correctIndex: 2,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'Дукха', translit: 'Duqa', french: 'Beaucoup',
-        prompt: 'Quel mot signifie "Beaucoup" ?',
-        choices: ['K̇ezig', 'Voŋ', 'Dika', 'Duqa'],
-        correctIndex: 3,
-      ),
-      Exercise(
-        type: ExerciseType.translation,
-        cyrillic: 'Баркалла дукха', translit: 'Barkalla duqa',
-        french: 'Merci beaucoup',
-        prompt: 'Traduis en tchétchène :\n"Merci beaucoup"',
-      ),
-    ],
-    '2': [
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'Марша огӀийла', translit: 'Marşa oġiyla',
-          french: 'Bonjour (formel)'),
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'Дела реза хуьлда', translit: 'Dela reza xülda',
-          french: 'Que Dieu soit satisfait'),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'Марша огӀийла', translit: 'Marşa oġiyla',
-        french: 'Bonjour (formel)',
-        prompt: 'Quel est le bonjour formel en tchétchène ?',
-        choices: ['Salam', 'Barkalla', 'Marşa oġiyla', 'Dika de'],
-        correctIndex: 2,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'Суьйре', translit: 'Süyre', french: 'Soir',
-        prompt: 'Comment dit-on "Soir" en tchétchène ?',
-        choices: ['De', 'Büysa', 'Jüyre', 'Süyre'],
-        correctIndex: 3,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'Марша огӀийла', translit: 'Marşa oġiyla',
-        french: 'Entre libre (litt.)',
-        prompt: 'Que signifie littéralement "Marşa oġiyla" ?',
-        choices: ['Bonne journée', 'Entre libre', 'Bonne nuit', 'À bientôt'],
-        correctIndex: 1,
-      ),
-      Exercise(
-        type: ExerciseType.translation,
-        cyrillic: 'Марша огӀийла', translit: 'Marşa oġiyla',
-        french: 'Bonjour (formel)',
-        prompt: 'Traduis en tchétchène :\n"Bonjour" (formel)',
-      ),
-    ],
-    '3': [
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'цхьа', translit: 'cẋa', french: 'Un (1)'),
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'шиъ', translit: 'şiə', french: 'Deux (2)'),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'кхо', translit: 'qo', french: 'Trois (3)',
-        prompt: '"Qo" signifie ?',
-        choices: ['Un', 'Deux', 'Trois', 'Quatre'],
-        correctIndex: 2,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'пхи', translit: 'pxi', french: 'Cinq (5)',
-        prompt: 'Comment dit-on "5" en tchétchène ?',
-        choices: ['Diə', 'Pxi', 'Yalx', 'Vorx'],
-        correctIndex: 1,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'цхьа', translit: 'cẋa', french: 'Un (1)',
-        prompt: 'Comment dit-on "1" en tchétchène ?',
-        choices: ['Şiə', 'Qo', 'Cẋa', 'Diə'],
-        correctIndex: 2,
-      ),
-      Exercise(
-        type: ExerciseType.translation,
-        cyrillic: 'кхо', translit: 'qo', french: 'Trois',
-        prompt: 'Écris le chiffre 3 en tchétchène :',
-      ),
-    ],
-    '4': [
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'Да', translit: 'Da', french: 'Père'),
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'Нана', translit: 'Nana', french: 'Mère'),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'Ваша', translit: 'Vaşa', french: 'Frère',
-        prompt: 'Comment dit-on "Frère" en tchétchène ?',
-        choices: ['Yişa', 'Nana', 'Vaşa', 'Da'],
-        correctIndex: 2,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'Йиша', translit: 'Yişa', french: 'Sœur',
-        prompt: '"Yişa" signifie ?',
-        choices: ['Mère', 'Père', 'Frère', 'Sœur'],
-        correctIndex: 3,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'Да', translit: 'Da', french: 'Père',
-        prompt: 'Comment dit-on "Père" en tchétchène ?',
-        choices: ['Nana', 'Da', 'Vaşa', 'Yişa'],
-        correctIndex: 1,
-      ),
-      Exercise(
-        type: ExerciseType.translation,
-        cyrillic: 'Нана', translit: 'Nana', french: 'Mère',
-        prompt: 'Traduis en tchétchène :\n"Mère"',
-      ),
-    ],
-    '5': [
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'цӀен', translit: 'ċeŋ', french: 'Rouge'),
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'сийна', translit: 'siyna', french: 'Bleu'),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'цӀен', translit: 'ċeŋ', french: 'Rouge',
-        prompt: 'Comment dit-on "Rouge" en tchétchène ?',
-        choices: ['Siyna', 'Ċeŋ', 'K̇ayŋ', 'Bäccara'],
-        correctIndex: 1,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'баьццара', translit: 'bäccara', french: 'Vert',
-        prompt: 'Que signifie "Bäccara" ?',
-        choices: ['Rouge', 'Bleu', 'Vert', 'Noir'],
-        correctIndex: 2,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'Ӏаьржа', translit: 'Järƶa', french: 'Noir',
-        prompt: 'Comment dit-on "Noir" en tchétchène ?',
-        choices: ['Järƶa', 'Moƶa', 'K̇ayŋ', 'Siyna'],
-        correctIndex: 0,
-      ),
-      Exercise(
-        type: ExerciseType.translation,
-        cyrillic: 'кӀайн', translit: 'k̇ayŋ', french: 'Blanc',
-        prompt: 'Traduis en tchétchène :\n"Blanc"',
-      ),
-    ],
-    '6': [
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'бепиг', translit: 'bepig', french: 'Pain'),
-      Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'хи', translit: 'xi', french: 'Eau'),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'хи', translit: 'xi', french: 'Eau',
-        prompt: 'Comment dit-on "Eau" en tchétchène ?',
-        choices: ['Bepig', 'Xi', 'Şura', 'Tüxa'],
-        correctIndex: 1,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'жижиг', translit: 'ƶiƶig', french: 'Viande',
-        prompt: 'Que signifie "Ƶiƶig" ?',
-        choices: ['Pain', 'Lait', 'Viande', 'Sel'],
-        correctIndex: 2,
-      ),
-      Exercise(
-        type: ExerciseType.qcm,
-        cyrillic: 'шура', translit: 'şura', french: 'Lait',
-        prompt: 'Comment dit-on "Lait" en tchétchène ?',
-        choices: ['Tüxa', 'Xi', 'Şura', 'Bepig'],
-        correctIndex: 2,
-      ),
-      Exercise(
-        type: ExerciseType.translation,
-        cyrillic: 'бепиг', translit: 'bepig', french: 'Pain',
-        prompt: 'Traduis en tchétchène :\n"Pain"',
-      ),
-    ],
-  };
-
-  static List<Exercise> forLesson(String id) => _byLesson[id] ?? [];
-}
 
 // ═══════════════════════════════════════════════════════════
 // SCREEN
@@ -257,11 +24,13 @@ class ExerciseScreen extends StatefulWidget {
 
 class _ExerciseScreenState extends State<ExerciseScreen>
     with SingleTickerProviderStateMixin {
-  late final List<Exercise> _exercises;
+  /// Chargés depuis la base au montage (repli hors-ligne dans le service).
+  List<Exercise> _exercises = [];
 
   /// Nombre d'exercices de base (hors rattrapages ajoutés en fin de file) :
   /// la progression persistée reste bornée à cette valeur.
-  late final int _baseCount;
+  int _baseCount = 0;
+  bool _loading = true;
   int _currentIndex = 0;
   int _xpEarned = 0;
   int _mistakes = 0;
@@ -281,19 +50,6 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   @override
   void initState() {
     super.initState();
-    // Copie modifiable : la boucle de rattrapage ajoute en fin de file,
-    // et les listes de _Data sont const.
-    _exercises = List.of(_Data.forLesson(widget.lesson.id));
-    _baseCount = _exercises.length;
-
-    // Reprise : on repart de la progression partielle sauvegardée.
-    // Une leçon déjà terminée (mode révision) recommence du début.
-    if (_exercises.isNotEmpty &&
-        widget.lesson.status != LessonStatus.completed) {
-      _currentIndex =
-          widget.lesson.completedExercises.clamp(0, _exercises.length - 1);
-    }
-
     _flipCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -302,11 +58,28 @@ class _ExerciseScreenState extends State<ExerciseScreen>
       CurvedAnimation(parent: _flipCtrl, curve: Curves.easeInOut),
     );
     _translCtrl.addListener(() => setState(() {}));
+    _load();
+  }
 
-    if (_exercises.isEmpty) {
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => Navigator.pop(context));
-    }
+  Future<void> _load() async {
+    // `List.of` : copie modifiable — la boucle de rattrapage ajoute en
+    // fin de file.
+    final list = List.of(await ExerciseService.fetchForLesson(
+      widget.lesson.id,
+    ));
+    if (!mounted) return;
+    setState(() {
+      _exercises = list;
+      _baseCount = list.length;
+      _loading = false;
+
+      // Reprise : on repart de la progression partielle sauvegardée.
+      // Une leçon déjà terminée (mode révision) recommence du début.
+      if (list.isNotEmpty && widget.lesson.status != LessonStatus.completed) {
+        _currentIndex =
+            widget.lesson.completedExercises.clamp(0, list.length - 1);
+      }
+    });
   }
 
   @override
@@ -477,11 +250,55 @@ class _ExerciseScreenState extends State<ExerciseScreen>
     Navigator.pop(context);
   }
 
+  // ─── États de chargement et de leçon vide ────────────────
+  Widget _buildLoading(LinguaTokens t) => Scaffold(
+        backgroundColor: t.surfaceBase,
+        body: Center(
+          child: CircularProgressIndicator(strokeWidth: 2, color: t.accent),
+        ),
+      );
+
+  Widget _buildEmpty(LinguaTokens t) => Scaffold(
+        backgroundColor: t.surfaceBase,
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(LinguaSpacing.xxl),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.hourglass_empty_rounded,
+                      size: 48, color: t.textTertiary),
+                  const SizedBox(height: LinguaSpacing.lg),
+                  ScreenTitle(tr('ex.empty_title'), size: 24),
+                  const SizedBox(height: LinguaSpacing.sm),
+                  Text(
+                    tr('ex.empty_desc'),
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.manrope(
+                        color: t.textSecondary, fontSize: 14, height: 1.5),
+                  ),
+                  const SizedBox(height: LinguaSpacing.xl),
+                  CopilotButton(
+                    label: tr('common.close'),
+                    variant: CopilotButtonVariant.tonal,
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
   // ─── Build ───────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
-    if (_exercises.isEmpty) return const SizedBox.shrink();
     final t = context.tokens;
+    if (_loading) return _buildLoading(t);
+    // Leçon sans contenu : on l'explique au lieu de refermer l'écran
+    // (l'ancien comportement donnait un écran qui « clignotait »).
+    if (_exercises.isEmpty) return _buildEmpty(t);
     return PopScope(
       // Intercepte le retour système (geste / bouton Android) tant qu'une
       // progression serait perdue, pour passer par la confirmation.

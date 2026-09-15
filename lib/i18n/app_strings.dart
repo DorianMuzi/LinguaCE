@@ -514,6 +514,20 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Выйти',
     'CE': 'Aravala'
   },
+  // CE composé de tournures déjà présentes dans ce fichier
+  // (« Hinca … yac/bac » pour « pas encore de … », « Sixxa xir du »).
+  'ex.empty_title': {
+    'FR': 'Leçon en préparation',
+    'EN': 'Lesson in the works',
+    'RU': 'Урок в подготовке',
+    'CE': 'Hinca bolx bac'
+  },
+  'ex.empty_desc': {
+    'FR': 'Cette leçon n\'a pas encore d\'exercices. Reviens bientôt !',
+    'EN': 'This lesson has no exercises yet. Check back soon!',
+    'RU': 'В этом уроке пока нет упражнений. Загляните позже!',
+    'CE': 'Hinca bolx bac. Sixxa xir du!'
+  },
   'ex.save_failed': {
     'FR': 'Hors ligne — ta progression n\'a pas pu être enregistrée.',
     'EN': 'Offline — your progress couldn\'t be saved.',

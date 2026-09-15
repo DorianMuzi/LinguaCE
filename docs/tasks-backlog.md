@@ -42,6 +42,12 @@ déjà dans l'UI (`set.notifications` dans `app_strings.dart`) mais ne fait rien
 ## 2. Passe d'accessibilité (contraste + lecteurs d'écran)
 **Labels :** `accessibility`, `priority: medium`, `good first issue`
 
+> ✅ **Largement résolue par le portage du design system (sept. 2026).**
+> Les nouveaux tokens montent `textTertiary` à 5,4:1 en clair (contre 2,8:1),
+> et le lot 3 a converti les emojis décoratifs en icônes teintées. Il reste à
+> vérifier les tailles de cibles tactiles ailleurs que dans la nav bar (qui a
+> déjà ses 44 px) et à repasser un lecteur d'écran sur l'ensemble.
+
 **Contexte.** Deux points relevés en revue : le token `textTertiary` (#919191
 sur fond clair ≈ 2,8:1) est sous le seuil WCAG AA, et les emojis utilisés comme
 icônes (🔥 série, ✨ mot du jour, ⭐ XP…) sont lus littéralement (« flamme »)
@@ -128,6 +134,17 @@ Leçons / Progrès), accessible 100 px plus bas. C'est de l'espace gâché.
 
 ## 6. [GROS CHANTIER] Contenu des leçons en base Supabase
 **Labels :** `enhancement`, `priority: high`, `phase-3`, `help wanted`
+
+> ✅ **Fait (sept. 2026).** Table `public.exercises` + RLS + index, seed des
+> 36 exercices existants (migration `20260915120000_exercises.sql`),
+> `ExerciseService` avec repli hors-ligne, `ExerciseScreen` asynchrone avec
+> état de chargement et écran « leçon en préparation » au lieu de se refermer.
+> Modèles `Exercise`/`ExerciseType` déplacés dans `models.dart`, secours dans
+> `mock_data.dart`. 12 tests sur `Exercise.fromRow` et le jeu de secours.
+>
+> **Reste à faire côté mainteneur :** appliquer la migration
+> (`supabase db push`), puis vérifier qu'une 7ᵉ leçon ajoutée en base
+> s'ouvre sans recompiler.
 
 **Contexte.** Le contenu pédagogique réel (exercices) est codé en dur côté
 client dans `lib/screens/exercise_screen.dart` (`_Data._byLesson`, leçons '1'
