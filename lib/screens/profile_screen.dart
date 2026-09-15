@@ -6,6 +6,7 @@ import '../design/lingua_components.dart';
 import '../design/responsive.dart';
 import '../i18n/app_strings.dart';
 import '../services/auth_service.dart';
+import '../services/notification_service.dart';
 import '../services/profile_service.dart';
 import '../widgets/xp_bar.dart';
 import 'auth_screen.dart';
@@ -21,16 +22,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Map<String, dynamic>? _profile;
   bool _loading = true;
   bool _signingOut = false;
+  bool _notificationsEnabled = true;
 
   @override
   void initState() {
     super.initState();
     _loadProfile();
+    _loadNotificationSetting();
   }
 
   Future<void> _loadProfile() async {
     final profile = await ProfileService.getOrCreateProfile();
     if (mounted) setState(() { _profile = profile; _loading = false; });
+  }
+
+  Future<void> _loadNotificationSetting() async {
+    final enabled = await NotificationService.isEnabled();
+    if (mounted) setState(() => _notificationsEnabled = enabled);
+  }
+
+  /// Bascule le toggle Notifications : retour visuel immédiat, puis
+  /// alignement sur le résultat réel (la permission système peut être
+  /// refusée à l'activation).
+  Future<void> _onToggleNotifications(bool value) async {
+    setState(() => _notificationsEnabled = value);
+    final ok = await NotificationService.setEnabled(value);
+    if (!mounted) return;
+    if (value && !ok) {
+      setState(() => _notificationsEnabled = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('set.notifications_denied'))),
+      );
+    }
   }
 
   String get _username => _profile?['username'] as String? ?? 'Apprenant';
@@ -290,6 +313,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildSettingsSection(LinguaTokens t) {
+    // Seul l'item Notifications (index 0) est réellement câblé (tâche #1) ;
+    // les autres toggles restent des maquettes, comme avant.
     final items = [
       (Icons.notifications_outlined, tr('set.notifications'), true),
       (Icons.language_outlined, tr('set.interface_lang'), false),
@@ -302,7 +327,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         children: items.asMap().entries.map((e) {
           final (icon, label, hasSwitch) = e.value;
-          final isLast = e.key == items.length - 1;
+          final index = e.key;
+          final isLast = index == items.length - 1;
+          final isNotifications = index == 0;
           return Column(
             children: [
               ListTile(
@@ -312,8 +339,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         GoogleFonts.manrope(color: t.textPrimary, fontSize: 15)),
                 trailing: hasSwitch
                     ? Switch(
-                        value: true,
-                        onChanged: (_) {},
+                        value:
+                            isNotifications ? _notificationsEnabled : true,
+                        onChanged:
+                            isNotifications ? _onToggleNotifications : (_) {},
                         activeColor: t.accent,
                       )
                     : Icon(Icons.chevron_right_rounded,

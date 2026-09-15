@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
 import '../i18n/app_strings.dart';
 import '../i18n/locale_controller.dart';
+import '../services/notification_service.dart';
 import '../services/profile_service.dart';
 import '../widgets/floating_nav_bar.dart';
 import '../widgets/app_drawer.dart';
@@ -35,6 +38,14 @@ class _MainScreenState extends State<MainScreen> {
   Future<void> _loadProfile() async {
     final profile = await ProfileService.getOrCreateProfile();
     if (mounted) setState(() => _profile = profile);
+
+    // Reprogramme la fenêtre de rappels à chaque lancement — couvre le cas
+    // d'un redémarrage de l'appareil (les alarmes natives ne survivent pas
+    // toujours) et annule le rappel du jour si l'activité date d'aujourd'hui.
+    final lastRaw = profile?['last_activity'] as String?;
+    final lastActivity = lastRaw == null ? null : DateTime.tryParse(lastRaw);
+    unawaited(NotificationService.sync(lastActivity: lastActivity)
+        .catchError((_) {}));
   }
 
   String get _avatarInitial {

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/models.dart';
 import '../data/mock_data.dart';
+import 'notification_service.dart';
 import 'profile_service.dart';
 
 /// Gère le catalogue de leçons (Supabase) et la progression par utilisateur.
@@ -100,6 +103,9 @@ class LessonService {
 
       // Une sortie en cours de leçon reste une activité du jour.
       await ProfileService.updateStreak();
+      // Le rappel du jour devient inutile — best-effort, non bloquant.
+      unawaited(NotificationService.sync(lastActivity: DateTime.now())
+          .catchError((_) {}));
     } catch (_) {
       // Hors-ligne : repli silencieux, cohérent avec le reste du service.
     }
@@ -140,6 +146,9 @@ class LessonService {
 
       // Activité du jour → met à jour la série (AVANT l'XP).
       await ProfileService.updateStreak();
+      // Le rappel du jour devient inutile — best-effort, non bloquant.
+      unawaited(NotificationService.sync(lastActivity: DateTime.now())
+          .catchError((_) {}));
 
       if (isCompleted && !wasCompleted) {
         await ProfileService.addXP(xpEarned);

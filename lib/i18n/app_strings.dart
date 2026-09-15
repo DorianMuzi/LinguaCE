@@ -249,11 +249,35 @@ const Map<String, Map<String, String>> _strings = {
   },
   'profile.days': {'FR': 'jours', 'EN': 'days', 'RU': 'дней', 'CE': 'de'},
   'profile.day': {'FR': 'jour', 'EN': 'day', 'RU': 'день', 'CE': 'de'},
+  // Notification de rappel quotidien (tâche #1) — texte fixé au moment de
+  // la planification, dans la langue d'interface courante.
+  // CE : uniquement des groupes nominaux déjà attestés ailleurs dans ce
+  // fichier (Roġ, noxçiyŋ mott, Jamaraŋ neq̇) — aucune conjugaison inventée.
+  'notif.reminder_title': {
+    'FR': 'Continue ta série ! 🔥',
+    'EN': 'Keep your streak going! 🔥',
+    'RU': 'Не теряй свою серию! 🔥',
+    'CE': 'Roġ 🔥'
+  },
+  'notif.reminder_body': {
+    'FR': 'Prends 2 minutes pour pratiquer ton tchétchène aujourd\'hui.',
+    'EN': 'Take 2 minutes to practice your Chechen today.',
+    'RU': 'Удели 2 минуты изучению чеченского сегодня.',
+    'CE': 'Noxçiyŋ mott jamaraŋ neq̇.'
+  },
   'set.notifications': {
     'FR': 'Notifications',
     'EN': 'Notifications',
     'RU': 'Уведомления',
     'CE': 'Xaamaş'
+  },
+  // CE : reprend err.generic verbatim (sûr) plutôt que de composer une
+  // phrase dont l'accord de classe avec "Xaamaş" n'est pas vérifiable.
+  'set.notifications_denied': {
+    'FR': 'Autorisation refusée — active les notifications dans les réglages du téléphone.',
+    'EN': 'Permission denied — enable notifications in your phone settings.',
+    'RU': 'Разрешение отклонено — включите уведомления в настройках телефона.',
+    'CE': 'ġalat xilla. Yuxa ġort.'
   },
   'set.interface_lang': {
     'FR': 'Langue de l\'interface',

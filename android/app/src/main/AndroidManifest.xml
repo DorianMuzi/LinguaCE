@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Rappel quotidien de série (tâche #1) — demandée à l'exécution sur
+         Android 13+ ; sans effet, donc sans risque, sur les versions
+         antérieures. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
         android:label="lingua_ce"
         android:name="${applicationName}"

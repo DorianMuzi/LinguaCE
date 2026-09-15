@@ -7,12 +7,17 @@ plugins {
 
 android {
     namespace = "com.linguace.lingua_ce"
-    compileSdk = flutter.compileSdkVersion
+    // flutter_local_notifications (rappel de série, tâche #1) exige 34 au
+    // minimum — cf. son README sur le "core library desugaring".
+    compileSdk = maxOf(flutter.compileSdkVersion, 34)
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        // Requis par flutter_local_notifications pour les notifications
+        // programmées, compatible avec les versions d'Android antérieures.
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -28,6 +33,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -41,4 +47,9 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Requis par flutter_local_notifications (core library desugaring).
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

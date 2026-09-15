@@ -17,6 +17,29 @@
 ## 1. Notifications de rappel quotidien
 **Labels :** `enhancement`, `priority: high`, `good first issue`
 
+> ✅ **Fait (sept. 2026).** `NotificationService` (flutter_local_notifications +
+> timezone + flutter_timezone) : toggle branché dans l'écran Profil, persisté
+> via `shared_preferences`, permission Android 13+/iOS demandée à
+> l'activation. Fenêtre glissante de 14 jours (identifiants déterministes
+> AAAAMMJJ, pas de répétition native) resynchronisée au lancement de l'app et
+> juste après `ProfileService.updateStreak()` — le rappel du jour s'annule
+> dès qu'une activité vient d'avoir lieu. Textes FR/EN/RU/CE (le CE ne réutilise
+> que des groupes nominaux déjà attestés ailleurs dans le fichier, sans
+> conjugaison inventée). 4 tests sur le schéma d'identifiants.
+>
+> **Limite connue, documentée dans le code :** les alarmes programmées ne
+> survivent pas toujours à un redémarrage de l'appareil sur toutes les
+> versions d'Android sans récepteur `RECEIVE_BOOT_COMPLETED` dédié. La
+> resynchronisation à chaque lancement de l'app comble ce cas tant que
+> l'utilisateur rouvre l'app au moins une fois toutes les 14 jours ; un
+> correctif complet demanderait un récepteur de démarrage natif (hors
+> périmètre de cette tâche).
+>
+> **Reste à faire côté mainteneur :** vérifier sur un Android réel (13+ pour
+> la permission runtime) que le rappel arrive bien à 19 h et disparaît quand
+> une leçon est faite dans la journée. Nécessite `flutter pub get` après
+> avoir tiré ce commit.
+
 **Contexte.** La série (streak) est un moteur de rétention, mais l'app ne
 rappelle jamais à l'utilisateur de revenir. Le réglage « Notifications » existe
 déjà dans l'UI (`set.notifications` dans `app_strings.dart`) mais ne fait rien.
