@@ -48,8 +48,9 @@ class NotificationService {
 
     tzdata.initializeTimeZones();
     try {
-      final name = await FlutterTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(name));
+      // Depuis flutter_timezone 5.x : un TimezoneInfo, plus une String.
+      final info = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(info.identifier));
     } catch (e) {
       // Repli sur UTC (déjà la locale par défaut du package `timezone`) :
       // le rappel arrivera à un autre horaire local, sans bloquer le reste.
