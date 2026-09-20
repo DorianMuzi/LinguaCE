@@ -18,6 +18,20 @@ flutter pub get
 flutter run --dart-define-from-file=env.json
 ```
 
+### Prérequis Android : JDK 17 ou 21 (pas 25)
+
+Le projet utilise Gradle 8.12, qui ne fonctionne pas avec JDK 25 (erreur
+cryptique du type `25.0.3`). Un Android Studio récent peut pourtant
+t'imposer JDK 25. Installe un JDK complet 17 ou 21 (p. ex. Temurin) et
+indique-le à Flutter :
+
+```bash
+flutter config --jdk-dir "<chemin du JDK 21>"
+```
+
+Il faut un JDK complet, pas un JRE : la compilation Android a besoin de
+`jlink`.
+
 ## 🌳 Workflow
 
 1. **Fork** le dépôt, puis crée une branche depuis `main` :
