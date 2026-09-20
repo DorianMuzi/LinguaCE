@@ -87,6 +87,24 @@ class NotificationService {
     }
   }
 
+  /// Comme [isEnabled], mais au tout premier lancement (aucun choix
+  /// enregistré) demande la permission système : le réglage est « activé par
+  /// défaut », donc l'utilisateur ne passerait jamais par [setEnabled] et, sur
+  /// Android 13+, les rappels seraient bloqués en silence. Un refus est
+  /// enregistré pour que le toggle du profil reflète la réalité.
+  static Future<bool> _isEnabledResolvingFirstRun() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final stored = prefs.getBool(_prefKey);
+      if (stored != null) return stored;
+      final granted = await _requestPermission();
+      await prefs.setBool(_prefKey, granted);
+      return granted;
+    } catch (_) {
+      return true;
+    }
+  }
+
   /// Active ou désactive les rappels : persiste le choix, demande la
   /// permission système si besoin, puis (re)programme ou annule.
   ///
@@ -152,7 +170,7 @@ class NotificationService {
   /// Ne fait rien si le réglage est désactivé.
   static Future<void> sync({DateTime? lastActivity}) async {
     if (kIsWeb) return;
-    if (!await isEnabled()) return;
+    if (!await _isEnabledResolvingFirstRun()) return;
     await _ensureInitialized();
 
     final now = tz.TZDateTime.now(tz.local);
