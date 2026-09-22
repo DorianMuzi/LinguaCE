@@ -35,10 +35,17 @@
 > correctif complet demanderait un récepteur de démarrage natif (hors
 > périmètre de cette tâche).
 >
-> **Reste à faire côté mainteneur :** vérifier sur un Android réel (13+ pour
-> la permission runtime) que le rappel arrive bien à 19 h et disparaît quand
-> une leçon est faite dans la journée. Nécessite `flutter pub get` après
-> avoir tiré ce commit.
+> **Bug trouvé et corrigé pendant la vérification (sept. 2026) :** `sync()`
+> annulait par erreur le rappel du jour dès qu'on rouvrait l'app après 19 h,
+> alors que le système (mode `inexactAllowWhileIdle`, tolérance d'1 h) ne
+> l'avait pas encore livré — le rappel disparaissait sans jamais s'afficher.
+> Corrigé : ce cas (uniquement possible pour aujourd'hui) ne touche plus
+> l'alarme en attente.
+>
+> **Reste à faire côté mainteneur :** confirmer sur émulateur/Android réel
+> qu'un rappel arrive bien à l'heure prévue **sans qu'on rouvre l'app entre
+> l'heure programmée et sa réception**, puis vérifier qu'il disparaît quand
+> une leçon est faite dans la journée.
 
 **Contexte.** La série (streak) est un moteur de rétention, mais l'app ne
 rappelle jamais à l'utilisateur de revenir. Le réglage « Notifications » existe
@@ -94,6 +101,13 @@ par les lecteurs d'écran.
 
 ## 3. Animation de gain d'XP dans les exercices
 **Labels :** `enhancement`, `priority: low`, `good first issue`
+
+> ✅ **Fait (sept. 2026).** Badge « +N XP » près du compteur du header,
+> déclenché à chaque gain (flashcard, QCM, traduction correcte ou
+> consolation), fondu + légère translation vers le haut. Désactivé proprement
+> en mode animations réduites (`MediaQuery.disableAnimations`) : seul le
+> total, déjà mis à jour, reste visible. Durée/courbe via les tokens
+> existants (`LinguaDuration`, `LinguaCurves`).
 
 **Contexte.** Le retour haptique sur bonne réponse existe (`exercise_screen.dart`)
 mais il n'y a aucune récompense visuelle au moment du gain. La gamification
