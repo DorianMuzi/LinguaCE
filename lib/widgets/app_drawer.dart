@@ -9,6 +9,7 @@ import '../i18n/locale_controller.dart';
 import '../services/profile_service.dart';
 import '../services/auth_service.dart';
 import '../screens/auth_screen.dart';
+import '../screens/profile_screen.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -52,19 +53,6 @@ class _AppDrawerState extends State<AppDrawer> {
     messenger.showSnackBar(SnackBar(
       content: Text(tr('chat.copied'),
           style: GoogleFonts.manrope(color: Colors.white)),
-      backgroundColor: t.accentStrong,
-      behavior: SnackBarBehavior.floating,
-      shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rMd),
-      margin: const EdgeInsets.all(16),
-    ));
-  }
-
-  void _info(String message) {
-    if (!mounted) return;
-    final t = context.tokens;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content:
-          Text(message, style: GoogleFonts.manrope(color: Colors.white)),
       backgroundColor: t.accentStrong,
       behavior: SnackBarBehavior.floating,
       shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rMd),
@@ -320,8 +308,14 @@ class _AppDrawerState extends State<AppDrawer> {
                     icon: Icons.notifications_outlined,
                     label: tr('set.notifications'),
                     onTap: () {
+                      // Le réglage (toggle + permission) vit dans Profil —
+                      // évite un doublon d'état avec NotificationService.
                       Navigator.pop(context);
-                      _info(tr('common.soon'));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const ProfileScreen()),
+                      );
                     },
                   ),
                   _DrawerItem(

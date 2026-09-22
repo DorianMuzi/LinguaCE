@@ -191,8 +191,13 @@ class NotificationService {
       final when =
           tz.TZDateTime(tz.local, day.year, day.month, day.day, _hour, _minute);
       if (when.isBefore(now)) {
-        // L'heure du jour est déjà passée : rien à programmer pour ce jour.
-        await _plugin.cancel(id);
+        // Ne peut arriver que pour aujourd'hui (i == 0), après _hour:_minute —
+        // les jours suivants sont par construction dans le futur. NE PAS
+        // annuler ici : l'alarme du jour, programmée par un sync() précédent,
+        // est peut-être encore en attente de livraison par le système
+        // (AndroidScheduleMode.inexactAllowWhileIdle tolère jusqu'à 1h de
+        // battement). Rouvrir l'app pendant cette fenêtre appelait sync() et
+        // annulait le rappel avant qu'il n'ait pu s'afficher — corrigé ici.
         continue;
       }
 
