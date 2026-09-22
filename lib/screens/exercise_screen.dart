@@ -34,6 +34,15 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   int _currentIndex = 0;
   int _xpEarned = 0;
   int _mistakes = 0;
+
+  /// Dernier gain d'XP à faire apparaître près du compteur du header, et
+  /// jeton incrémenté à chaque gain pour rejouer l'animation même quand le
+  /// montant se répète (ex. deux +5 d'affilée) — `null` en mode « animations
+  /// réduites », où seul le total du header est mis à jour, sans effet.
+  int? _popupGain;
+  int _popupToken = 0;
+  static final Duration _xpPopupDuration = LinguaDuration.slow * 3;
+
   bool _isAnswered = false;
   bool _isCorrect = false;
   bool _isCompleted = false;
@@ -103,8 +112,22 @@ class _ExerciseScreenState extends State<ExerciseScreen>
     }
   }
 
+  /// Prépare l'apparition du badge « +N XP » près du compteur du header —
+  /// à appeler depuis le corps d'un setState() déjà ouvert (pas d'appel
+  /// setState() propre, pour ne pas déclencher un rebuild supplémentaire).
+  /// Aucun effet en mode « animations réduites » (accessibilité) : le total
+  /// du header, déjà mis à jour, reste la seule trace visible du gain.
+  void _triggerXpPopup(int amount) {
+    if (MediaQuery.of(context).disableAnimations) return;
+    _popupGain = amount;
+    _popupToken++;
+  }
+
   void _confirmFlashcard() {
-    setState(() => _xpEarned += 5);
+    setState(() {
+      _xpEarned += 5;
+      _triggerXpPopup(5);
+    });
     _next();
   }
 
@@ -118,6 +141,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
       _isCorrect = correct;
       if (correct) {
         _xpEarned += 10;
+        _triggerXpPopup(10);
       } else {
         _mistakes++;
       }
@@ -133,9 +157,11 @@ class _ExerciseScreenState extends State<ExerciseScreen>
       _isCorrect = correct;
       if (correct) {
         _xpEarned += 20;
+        _triggerXpPopup(20);
       } else {
         _mistakes++;
         _xpEarned += 5;
+        _triggerXpPopup(5);
       }
     });
   }
@@ -358,9 +384,49 @@ class _ExerciseScreenState extends State<ExerciseScreen>
             ),
           ),
           const SizedBox(width: 16),
-          Text('+$_xpEarned XP',
-              style: GoogleFonts.jetBrainsMono(
-                  color: t.accent, fontSize: 13, fontWeight: FontWeight.bold)),
+          Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.centerRight,
+            children: [
+              Text('+$_xpEarned XP',
+                  style: GoogleFonts.jetBrainsMono(
+                      color: t.accent,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold)),
+              if (_popupGain != null)
+                Positioned(
+                  top: -18,
+                  child: IgnorePointer(
+                    child: TweenAnimationBuilder<double>(
+                      key: ValueKey(_popupToken),
+                      tween: Tween(begin: 0, end: 1),
+                      duration: _xpPopupDuration,
+                      curve: LinguaCurves.out,
+                      onEnd: () {
+                        if (mounted) setState(() => _popupGain = null);
+                      },
+                      builder: (_, v, __) {
+                        // Apparaît vite, tient, puis s'efface en fin de course.
+                        final opacity = v < .2
+                            ? v / .2
+                            : (v > .7 ? (1 - v) / .3 : 1.0);
+                        return Opacity(
+                          opacity: opacity.clamp(0.0, 1.0),
+                          child: Transform.translate(
+                            offset: Offset(0, -14 * v),
+                            child: Text('+$_popupGain',
+                                style: GoogleFonts.jetBrainsMono(
+                                    color: t.accent,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ],
       ),
     );
