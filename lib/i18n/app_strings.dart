@@ -438,6 +438,37 @@ const Map<String, Map<String, String>> _strings = {
     'CE': 'ġalat xilla. Yuxa ġort.'
   },
 
+  'err.google_signin': {
+    'FR': 'Connexion Google échouée.',
+    'EN': 'Google sign-in failed.',
+    'RU': 'Не удалось войти через Google.',
+    'CE': 'ġalat xilla. Yuxa ġort.'
+  },
+
+  // ── Inscription (register_screen.dart) ──────────────────────────────────
+  'reg.err_password_short': {
+    'FR': 'Le mot de passe doit contenir au moins 6 caractères.',
+    'EN': 'Password must be at least 6 characters.',
+    'RU': 'Пароль должен содержать не менее 6 символов.',
+    // CE : reprend err.generic verbatim (sûr) plutôt que de composer une
+    // phrase inédite non relue par un locuteur natif.
+    'CE': 'ġalat xilla. Yuxa ġort.'
+  },
+  'reg.err_password_mismatch': {
+    'FR': 'Les mots de passe ne correspondent pas.',
+    'EN': 'Passwords don\'t match.',
+    'RU': 'Пароли не совпадают.',
+    'CE': 'ġalat xilla. Yuxa ġort.'
+  },
+  // CE non fourni volontairement (repli sur le FR, cf. tr()) : c'est un
+  // message de succès, pas une erreur — pas de phrase CE sûre existante à
+  // réutiliser ici (contrairement aux deux clés d'erreur ci-dessus).
+  'reg.check_email': {
+    'FR': 'Vérifie ton email pour confirmer ton compte.',
+    'EN': 'Check your email to confirm your account.',
+    'RU': 'Проверьте почту, чтобы подтвердить аккаунт.',
+  },
+
   // ── Exercices ─────────────────────────────────────────────────────────────
   'ex.tap_flip': {
     'FR': 'Tapez la carte pour la retourner',

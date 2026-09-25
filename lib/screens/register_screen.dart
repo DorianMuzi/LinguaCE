@@ -7,6 +7,7 @@ import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
+import '../i18n/app_strings.dart';
 import 'main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -119,15 +120,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final confirm = _confirmController.text;
 
     if (name.isEmpty || email.isEmpty || password.isEmpty || confirm.isEmpty) {
-      _showError('Veuillez remplir tous les champs.');
+      _showError(tr('err.fill_fields'));
       return;
     }
     if (password.length < 6) {
-      _showError('Le mot de passe doit contenir au moins 6 caractères.');
+      _showError(tr('reg.err_password_short'));
       return;
     }
     if (password != confirm) {
-      _showError('Les mots de passe ne correspondent pas.');
+      _showError(tr('reg.err_password_mismatch'));
       return;
     }
 
@@ -148,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         final t = context.tokens;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Vérifie ton email pour confirmer ton compte.',
+            content: Text(tr('reg.check_email'),
                 style: GoogleFonts.manrope(color: Colors.white)),
             backgroundColor: t.accentStrong,
             behavior: SnackBarBehavior.floating,
@@ -162,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } on AuthException catch (e) {
       _showError(e.message);
     } catch (_) {
-      _showError('Une erreur est survenue. Réessaie.');
+      _showError(tr('err.generic'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

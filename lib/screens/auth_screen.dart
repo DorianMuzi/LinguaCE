@@ -134,7 +134,7 @@ class _AuthScreenState extends State<AuthScreen> {
     } on AuthException catch (e) {
       _showError(e.message);
     } catch (_) {
-      _showError('Connexion Google échouée.');
+      _showError(tr('err.google_signin'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
