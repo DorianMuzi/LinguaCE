@@ -27,25 +27,33 @@
 > que des groupes nominaux déjà attestés ailleurs dans le fichier, sans
 > conjugaison inventée). 4 tests sur le schéma d'identifiants.
 >
-> **Limite connue, documentée dans le code :** les alarmes programmées ne
-> survivent pas toujours à un redémarrage de l'appareil sur toutes les
-> versions d'Android sans récepteur `RECEIVE_BOOT_COMPLETED` dédié. La
-> resynchronisation à chaque lancement de l'app comble ce cas tant que
-> l'utilisateur rouvre l'app au moins une fois toutes les 14 jours ; un
-> correctif complet demanderait un récepteur de démarrage natif (hors
-> périmètre de cette tâche).
+> **Limite initiale, résolue en cours de vérification (sept. 2026) :** un
+> `ScheduledNotificationBootReceiver` (`RECEIVE_BOOT_COMPLETED`) a été ajouté
+> — cf. bug n°2 ci-dessous — donc les rappels survivent maintenant à un
+> redémarrage sans dépendre de la resynchronisation au lancement de l'app.
 >
-> **Bug trouvé et corrigé pendant la vérification (sept. 2026) :** `sync()`
-> annulait par erreur le rappel du jour dès qu'on rouvrait l'app après 19 h,
-> alors que le système (mode `inexactAllowWhileIdle`, tolérance d'1 h) ne
-> l'avait pas encore livré — le rappel disparaissait sans jamais s'afficher.
-> Corrigé : ce cas (uniquement possible pour aujourd'hui) ne touche plus
-> l'alarme en attente.
+> **Deux bugs trouvés et corrigés pendant la vérification (sept. 2026) :**
+> 1. `sync()` annulait par erreur le rappel du jour dès qu'on rouvrait l'app
+>    après 19 h, alors que le système (mode `inexactAllowWhileIdle`,
+>    tolérance d'1 h) ne l'avait pas encore livré — le rappel disparaissait
+>    sans jamais s'afficher. Corrigé : ce cas (uniquement possible pour
+>    aujourd'hui) ne touche plus l'alarme en attente.
+> 2. **Plus grave** : `AndroidManifest.xml` ne déclarait aucun des
+>    récepteurs natifs du plugin (`ScheduledNotificationReceiver`,
+>    `ScheduledNotificationBootReceiver`) — omission depuis l'implémentation
+>    initiale. `flutter_local_notifications` ≥ ~17 ne les déclare plus lui-même
+>    (son propre manifeste ne contient que des permissions). Conséquence :
+>    AlarmManager déclenchait bien l'alarme (comptée côté système, « 1
+>    wakeups » dans `dumpsys alarm`) mais ne trouvait aucun composant à qui la
+>    livrer — aucune notification ne s'affichait jamais, sans la moindre
+>    exception dans les logs. Corrigé en ajoutant les deux `<receiver>` (le
+>    second, avec `RECEIVE_BOOT_COMPLETED`, résout aussi la limite ci-dessous
+>    sur la survie au redémarrage).
 >
-> **Reste à faire côté mainteneur :** confirmer sur émulateur/Android réel
-> qu'un rappel arrive bien à l'heure prévue **sans qu'on rouvre l'app entre
-> l'heure programmée et sa réception**, puis vérifier qu'il disparaît quand
-> une leçon est faite dans la journée.
+> **Reste à faire côté mainteneur :** confirmer sur émulateur/Android réel,
+> après un **build complet** (pas un hot reload/restart — un changement de
+> manifeste l'exige), qu'un rappel arrive bien à l'heure prévue, puis vérifier
+> qu'il disparaît quand une leçon est faite dans la journée.
 
 **Contexte.** La série (streak) est un moteur de rétention, mais l'app ne
 rappelle jamais à l'utilisateur de revenir. Le réglage « Notifications » existe
