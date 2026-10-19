@@ -47,6 +47,11 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   bool _isCorrect = false;
   bool _isCompleted = false;
   bool _saveFailed = false;
+
+  /// XP réellement crédité par le serveur à la fin de la leçon (`null` tant
+  /// que la sauvegarde n'a pas abouti). Distinct de [_xpEarned], qui n'est
+  /// que le compteur de points de la session.
+  int? _xpCredited;
   bool _retrying = false;
 
   late AnimationController _flipCtrl;
@@ -210,15 +215,17 @@ class _ExerciseScreenState extends State<ExerciseScreen>
     if (mounted && !saved) setState(() => _saveFailed = true);
   }
 
-  Future<bool> _saveCompletion() => LessonService.completeLesson(
-        lessonId: widget.lesson.id,
-        completedExercises: _exercises.length,
-        totalExercises: _exercises.length,
-        xpEarned: _xpEarned,
-      );
+  Future<bool> _saveCompletion() async {
+    final result =
+        await LessonService.completeLesson(lessonId: widget.lesson.id);
+    if (result == null) return false;
+    if (mounted) setState(() => _xpCredited = result.xpAwarded);
+    return true;
+  }
 
   /// Nouvelle tentative de sauvegarde depuis le bandeau hors-ligne.
-  /// Idempotent : la garde `wasCompleted` du service empêche tout double XP.
+  /// Sûr à rejouer : `complete_lesson` est atomique et idempotent côté
+  /// serveur (un échec ne laisse rien d'écrit, un succès ne crédite qu'une fois).
   Future<void> _retrySave() async {
     setState(() => _retrying = true);
     final saved = await _saveCompletion();
@@ -903,7 +910,14 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _stat(t, tr('ex.xp_earned'), '+$_xpEarned',
+                  // XP crédité par le serveur (montant fixé par la leçon),
+                  // pas le compteur de session : « … » le temps de la sauvegarde.
+                  _stat(
+                      t,
+                      tr('ex.xp_earned'),
+                      _saveFailed
+                          ? '—'
+                          : (_xpCredited == null ? '…' : '+$_xpCredited'),
                       Icons.star_rounded),
                   Container(width: 1, height: 40, color: t.outlineSubtle),
                   // Sans faute, le compteur passe au vert : c'est là que le

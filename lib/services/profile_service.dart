@@ -75,19 +75,9 @@ class ProfileService {
     }
   }
 
-  /// Crédite l'XP **côté serveur** via la fonction Postgres `award_xp`
-  /// (SECURITY DEFINER, cf. migration secure_xp) : elle journalise l'événement
-  /// dans `xp_events`, incrémente le total et recalcule niveau + ligue, le tout
-  /// transactionnellement. Le client ne peut plus écrire xp/level/league en
-  /// direct — ces colonnes sont verrouillées par les grants de colonnes.
-  static Future<void> addXP(int xp) async {
-    if (_client.auth.currentUser == null) return;
-    try {
-      await _client.rpc('award_xp', params: {'amount': xp});
-    } catch (e) {
-      debugPrint('award_xp error: $e');
-    }
-  }
+  // L'XP n'est PLUS créditée par le client : xp / level / league sont
+  // verrouillés en écriture et seule la fonction serveur `complete_lesson`
+  // (cf. LessonService.completeLesson) les modifie.
 
   /// Série effective à AFFICHER. La valeur stockée n'est recalculée qu'à la
   /// prochaine activité : sans ce correctif, un utilisateur absent verrait
@@ -107,7 +97,7 @@ class ProfileService {
   }
 
   /// Met à jour la série quotidienne en comparant les **jours calendaires**.
-  /// À appeler AVANT [addXP] (qui écrase `last_activity`).
+  /// À appeler AVANT `complete_lesson` (qui réécrit `last_activity`).
   static Future<void> updateStreak() async {
     final user = _client.auth.currentUser;
     if (user == null) return;

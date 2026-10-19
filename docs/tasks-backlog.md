@@ -311,26 +311,49 @@ sans infra de paiement et garde le chat accessible.
 ## 8. Rendre XP / niveau / ligue inviolables côté serveur
 **Labels :** `security`, `backend`, `priority: high`
 
-> ✅ **Fait (oct. 2026).** Migration `20261019120000_secure_xp.sql` :
-> fonction Postgres `award_xp(amount)` `SECURITY DEFINER` (journalise
-> `xp_events`, incrémente `xp`, recalcule `level` + `league` et
-> `last_activity`, barème identique à `leagueForXp`/level), bornée serveur
-> (`0 ≤ amount ≤ 1000`, appelant authentifié requis). Les colonnes
-> `xp`/`level`/`league` ne sont plus modifiables par le client :
-> `revoke update … ; grant update (username, interface_language, streak,
-> lessons_completed, last_activity)`. `ProfileService.addXP` appelle la RPC ;
-> `updateLeague` supprimé (la ligue est calculée par `award_xp`) ;
-> `leagueForXp` conservé (référence testée du barème). `analyze` + 30 tests
-> verts.
+> ✅ **Fait (oct. 2026), en deux temps.**
 >
-> **Reste à faire côté mainteneur :** appliquer la migration
-> (`supabase db push`), puis vérifier qu'un `UPDATE profiles SET xp = 999999`
-> depuis un client authentifié est **refusé**, et qu'une fin de leçon crédite
-> toujours la bonne XP (une seule fois).
+> **1. Migration `20261019120000_secure_xp.sql`** (appliquée, vérifiée en prod
+> côté anonyme) : les colonnes `xp`/`level`/`league` ne sont plus modifiables
+> par le client (`revoke update … ; grant update (username,
+> interface_language, streak, lessons_completed, last_activity)`). Vérifié :
+> un `PATCH profiles {xp: 999999}` est refusé (`permission denied`).
+>
+> **2. Correctif — migration `20261019140000_complete_lesson.sql`.** La
+> première version exposait `award_xp(amount)` : le montant venait du client
+> (plafonné à 1000), donc un utilisateur connecté pouvait l'appeler en boucle
+> et gonfler son XP — la faille d'écriture directe était fermée, pas l'abus
+> via la RPC. De plus la fin de leçon était écrite en plusieurs requêtes
+> client : un échec au milieu laissait la leçon « terminée » sans XP, et la
+> relance ne rattrapait rien. Désormais :
+> - `complete_lesson(lesson_id)` (`SECURITY DEFINER`) fait tout **en une
+>   transaction** : marque la leçon terminée, crédite `lessons.xp_reward`
+>   **une seule fois** (`ON CONFLICT … WHERE completed = false`, atomique),
+>   recalcule niveau/ligue et `lessons_completed`. Aucun montant côté client.
+> - `grant_xp(user, amount)` est interne : exécution révoquée à
+>   `anon`/`authenticated`. `award_xp` est supprimée.
+> - `lessons_completed` n'est plus modifiable par le client.
+> - Client : `LessonService.completeLesson(lessonId)` → `LessonCompletion?`
+>   (`null` = échec, base inchangée, relance sûre via le bandeau existant).
+>   L'écran de fin affiche l'XP **réellement crédité** ; le compteur « +N XP »
+>   de l'en-tête reste un score de session, purement indicatif.
+> - Barème : **crédit fixe par leçon** (`xp_reward`), plus de total par exercice.
+>
+> **Limites connues (assumées).** Un client peut appeler `complete_lesson` sur
+> une leçon qu'il n'a pas faite : l'XP total reste borné par la somme des
+> `xp_reward` du catalogue, une fois par leçon, mais le serveur ne vérifie ni
+> les exercices réellement réussis ni le déblocage séquentiel. `streak` et
+> `last_activity` restent écrits par le client (la série est falsifiable ; elle
+> n'entre pas dans le classement, trié sur `xp`). Le SQL de `complete_lesson`
+> n'a pu être validé que par relecture (pas de Postgres local) : à confirmer
+> par un vrai parcours de leçon.
+>
+> **Reste à faire côté mainteneur :** `supabase db push`, puis terminer une
+> leçon (XP crédité = `xp_reward`, une seule fois ; la rejouer → +0).
 
 **Contexte.** La politique RLS `profiles_update_own` autorise un utilisateur à
 mettre à jour **sa propre ligne `profiles`** — colonnes `xp`, `level`, `league`
-comprises. L'XP est aujourd'hui calculée côté client (`ProfileService.addXP`).
+comprises. L'XP était calculée côté client (`ProfileService.addXP`, supprimée).
 Conséquence : un utilisateur authentifié peut écrire directement `xp = 999999`
 et truster le classement. Les valeurs de progression doivent être
 **autoritatives côté serveur**.

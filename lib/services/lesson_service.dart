@@ -111,65 +111,59 @@ class LessonService {
     }
   }
 
-  /// Enregistre la complétion d'une leçon, ajoute l'XP (une seule fois) et
-  /// met à jour le compteur de leçons terminées du profil.
+  /// Termine une leçon via la fonction serveur `complete_lesson` : marque la
+  /// leçon terminée, crédite l'XP de la leçon (`lessons.xp_reward`, **une
+  /// seule fois**), recalcule niveau/ligue et le compteur de leçons — le tout
+  /// en une transaction. Le client n'envoie aucun montant.
   ///
-  /// Renvoie `false` si la sauvegarde a échoué (hors-ligne…), pour que
-  /// l'UI puisse le signaler et proposer de réessayer.
-  static Future<bool> completeLesson({
+  /// Renvoie `null` si l'opération a échoué (hors-ligne…) : la base est alors
+  /// restée inchangée, donc l'UI peut proposer de réessayer sans risque de
+  /// double XP ni de leçon « terminée » sans XP.
+  static Future<LessonCompletion?> completeLesson({
     required String lessonId,
-    required int completedExercises,
-    required int totalExercises,
-    required int xpEarned,
   }) async {
-    final user = _client.auth.currentUser;
-    if (user == null) return false;
-    final isCompleted = completedExercises >= totalExercises;
-
+    if (_client.auth.currentUser == null) return null;
     try {
-      // État précédent (pour ne pas redonner d'XP si déjà terminée)
-      final prev = await _client
-          .from('lesson_progress')
-          .select('completed')
-          .eq('user_id', user.id)
-          .eq('lesson_id', lessonId)
-          .maybeSingle();
-      final wasCompleted = prev?['completed'] as bool? ?? false;
-
-      await _client.from('lesson_progress').upsert({
-        'user_id': user.id,
-        'lesson_id': lessonId,
-        'completed_exercises': completedExercises,
-        'completed': isCompleted,
-        'updated_at': DateTime.now().toIso8601String(),
-      });
-
-      // Activité du jour → met à jour la série (AVANT l'XP).
+      // Activité du jour → met à jour la série. Avant l'XP : la complétion
+      // réécrit `last_activity`, qui sert de référence au calcul de série.
+      // Idempotent dans la même journée, donc sûr à rejouer lors d'une relance.
       await ProfileService.updateStreak();
+      final data = await _client
+          .rpc('complete_lesson', params: {'p_lesson_id': lessonId});
       // Le rappel du jour devient inutile — best-effort, non bloquant.
       unawaited(NotificationService.sync(lastActivity: DateTime.now())
           .catchError((_) {}));
-
-      if (isCompleted && !wasCompleted) {
-        // award_xp (serveur) crédite l'XP ET recalcule niveau + ligue.
-        await ProfileService.addXP(xpEarned);
-      }
-
-      // Recompte les leçons terminées
-      final completedRows = await _client
-          .from('lesson_progress')
-          .select('lesson_id')
-          .eq('user_id', user.id)
-          .eq('completed', true);
-      await _client
-          .from('profiles')
-          .update({'lessons_completed': (completedRows as List).length})
-          .eq('id', user.id);
-      return true;
+      return LessonCompletion.fromRpc(data);
     } catch (_) {
-      // Pas de repli addXP ici : si l'upsert avait réussi avant l'échec,
-      // on créditerait l'XP en double. L'UI propose de réessayer.
-      return false;
+      return null;
     }
+  }
+}
+
+/// Résultat de [LessonService.completeLesson] : ce que le serveur a
+/// réellement crédité (et non ce que le client croit avoir gagné).
+class LessonCompletion {
+  /// XP crédité par cet appel. 0 si la leçon était déjà terminée (révision).
+  final int xpAwarded;
+
+  /// `true` si la leçon avait déjà été terminée auparavant.
+  final bool alreadyCompleted;
+
+  const LessonCompletion({
+    required this.xpAwarded,
+    required this.alreadyCompleted,
+  });
+
+  /// Lit la réponse JSON de `complete_lesson`. Tolérant : l'appel a réussi
+  /// côté serveur, une forme de réponse inattendue ne doit pas passer pour
+  /// un échec (et déclencher une relance inutile).
+  factory LessonCompletion.fromRpc(dynamic data) {
+    if (data is! Map) {
+      return const LessonCompletion(xpAwarded: 0, alreadyCompleted: false);
+    }
+    return LessonCompletion(
+      xpAwarded: (data['xp_awarded'] as num?)?.toInt() ?? 0,
+      alreadyCompleted: data['already_completed'] as bool? ?? false,
+    );
   }
 }
