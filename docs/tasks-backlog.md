@@ -290,6 +290,23 @@ sans infra de paiement et garde le chat accessible.
 ## 8. Rendre XP / niveau / ligue inviolables côté serveur
 **Labels :** `security`, `backend`, `priority: high`
 
+> ✅ **Fait (oct. 2026).** Migration `20261019120000_secure_xp.sql` :
+> fonction Postgres `award_xp(amount)` `SECURITY DEFINER` (journalise
+> `xp_events`, incrémente `xp`, recalcule `level` + `league` et
+> `last_activity`, barème identique à `leagueForXp`/level), bornée serveur
+> (`0 ≤ amount ≤ 1000`, appelant authentifié requis). Les colonnes
+> `xp`/`level`/`league` ne sont plus modifiables par le client :
+> `revoke update … ; grant update (username, interface_language, streak,
+> lessons_completed, last_activity)`. `ProfileService.addXP` appelle la RPC ;
+> `updateLeague` supprimé (la ligue est calculée par `award_xp`) ;
+> `leagueForXp` conservé (référence testée du barème). `analyze` + 30 tests
+> verts.
+>
+> **Reste à faire côté mainteneur :** appliquer la migration
+> (`supabase db push`), puis vérifier qu'un `UPDATE profiles SET xp = 999999`
+> depuis un client authentifié est **refusé**, et qu'une fin de leçon crédite
+> toujours la bonne XP (une seule fois).
+
 **Contexte.** La politique RLS `profiles_update_own` autorise un utilisateur à
 mettre à jour **sa propre ligne `profiles`** — colonnes `xp`, `level`, `league`
 comprises. L'XP est aujourd'hui calculée côté client (`ProfileService.addXP`).

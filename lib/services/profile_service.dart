@@ -75,24 +75,18 @@ class ProfileService {
     }
   }
 
+  /// Crédite l'XP **côté serveur** via la fonction Postgres `award_xp`
+  /// (SECURITY DEFINER, cf. migration secure_xp) : elle journalise l'événement
+  /// dans `xp_events`, incrémente le total et recalcule niveau + ligue, le tout
+  /// transactionnellement. Le client ne peut plus écrire xp/level/league en
+  /// direct — ces colonnes sont verrouillées par les grants de colonnes.
   static Future<void> addXP(int xp) async {
-    final user = _client.auth.currentUser;
-    if (user == null) return;
-    final profile = await getProfile();
-    if (profile == null) return;
-    final newXP = (profile['xp'] as int) + xp;
-    final newLevel = (newXP ~/ 1000) + 1;
-    await _client.from('profiles').update({
-      'xp': newXP,
-      'level': newLevel,
-      'last_activity': DateTime.now().toIso8601String(),
-    }).eq('id', user.id);
-    // Journal d'XP pour le graphique hebdomadaire (best-effort).
+    if (_client.auth.currentUser == null) return;
     try {
-      await _client
-          .from('xp_events')
-          .insert({'user_id': user.id, 'amount': xp});
-    } catch (_) {}
+      await _client.rpc('award_xp', params: {'amount': xp});
+    } catch (e) {
+      debugPrint('award_xp error: $e');
+    }
   }
 
   /// Série effective à AFFICHER. La valeur stockée n'est recalculée qu'à la
@@ -187,16 +181,6 @@ class ProfileService {
         'forest' => '🌲',
         _ => '🪨',
       };
-
-  static Future<void> updateLeague() async {
-    final user = _client.auth.currentUser;
-    if (user == null) return;
-    final profile = await getProfile();
-    if (profile == null) return;
-    await _client.from('profiles').update({
-      'league': leagueForXp(profile['xp'] as int),
-    }).eq('id', user.id);
-  }
 
   static const _avatarPalette = [
     Color(0xFF7C3AED),

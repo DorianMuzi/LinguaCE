@@ -151,8 +151,8 @@ class LessonService {
           .catchError((_) {}));
 
       if (isCompleted && !wasCompleted) {
+        // award_xp (serveur) crédite l'XP ET recalcule niveau + ligue.
         await ProfileService.addXP(xpEarned);
-        await ProfileService.updateLeague();
       }
 
       // Recompte les leçons terminées
