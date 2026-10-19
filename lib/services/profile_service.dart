@@ -185,58 +185,42 @@ class ProfileService {
   /// Si l'utilisateur connecté n'est pas dans le top [limit], sa propre
   /// ligne — avec son rang réel — est ajoutée en fin de liste, pour qu'un
   /// débutant se voie toujours dans le classement.
+  ///
+  /// Un seul aller-retour : la fonction Postgres `get_leaderboard` (cf.
+  /// migration leaderboard) renvoie le top [limit] ET, si besoin, la ligne de
+  /// l'appelant avec son vrai rang, avec un départage des ex æquo déterministe
+  /// (xp décroissant, puis id) et un index dédié.
   static Future<List<LeagueUser>> fetchLeaderboard({int limit = 20}) async {
-    final me = _client.auth.currentUser;
     try {
-      final rows = await _client
-          .from('profiles')
-          .select('id, username, xp')
-          .order('xp', ascending: false)
-          .limit(limit);
-      final list = rows as List;
-      final result = <LeagueUser>[];
-      for (var i = 0; i < list.length; i++) {
-        final r = list[i] as Map<String, dynamic>;
-        final name = (r['username'] as String?) ?? 'Apprenant';
-        result.add(LeagueUser(
-          name: name,
-          avatarInitials: name.isNotEmpty ? name[0].toUpperCase() : 'A',
-          avatarColor: _avatarPalette[i % _avatarPalette.length],
-          xp: (r['xp'] as int?) ?? 0,
-          rank: i + 1,
-          isCurrentUser: r['id'] == me?.id,
-        ));
-      }
-
-      if (me != null && !result.any((u) => u.isCurrentUser)) {
-        final mine = await _client
-            .from('profiles')
-            .select('username, xp')
-            .eq('id', me.id)
-            .maybeSingle();
-        if (mine != null) {
-          final myXp = (mine['xp'] as int?) ?? 0;
-          // Rang = nombre de profils strictement au-dessus + 1.
-          final higher = await _client
-              .from('profiles')
-              .select('id')
-              .gt('xp', myXp)
-              .count(CountOption.exact);
-          final name = (mine['username'] as String?) ?? 'Apprenant';
-          result.add(LeagueUser(
-            name: name,
-            avatarInitials: name.isNotEmpty ? name[0].toUpperCase() : 'A',
-            avatarColor: _avatarPalette[higher.count % _avatarPalette.length],
-            xp: myXp,
-            rank: higher.count + 1,
-            isCurrentUser: true,
-          ));
-        }
-      }
-      return result;
+      final rows =
+          await _client.rpc('get_leaderboard', params: {'p_limit': limit});
+      return leaderboardFromRows(rows);
     } catch (_) {
       return [];
     }
+  }
+
+  /// Convertit les lignes de `get_leaderboard` en [LeagueUser]. Le rang et
+  /// « c'est moi » viennent du serveur (le client ne les recalcule pas) ; la
+  /// couleur d'avatar dérive du rang pour rester stable d'un chargement à l'autre.
+  static List<LeagueUser> leaderboardFromRows(dynamic rows) {
+    if (rows is! List) return [];
+    final result = <LeagueUser>[];
+    for (final raw in rows) {
+      if (raw is! Map) continue;
+      final rank = (raw['rank'] as num?)?.toInt() ?? 0;
+      final name = (raw['username'] as String?) ?? 'Apprenant';
+      result.add(LeagueUser(
+        name: name,
+        avatarInitials: name.isNotEmpty ? name[0].toUpperCase() : 'A',
+        avatarColor: _avatarPalette[(rank <= 0 ? 0 : rank - 1) %
+            _avatarPalette.length],
+        xp: (raw['xp'] as num?)?.toInt() ?? 0,
+        rank: rank,
+        isCurrentUser: raw['is_me'] == true,
+      ));
+    }
+    return result;
   }
 
   /// XP gagné par jour sur les 7 derniers jours (du plus ancien au plus

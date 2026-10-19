@@ -382,6 +382,30 @@ et truster le classement. Les valeurs de progression doivent être
 ## 9. Rang du classement via fonction Postgres + index
 **Labels :** `backend`, `performance`, `priority: medium`
 
+> ✅ **Fait (oct. 2026), à appliquer** — migration
+> `20261019150000_leaderboard.sql` :
+> - index `profiles_xp_id_idx` sur `(xp desc, id asc)`, qui sert au tri du top
+>   N **et** au comptage du rang ;
+> - `get_leaderboard(p_limit)` (SQL, `SECURITY INVOKER` : la visibilité reste
+>   celle de la RLS `profiles_select_all`) renvoie le top N (borné à 100
+>   côté serveur) **plus** la ligne de l'appelant avec son vrai rang s'il n'y
+>   figure pas — **un seul aller-retour** ;
+> - départage des ex æquo **déterministe** : `xp` décroissant puis `id`
+>   croissant (pas `created_at`, nullable) ;
+> - client : `fetchLeaderboard` appelle la RPC (plus de seconde requête
+>   `COUNT`) ; la conversion est isolée dans `leaderboardFromRows` et testée
+>   (top, joueur hors top avec rang réel, entrées dégradées). `analyze` + 38
+>   tests verts.
+>
+> **Non démontré :** le critère « le plan d'exécution utilise l'index ». Sans
+> Postgres local et avec une table de quelques lignes, le planificateur choisit
+> de toute façon un scan séquentiel : un `explain analyze` aujourd'hui ne
+> prouverait rien. À mesurer sur une table peuplée (quelques milliers de
+> profils). Le SQL n'a été validé que par relecture (pas de Postgres local).
+>
+> **Reste à faire côté mainteneur :** `supabase db push`, puis ouvrir l'écran
+> Progrès : classement affiché, ta ligne marquée « moi », rang correct.
+
 **Contexte.** `ProfileService.fetchLeaderboard` récupère le top 20 puis, si
 l'utilisateur n'y est pas, fait une **seconde requête** `COUNT(*) WHERE xp > moi`
 pour son rang. Or il n'existe **aucun index sur `profiles.xp`** : le tri du

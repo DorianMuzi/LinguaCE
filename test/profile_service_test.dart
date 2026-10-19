@@ -57,4 +57,57 @@ void main() {
       expect(ProfileService.normalizeLeague('???'), 'stone');
     });
   });
+
+  group('ProfileService.leaderboardFromRows', () {
+    test('conserve rang, XP et « c\'est moi » tels que fournis par le serveur',
+        () {
+      final list = ProfileService.leaderboardFromRows([
+        {'rank': 1, 'user_id': 'a', 'username': 'Aïcha', 'xp': 4120, 'is_me': false},
+        {'rank': 2, 'user_id': 'b', 'username': 'moi', 'xp': 2847, 'is_me': true},
+      ]);
+      expect(list.map((u) => u.rank), [1, 2]);
+      expect(list.map((u) => u.xp), [4120, 2847]);
+      expect(list.map((u) => u.isCurrentUser), [false, true]);
+      expect(list.first.avatarInitials, 'A');
+    });
+
+    test('joueur hors du top : sa ligne arrive avec son vrai rang', () {
+      // Le serveur ajoute la ligne de l'appelant après le top, rang réel (57).
+      final list = ProfileService.leaderboardFromRows([
+        {'rank': 1, 'username': 'a', 'xp': 900, 'is_me': false},
+        {'rank': 57, 'username': 'moi', 'xp': 12, 'is_me': true},
+      ]);
+      expect(list.last.rank, 57);
+      expect(list.last.isCurrentUser, isTrue);
+      expect(list.where((u) => u.isCurrentUser), hasLength(1));
+    });
+
+    test('la couleur d\'avatar est stable pour un même rang', () {
+      final a = ProfileService.leaderboardFromRows([
+        {'rank': 3, 'username': 'x', 'xp': 1, 'is_me': false},
+      ]).single;
+      final b = ProfileService.leaderboardFromRows([
+        {'rank': 3, 'username': 'y', 'xp': 9, 'is_me': true},
+      ]).single;
+      expect(a.avatarColor, b.avatarColor);
+    });
+
+    test('entrées dégradées : pas de crash, valeurs par défaut', () {
+      expect(ProfileService.leaderboardFromRows(null), isEmpty);
+      expect(ProfileService.leaderboardFromRows('ko'), isEmpty);
+      expect(ProfileService.leaderboardFromRows(<dynamic>[]), isEmpty);
+
+      final list = ProfileService.leaderboardFromRows([
+        'pas une map',
+        {'rank': 5, 'xp': 7.0}, // username absent, xp flottant
+        {'username': ''}, // rank/xp absents, nom vide
+      ]);
+      expect(list, hasLength(2));
+      expect(list[0].name, 'Apprenant');
+      expect(list[0].xp, 7);
+      expect(list[0].isCurrentUser, isFalse);
+      expect(list[1].avatarInitials, 'A');
+      expect(list[1].rank, 0);
+    });
+  });
 }
