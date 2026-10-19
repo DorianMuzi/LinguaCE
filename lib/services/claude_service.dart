@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../config/app_config.dart';
+import '../i18n/app_strings.dart';
 import '../models/models.dart';
 
 class ClaudeService {
@@ -451,9 +452,12 @@ Couleurs :
 
       return _parseJsonReply(res.data);
     } on FunctionException catch (e) {
+      // Erreurs durcies côté serveur (tâche #7).
+      if (e.status == 401) throw Exception(tr('err.session_expired'));
+      if (e.status == 429) throw Exception(tr('err.quota_reached'));
       final details = e.details;
       if (details is Map && details['error'] is Map) {
-        throw Exception(details['error']['message'] ?? 'Erreur serveur.');
+        throw Exception(details['error']['message'] ?? tr('err.generic'));
       }
       throw Exception(
         'La fonction « chat » est-elle déployée ? '
@@ -506,6 +510,9 @@ Couleurs :
     try {
       final res =
           await client.send(req).timeout(const Duration(seconds: 30));
+      // Erreurs durcies côté serveur (tâche #7) : statut HTTP explicite.
+      if (res.statusCode == 401) throw Exception(tr('err.session_expired'));
+      if (res.statusCode == 429) throw Exception(tr('err.quota_reached'));
       final contentType = res.headers['content-type'] ?? '';
 
       if (!contentType.contains('text/event-stream')) {

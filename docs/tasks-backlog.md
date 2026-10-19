@@ -244,6 +244,27 @@ quel. Tout nouvel exemple ou toute correction doit être marqué
 ## 7. Durcir l'Edge Function `chat` (auth + bornes + quota gratuit)
 **Labels :** `security`, `backend`, `priority: high`
 
+> ✅ **Fait (oct. 2026).** Edge Function `chat` durcie + migration
+> `20261019130000_chat_quota.sql`.
+> - **Auth** : JWT de l'appelant validé via `getUser` → **401** sinon (la clé
+>   anon publique ne suffit plus, le proxy n'est plus ouvert).
+> - **Bornes serveur** : `max_tokens` plafonné (1024), nombre de messages
+>   (≤ 24) et taille du corps (≤ 256 KB) limités, sans confiance au client.
+> - **Quota quotidien** : table `chat_usage(user_id, day, count)` (RLS select
+>   own, écriture client révoquée) + `consume_chat_quota(daily_limit)`
+>   `SECURITY DEFINER` à **incrément atomique** (ne compte que les requêtes
+>   acceptées, jour UTC). Au-delà → **429**. Barème via `CHAT_DAILY_QUOTA`
+>   (défaut 20).
+> - **Client** : `ClaudeService` mappe 401 → « session expirée » et 429 →
+>   « quota atteint » (i18n `err.session_expired` / `err.quota_reached`, CE
+>   best-effort à relire), chemins invoke ET streaming. SSE intact.
+>   `analyze` + 30 tests verts.
+>
+> **Reste à faire côté mainteneur :** `supabase db push` puis
+> `supabase functions deploy chat` ; vérifier qu'un appel sans JWT valide
+> renvoie 401 et qu'au-delà du quota l'API renvoie 429. CE des 2 messages
+> d'erreur à valider sur #chechen-linguistics.
+
 **Contexte.** `supabase/functions/chat/index.ts` ne vérifie que la présence de
 la clé `ANTHROPIC_API_KEY`. Elle **ne valide pas l'appelant** : la clé `anon`
 Supabase est publique (embarquée dans le client), donc n'importe qui peut

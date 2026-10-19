@@ -437,6 +437,18 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Произошла ошибка. Попробуйте снова.',
     'CE': 'ġalat xilla. Yuxa ġort.'
   },
+  'err.session_expired': {
+    'FR': 'Session expirée. Reconnecte-toi.',
+    'EN': 'Session expired. Please sign in again.',
+    'RU': 'Сессия истекла. Войдите снова.',
+    'CE': 'Yuxa çuvala deza ẋuna.'
+  },
+  'err.quota_reached': {
+    'FR': 'Limite quotidienne du chat atteinte. Réessaie demain.',
+    'EN': 'Daily chat limit reached. Try again tomorrow.',
+    'RU': 'Дневной лимит чата исчерпан. Попробуйте завтра.',
+    'CE': 'Taxana chat yac. Kxana yuxa ġort.'
+  },
 
   'err.google_signin': {
     'FR': 'Connexion Google échouée.',
