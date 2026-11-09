@@ -13,6 +13,11 @@ void main() {
       });
       expect(r.xpAwarded, 100);
       expect(r.alreadyCompleted, isFalse);
+      expect(r.level, 1);
+    });
+
+    test('niveau absent de la réponse : null, pas de valeur inventée', () {
+      expect(LessonCompletion.fromRpc({'xp_awarded': 0}).level, isNull);
     });
 
     test('révision : aucun XP, déjà terminée', () {

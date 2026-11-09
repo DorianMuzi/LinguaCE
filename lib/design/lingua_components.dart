@@ -683,10 +683,65 @@ class LeagueBadge extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Illustrations de marque (assets/brand/), issues du design system.
+//
+// JPG peints, en portrait (784×1168) sur fond navy : toujours affichés en
+// recadrage circulaire. `cacheWidth` évite de décoder l'image pleine taille
+// pour une pastille de quelques dizaines de pixels.
+// ─────────────────────────────────────────────────────────────────────────────
+abstract final class BrandAssets {
+  /// Naxçi, l'assistant IA — direction « flamme », retenue par le système.
+  static const naxci = 'assets/brand/naxci-flamme.jpg';
+
+  /// Nombre d'évolutions de Pkharmat illustrées.
+  static const pkharmatStages = 8;
+
+  /// Pkharmat au stade correspondant à [level]. Le niveau du joueur n'est pas
+  /// borné : au-delà du dernier stade illustré, on garde le dernier.
+  static String pkharmat(int level) =>
+      'assets/brand/pkharmat-${level.clamp(1, pkharmatStages)}.jpg';
+
+  /// Recadrage circulaire d'une illustration de marque. Purement décoratif :
+  /// exclu de l'arbre sémantique (le sens est porté par le texte voisin).
+  static Widget circle(
+    BuildContext context,
+    String asset, {
+    required double size,
+    Alignment alignment = Alignment.center,
+  }) {
+    final dpr = MediaQuery.devicePixelRatioOf(context);
+    return ClipOval(
+      child: Image.asset(
+        asset,
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        alignment: alignment,
+        cacheWidth: (size * dpr).round(),
+        excludeFromSemantics: true,
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Avatar de Naxçi : pastille ronde à côté de ses messages dans le chat.
+// ─────────────────────────────────────────────────────────────────────────────
+class NaxciAvatar extends StatelessWidget {
+  final double size;
+
+  const NaxciAvatar({super.key, this.size = 32});
+
+  @override
+  Widget build(BuildContext context) =>
+      BrandAssets.circle(context, BrandAssets.naxci, size: size);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Médaillon : cadre ornemental grenat et or. Emplacement d'illustration.
 //
-// `image` reste vide jusqu'à ce qu'une vraie illustration existe — le cadre
-// tient seul, il ne réclame pas de remplissage.
+// Sans `image`, le cadre tient seul (glyphe flamme) — il ne réclame pas de
+// remplissage. `Medallion.pkharmat` y loge Pkharmat au stade du niveau donné.
 // ─────────────────────────────────────────────────────────────────────────────
 class Medallion extends StatelessWidget {
   final double size;
@@ -694,6 +749,23 @@ class Medallion extends StatelessWidget {
   final int? level;
 
   const Medallion({super.key, this.size = 132, this.image, this.level});
+
+  /// Médaillon de Pkharmat au stade du [level] du joueur (pastille « NIV. »
+  /// incluse). Le visage est dans le tiers haut des illustrations : le
+  /// recadrage est remonté pour ne pas le couper.
+  static Widget pkharmat(BuildContext context,
+      {required int level, double size = 132}) {
+    return Medallion(
+      size: size,
+      level: level,
+      image: BrandAssets.circle(
+        context,
+        BrandAssets.pkharmat(level),
+        size: size * 0.68,
+        alignment: const Alignment(0, -0.5),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

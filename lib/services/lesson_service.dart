@@ -149,9 +149,14 @@ class LessonCompletion {
   /// `true` si la leçon avait déjà été terminée auparavant.
   final bool alreadyCompleted;
 
+  /// Niveau du joueur après l'opération (`null` si le serveur ne l'a pas
+  /// renvoyé) — sert à choisir le stade de Pkharmat sur l'écran de fin.
+  final int? level;
+
   const LessonCompletion({
     required this.xpAwarded,
     required this.alreadyCompleted,
+    this.level,
   });
 
   /// Lit la réponse JSON de `complete_lesson`. Tolérant : l'appel a réussi
@@ -164,6 +169,7 @@ class LessonCompletion {
     return LessonCompletion(
       xpAwarded: (data['xp_awarded'] as num?)?.toInt() ?? 0,
       alreadyCompleted: data['already_completed'] as bool? ?? false,
+      level: (data['level'] as num?)?.toInt(),
     );
   }
 }

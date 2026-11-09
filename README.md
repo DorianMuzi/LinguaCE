@@ -176,6 +176,11 @@ This project is licensed under the **Apache License 2.0** — see the
 The **Chechen Latin Script** transliteration system is proprietary and **not**
 covered by the Apache 2.0 license.
 
+The brand illustrations in `assets/brand/` (Naxçi, Pkharmat, the league
+animals) are part of the LinguaCE brand identity. They are likewise **not**
+covered by the Apache 2.0 license — please do not reuse them outside this
+project.
+
 <div align="center">
 
 **Noxçiyŋ mott bayna djabala ca beza. 🤍**

@@ -52,6 +52,10 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   /// que la sauvegarde n'a pas abouti). Distinct de [_xpEarned], qui n'est
   /// que le compteur de points de la session.
   int? _xpCredited;
+
+  /// Niveau du joueur renvoyé par le serveur à la fin de la leçon : choisit le
+  /// stade de Pkharmat du médaillon de l'écran de fin.
+  int? _levelAfter;
   bool _retrying = false;
 
   late AnimationController _flipCtrl;
@@ -219,7 +223,12 @@ class _ExerciseScreenState extends State<ExerciseScreen>
     final result =
         await LessonService.completeLesson(lessonId: widget.lesson.id);
     if (result == null) return false;
-    if (mounted) setState(() => _xpCredited = result.xpAwarded);
+    if (mounted) {
+      setState(() {
+        _xpCredited = result.xpAwarded;
+        _levelAfter = result.level;
+      });
+    }
     return true;
   }
 
@@ -884,10 +893,22 @@ class _ExerciseScreenState extends State<ExerciseScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              perfect ? Icons.emoji_events_rounded : Icons.school_rounded,
-              size: 76,
-              color: perfect ? t.goldInk : t.textAccent,
+            // Pkharmat au stade du niveau du joueur, dès que le serveur l'a
+            // confirmé. La hauteur est réservée d'emblée : l'écran ne saute
+            // pas quand le médaillon remplace l'icône d'attente.
+            SizedBox(
+              height: 132,
+              child: Center(
+                child: _levelAfter != null
+                    ? Medallion.pkharmat(context, level: _levelAfter!)
+                    : Icon(
+                        perfect
+                            ? Icons.emoji_events_rounded
+                            : Icons.school_rounded,
+                        size: 76,
+                        color: perfect ? t.goldInk : t.textAccent,
+                      ),
+              ),
             ),
             const SizedBox(height: 24),
             Text(tr(perfect ? 'ex.done_perfect' : 'ex.done'),

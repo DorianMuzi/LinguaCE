@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../design/lingua_components.dart';
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../i18n/app_strings.dart';
@@ -395,18 +396,7 @@ class _ChatScreenState extends State<ChatScreen> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               if (!isUser) ...[
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: t.accentTint,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Icon(Icons.smart_toy_rounded,
-                        size: 14, color: t.textAccent),
-                  ),
-                ),
+                const NaxciAvatar(),
                 const SizedBox(width: 8),
               ],
               Flexible(
@@ -504,16 +494,7 @@ class _ChatScreenState extends State<ChatScreen> {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Container(
-            width: 32,
-            height: 32,
-            decoration:
-                BoxDecoration(color: t.accentTint, shape: BoxShape.circle),
-            child: Center(
-              child:
-                  Icon(Icons.smart_toy_rounded, size: 14, color: t.textAccent),
-            ),
-          ),
+          const NaxciAvatar(),
           const SizedBox(width: 8),
           Container(
             padding:
