@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -276,6 +277,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     // Toute la ligne bascule, pas seulement l'interrupteur.
                     onTap: () => _toggleTheme(!t.isDark),
                   ),
+                  if (!kIsWeb) // pas de rappels locaux sur le web
                   _DrawerItem(
                     icon: Icons.notifications_outlined,
                     label: tr('set.notifications'),

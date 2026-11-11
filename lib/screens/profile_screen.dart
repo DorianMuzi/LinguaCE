@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../design/lingua_tokens.dart';
@@ -329,7 +330,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Widget chevron() =>
         Icon(Icons.chevron_right_rounded, color: t.textSecondary, size: 20);
     final items = <(IconData, String, Widget, VoidCallback)>[
-      (
+      // Pas de rappels locaux sur le web : la ligne y serait un leurre (elle
+      // se remettait à « off » avec un faux « autorisation refusée »).
+      if (!kIsWeb) (
         Icons.notifications_outlined,
         tr('set.notifications'),
         Switch(
