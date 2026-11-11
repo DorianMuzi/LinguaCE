@@ -5,11 +5,11 @@ import '../main.dart' show themeController;
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../i18n/app_strings.dart';
-import '../i18n/locale_controller.dart';
 import '../services/profile_service.dart';
 import '../services/auth_service.dart';
 import '../screens/auth_screen.dart';
 import '../screens/profile_screen.dart';
+import 'language_picker.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -41,6 +41,18 @@ class _AppDrawerState extends State<AppDrawer> {
   String get _initials =>
       _username.isNotEmpty ? _username[0].toUpperCase() : 'A';
 
+  /// Ferme le drawer et renvoie le Navigator de l'app.
+  ///
+  /// Une fois le drawer fermé, SON `context` est démonté : tout ce qui suit
+  /// (boîte de dialogue, navigation, `mounted`) doit passer par le Navigator,
+  /// qui, lui, reste en vie. C'était la cause des boutons « morts » :
+  /// Déconnexion s'arrêtait sur `!mounted`, Fermer (À propos) plantait.
+  NavigatorState _closeDrawer() {
+    final navigator = Navigator.of(context);
+    navigator.pop();
+    return navigator;
+  }
+
   /// Partage : copie le lien de l'app dans le presse-papier + confirmation.
   Future<void> _shareApp() async {
     final messenger = ScaffoldMessenger.of(context);
@@ -62,9 +74,9 @@ class _AppDrawerState extends State<AppDrawer> {
 
   Future<void> _signOut() async {
     final t = context.tokens;
-    Navigator.pop(context);
+    final navigator = _closeDrawer();
     final confirmed = await showDialog<bool>(
-      context: context,
+      context: navigator.context,
       builder: (ctx) => AlertDialog(
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
@@ -88,10 +100,10 @@ class _AppDrawerState extends State<AppDrawer> {
         ],
       ),
     );
-    if (confirmed != true || !mounted) return;
+    if (confirmed != true || !navigator.mounted) return;
     await AuthService.signOut();
-    if (!mounted) return;
-    Navigator.of(context).pushAndRemoveUntil(
+    if (!navigator.mounted) return;
+    navigator.pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => const AuthScreen()),
       (_) => false,
     );
@@ -99,10 +111,10 @@ class _AppDrawerState extends State<AppDrawer> {
 
   void _showAbout() {
     final t = context.tokens;
-    Navigator.pop(context);
+    final navigator = _closeDrawer();
     showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
+      context: navigator.context,
+      builder: (dialogContext) => AlertDialog(
         backgroundColor: t.surfaceRaised,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
         title: Row(children: [
@@ -140,7 +152,7 @@ class _AppDrawerState extends State<AppDrawer> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: Text(tr('common.close'),
                 style: GoogleFonts.manrope(color: t.accent)),
           ),
@@ -150,53 +162,12 @@ class _AppDrawerState extends State<AppDrawer> {
   }
 
   void _showLanguagePicker() {
-    final t = context.tokens;
-    // Capturé tant que le drawer est monté : reste valide après sa fermeture.
-    final messenger = ScaffoldMessenger.of(context);
-    Navigator.pop(context); // ferme le drawer
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        backgroundColor: t.surfaceRaised,
-        shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rLg),
-        title: Text(tr('set.interface_lang'),
-            style: GoogleFonts.oswald(
-                color: t.textPrimary, fontSize: 18)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: LocaleController.supported.map((code) {
-            final selected = localeController.value == code;
-            return ListTile(
-              title: Text('$code — ${LocaleController.names[code]}',
-                  style: GoogleFonts.manrope(
-                      color: selected ? t.accent : t.textPrimary,
-                      fontSize: 14,
-                      fontWeight:
-                          selected ? FontWeight.w600 : FontWeight.normal)),
-              trailing: selected
-                  ? Icon(Icons.check_rounded, color: t.accent, size: 18)
-                  : null,
-              onTap: () {
-                Navigator.of(dialogContext).pop(); // ferme la boîte de dialogue
-                localeController.setLang(code);
-                messenger.showSnackBar(SnackBar(
-                  content: Text(
-                      tr('lang.selected',
-                          {'lang': LocaleController.names[code]!}),
-                      style: GoogleFonts.manrope(color: Colors.white)),
-                  backgroundColor: t.accentStrong,
-                  behavior: SnackBarBehavior.floating,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: LinguaRadius.rMd),
-                  margin: const EdgeInsets.all(16),
-                ));
-              },
-            );
-          }).toList(),
-        ),
-      ),
-    );
+    final navigator = _closeDrawer();
+    showLanguagePicker(navigator.context);
   }
+
+  void _toggleTheme(bool dark) =>
+      themeController.setMode(dark ? ThemeMode.dark : ThemeMode.light);
 
   @override
   Widget build(BuildContext context) {
@@ -296,13 +267,14 @@ class _AppDrawerState extends State<AppDrawer> {
                         ? Icons.dark_mode_outlined
                         : Icons.light_mode_outlined,
                     label: tr('drawer.theme'),
+                    // Couleurs du thème (pouce blanc sur piste bleue) : un
+                    // `activeColor` local rendait le pouce invisible.
                     trailing: Switch(
                       value: t.isDark,
-                      onChanged: (v) => themeController
-                          .setMode(v ? ThemeMode.dark : ThemeMode.light),
-                      activeColor: t.accent,
+                      onChanged: _toggleTheme,
                     ),
-                    onTap: () {},
+                    // Toute la ligne bascule, pas seulement l'interrupteur.
+                    onTap: () => _toggleTheme(!t.isDark),
                   ),
                   _DrawerItem(
                     icon: Icons.notifications_outlined,
@@ -310,12 +282,8 @@ class _AppDrawerState extends State<AppDrawer> {
                     onTap: () {
                       // Le réglage (toggle + permission) vit dans Profil —
                       // évite un doublon d'état avec NotificationService.
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const ProfileScreen()),
-                      );
+                      _closeDrawer().push(MaterialPageRoute(
+                          builder: (_) => const ProfileScreen()));
                     },
                   ),
                   _DrawerItem(

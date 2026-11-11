@@ -467,18 +467,76 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Язык интерфейса',
     'CE': 'Interfaceaŋ mott'
   },
-  'set.sounds': {'FR': 'Sons', 'EN': 'Sounds', 'RU': 'Звуки', 'CE': 'Ozaş'},
   'set.privacy': {
     'FR': 'Confidentialité',
     'EN': 'Privacy',
     'RU': 'Конфиденциальность',
     'CE': 'Q̇aylaxalla'
   },
+  // Textes longs : pas encore de version CE (repli sur le FR).
+  'set.privacy_body': {
+    'FR': 'Ce que LinguaCE enregistre :\n'
+        '• ton compte (adresse e-mail) et ton profil : pseudo, XP, niveau, '
+        'série, ligue ;\n'
+        '• ta progression dans les leçons ;\n'
+        '• ton historique de chat avec Naxçi (efface-le depuis le chat, '
+        'icône corbeille) ;\n'
+        '• les erreurs que tu signales.\n\n'
+        'Tes messages à Naxçi sont transmis à Claude (Anthropic) pour '
+        'générer les réponses.\n\n'
+        'Ton pseudo et ton XP apparaissent dans le classement.\n\n'
+        'Langue, thème, niveau et rappels restent sur ton appareil.\n\n'
+        'Une question ? Écris-nous sur Discord : discord.gg/fnPmjfttc',
+    'EN': 'What LinguaCE stores:\n'
+        '• your account (email address) and profile: username, XP, level, '
+        'streak, league;\n'
+        '• your lesson progress;\n'
+        '• your chat history with Naxçi (clear it from the chat, trash '
+        'icon);\n'
+        '• the errors you report.\n\n'
+        'Your messages to Naxçi are sent to Claude (Anthropic) to generate '
+        'the replies.\n\n'
+        'Your username and XP appear on the leaderboard.\n\n'
+        'Language, theme, level and reminders stay on your device.\n\n'
+        'Any question? Reach us on Discord: discord.gg/fnPmjfttc',
+    'RU': 'Что хранит LinguaCE:\n'
+        '• твой аккаунт (адрес эл. почты) и профиль: имя, XP, уровень, '
+        'серия, лига;\n'
+        '• твой прогресс в уроках;\n'
+        '• история чата с Naxçi (её можно удалить в чате, значок корзины);\n'
+        '• ошибки, о которых ты сообщаешь.\n\n'
+        'Твои сообщения Naxçi передаются Claude (Anthropic) для создания '
+        'ответов.\n\n'
+        'Твоё имя и XP видны в рейтинге.\n\n'
+        'Язык, тема, уровень и напоминания остаются на твоём устройстве.\n\n'
+        'Вопросы? Пиши нам в Discord: discord.gg/fnPmjfttc',
+  },
   'set.help': {
     'FR': 'Aide & Support',
     'EN': 'Help & Support',
     'RU': 'Помощь',
     'CE': 'Ġönna'
+  },
+  'set.help_body': {
+    'FR': 'Une question sur le tchétchène ? Pose-la à Naxçi, dans l\'onglet '
+        'Chat.\n\n'
+        'Un mot mal traduit ou mal transcrit ? Dans une leçon, touche le '
+        'drapeau pour le signaler.\n\n'
+        'Un bug, une idée ? Rejoins la communauté :\n'
+        'Discord : discord.gg/fnPmjfttc\n'
+        'Instagram : @lingua_ce',
+    'EN': 'A question about Chechen? Ask Naxçi in the Chat tab.\n\n'
+        'A word badly translated or transliterated? In a lesson, tap the '
+        'flag to report it.\n\n'
+        'A bug, an idea? Join the community:\n'
+        'Discord: discord.gg/fnPmjfttc\n'
+        'Instagram: @lingua_ce',
+    'RU': 'Вопрос о чеченском? Задай его Naxçi во вкладке «Чат».\n\n'
+        'Слово переведено или транслитерировано неверно? В уроке нажми на '
+        'флажок, чтобы сообщить.\n\n'
+        'Ошибка, идея? Присоединяйся к сообществу:\n'
+        'Discord: discord.gg/fnPmjfttc\n'
+        'Instagram: @lingua_ce',
   },
 
   // ── Menu latéral (drawer) ─────────────────────────────────────────────────

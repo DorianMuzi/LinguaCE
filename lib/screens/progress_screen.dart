@@ -170,7 +170,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: List.generate(7, (i) {
                 final xp = xpData[i];
-                final height = maxXp > 0 ? (xp / maxXp) * 72 : 0.0;
+                // 66 px max : chiffre du jour + barre + jour tiennent dans
+                // les 110 px (à 72, la colonne débordait d'un pixel).
+                final height = maxXp > 0 ? (xp / maxXp) * 66 : 0.0;
                 final isToday = i == 6;
                 return Expanded(
                   child: Padding(

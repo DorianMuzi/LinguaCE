@@ -5,10 +5,12 @@ import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
 import '../i18n/app_strings.dart';
+import '../i18n/locale_controller.dart';
 import '../services/auth_service.dart';
 import '../services/notification_service.dart';
 import '../services/onboarding_service.dart';
 import '../services/profile_service.dart';
+import '../widgets/language_picker.dart';
 import '../widgets/xp_bar.dart';
 import 'auth_screen.dart';
 
@@ -322,14 +324,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildSettingsSection(LinguaTokens t) {
-    // Seul l'item Notifications (index 0) est réellement câblé (tâche #1) ;
-    // les autres toggles restent des maquettes, comme avant.
-    final items = [
-      (Icons.notifications_outlined, tr('set.notifications'), true),
-      (Icons.language_outlined, tr('set.interface_lang'), false),
-      (Icons.volume_up_outlined, tr('set.sounds'), true),
-      (Icons.privacy_tip_outlined, tr('set.privacy'), false),
-      (Icons.help_outline_rounded, tr('set.help'), false),
+    // Chaque ligne fait quelque chose de réel. (« Sons » a été retiré : l'app
+    // n'émet aucun son, l'interrupteur ne pilotait rien.)
+    Widget chevron() =>
+        Icon(Icons.chevron_right_rounded, color: t.textSecondary, size: 20);
+    final items = <(IconData, String, Widget, VoidCallback)>[
+      (
+        Icons.notifications_outlined,
+        tr('set.notifications'),
+        Switch(
+          value: _notificationsEnabled,
+          onChanged: _onToggleNotifications,
+        ),
+        () => _onToggleNotifications(!_notificationsEnabled),
+      ),
+      (
+        Icons.language_outlined,
+        tr('set.interface_lang'),
+        Row(mainAxisSize: MainAxisSize.min, children: [
+          Text(LocaleController.names[localeController.value] ?? '',
+              style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 14)),
+          chevron(),
+        ]),
+        () async {
+          await showLanguagePicker(context);
+          if (mounted) setState(() {});
+        },
+      ),
+      (
+        Icons.privacy_tip_outlined,
+        tr('set.privacy'),
+        chevron(),
+        () => _showInfo(tr('set.privacy'), tr('set.privacy_body')),
+      ),
+      (
+        Icons.help_outline_rounded,
+        tr('set.help'),
+        chevron(),
+        () => _showInfo(tr('set.help'), tr('set.help_body')),
+      ),
     ];
     return CopilotCard(
       padding: EdgeInsets.zero,
@@ -356,10 +389,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           Divider(height: 1, color: t.outlineSubtle, indent: 52),
           ...items.asMap().entries.map((e) {
-          final (icon, label, hasSwitch) = e.value;
-          final index = e.key;
-          final isLast = index == items.length - 1;
-          final isNotifications = index == 0;
+          final (icon, label, trailing, onTap) = e.value;
+          final isLast = e.key == items.length - 1;
           return Column(
             children: [
               ListTile(
@@ -367,17 +398,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: Text(label,
                     style:
                         GoogleFonts.manrope(color: t.textPrimary, fontSize: 15)),
-                trailing: hasSwitch
-                    ? Switch(
-                        value:
-                            isNotifications ? _notificationsEnabled : true,
-                        onChanged:
-                            isNotifications ? _onToggleNotifications : (_) {},
-                        activeColor: t.accent,
-                      )
-                    : Icon(Icons.chevron_right_rounded,
-                        color: t.textSecondary, size: 20),
-                onTap: () {},
+                trailing: trailing,
+                onTap: onTap,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
               ),
               if (!isLast)
@@ -386,6 +408,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
           );
         }),
         ],
+      ),
+    );
+  }
+
+  /// Panneau d'information simple (Confidentialité, Aide).
+  Future<void> _showInfo(String title, String body) {
+    final t = context.tokens;
+    return showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      backgroundColor: t.surfaceRaised,
+      builder: (_) => SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Semantics(
+                header: true,
+                child: Text(title,
+                    style: GoogleFonts.oswald(
+                        color: t.textPrimary,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700)),
+              ),
+              const SizedBox(height: 12),
+              SelectableText(body,
+                  style: GoogleFonts.manrope(
+                      color: t.textSecondary, fontSize: 14, height: 1.55)),
+            ],
+          ),
+        ),
       ),
     );
   }

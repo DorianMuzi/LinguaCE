@@ -212,7 +212,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       GoogleFonts.manrope(color: t.textPrimary, fontSize: 15)),
               value: _reminder,
               onChanged: (v) => setState(() => _reminder = v),
-              activeColor: t.accent,
+              // Couleurs du thème : pouce blanc visible sur la piste bleue.
             ),
           ),
         ],
