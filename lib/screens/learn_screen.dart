@@ -196,7 +196,11 @@ class _LessonCard extends StatelessWidget {
     final isCompleted = lesson.status == LessonStatus.completed;
     final isActive = lesson.status == LessonStatus.active;
 
-    return Padding(
+    // Annoncée comme bouton ; verrouillée = bouton désactivé.
+    return Semantics(
+      button: true,
+      enabled: !isLocked,
+      child: Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: GestureDetector(
         onTap: isLocked ? null : onOpen,
@@ -324,6 +328,7 @@ class _LessonCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

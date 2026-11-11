@@ -33,7 +33,9 @@ class LinguaTheme {
       onSurface: t.textPrimary,
       surfaceContainerHighest: t.surfaceSunken,
       error: t.danger,
-      onError: Colors.white,
+      // En sombre, `danger` est un rouge clair d'encre : le texte posé dessus
+      // doit être foncé.
+      onError: t.isDark ? LinguaPalette.navy900 : Colors.white,
       outline: t.outline,
       outlineVariant: t.outlineSubtle,
     );

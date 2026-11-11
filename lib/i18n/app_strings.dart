@@ -537,6 +537,8 @@ const Map<String, Map<String, String>> _strings = {
   },
 
   // ── Chat ──────────────────────────────────────────────────────────────────
+  'chat.send':
+      {'FR': 'Envoyer', 'EN': 'Send', 'RU': 'Отправить', 'CE': 'Djadaxiyta'},
   'chat.language': {'FR': 'Langue :', 'EN': 'Language:', 'RU': 'Язык:', 'CE': 'Mott:'},
   'chat.ai_label': {
     'FR': 'IA Tchétchène',

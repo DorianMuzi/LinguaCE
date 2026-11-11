@@ -245,11 +245,11 @@ class _AuthScreenState extends State<AuthScreen> {
                         MaterialPageRoute(
                             builder: (_) => const ForgotPasswordScreen()),
                       ),
+                      // Cible de 44 px (le texte reste discret, c'est la zone
+                      // de tap qui grandit ; elle était réduite à ~20 px).
                       style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 2),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        minimumSize: const Size(0, LinguaFrame.minTarget),
                       ),
                       child: Text(_forgotLabel,
                           style: GoogleFonts.manrope(
@@ -300,13 +300,26 @@ class _AuthScreenState extends State<AuthScreen> {
   // ── Sélecteur de langue repliable ────────────────────────────────────────
   Widget _buildLangSelector(LinguaTokens t) {
     const langs = ['FR', 'EN', 'RU', 'CE'];
+    // Replié : un seul bouton « Langue : Français » qui déplie le choix.
+    return Semantics(
+      button: !_langOpen,
+      label: _langOpen
+          ? null
+          : '${tr('chat.language')} ${_langNames[_selectedLang]}',
+      excludeSemantics: !_langOpen,
+      child: _langPill(t, langs),
+    );
+  }
+
+  Widget _langPill(LinguaTokens t, List<String> langs) {
     return GestureDetector(
       onTap: () => setState(() => _langOpen = !_langOpen),
       child: AnimatedSize(
         duration: LinguaDuration.base,
         curve: Curves.easeOut,
         child: Container(
-          padding: const EdgeInsets.all(4),
+          // Les pastilles ont leur propre zone de 44 px : pas de marge en plus.
+          padding: const EdgeInsets.symmetric(horizontal: 2),
           decoration: BoxDecoration(
             color: t.surfaceSunken,
             borderRadius: LinguaRadius.rPill,
@@ -330,28 +343,54 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
+  /// Nom complet de chaque langue, lu par les lecteurs d'écran (« FR » seul
+  /// serait épelé lettre à lettre).
+  static const _langNames = {
+    'FR': 'Français',
+    'EN': 'English',
+    'RU': 'Русский',
+    'CE': 'Noxçiyŋ mott',
+  };
+
   Widget _buildChip(LinguaTokens t, String lang) {
     final selected = _selectedLang == lang;
-    return GestureDetector(
-      onTap: _langOpen
-          ? () {
-              localeController.setLang(lang);
-              setState(() => _langOpen = false);
-            }
-          : null,
-      child: AnimatedContainer(
-        duration: LinguaDuration.fast,
-        padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
-        decoration: BoxDecoration(
-          color: selected ? t.accent : Colors.transparent,
-          borderRadius: LinguaRadius.rMd,
-        ),
-        child: Text(
-          lang,
-          style: GoogleFonts.jetBrainsMono(
-            color: selected ? t.onAccent : t.accent,
-            fontSize: 11,
-            fontWeight: FontWeight.bold,
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: _langNames[lang],
+      excludeSemantics: true,
+      child: GestureDetector(
+        onTap: _langOpen
+            ? () {
+                localeController.setLang(lang);
+                setState(() => _langOpen = false);
+              }
+            : null,
+        behavior: HitTestBehavior.opaque,
+        // La pastille reste compacte ; la zone de tap fait 44 × 44 minimum.
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            minWidth: LinguaFrame.minTarget,
+            minHeight: LinguaFrame.minTarget,
+          ),
+          child: Center(
+            widthFactor: 1,
+            child: AnimatedContainer(
+              duration: LinguaDuration.fast,
+              padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
+              decoration: BoxDecoration(
+                color: selected ? t.accent : Colors.transparent,
+                borderRadius: LinguaRadius.rMd,
+              ),
+              child: Text(
+                lang,
+                style: GoogleFonts.jetBrainsMono(
+                  color: selected ? t.onAccent : t.accent,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
         ),
       ),

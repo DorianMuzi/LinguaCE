@@ -172,6 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: t.surfaceBase,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: t.textPrimary),
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(tr('title.profile'),
@@ -179,12 +180,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: t.textPrimary,
                 fontSize: 20,
                 fontWeight: FontWeight.bold)),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings_outlined, color: t.textSecondary),
-            onPressed: () {},
-          ),
-        ],
+        // (L'ancien bouton ⚙️ ne faisait rien : les réglages sont sur cette
+        // page même. Retiré plutôt que de promettre une action absente.)
       ),
       body: _loading
           ? Center(child: CircularProgressIndicator(color: t.accent))
@@ -240,18 +237,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Positioned(
               bottom: 0,
               right: 0,
-              child: GestureDetector(
-                onTap: _editUsername,
-                child: Container(
-                  width: 28,
-                  height: 28,
-                  decoration: BoxDecoration(
-                    color: t.accent,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: t.surfaceBase, width: 2),
+              // Pastille de 28 px, mais zone de tap de 44 px qui déborde
+              // vers l'intérieur de l'avatar.
+              child: Semantics(
+                button: true,
+                label: tr('profile.edit_name'),
+                child: GestureDetector(
+                  onTap: _editUsername,
+                  behavior: HitTestBehavior.opaque,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, top: 16),
+                    child: Container(
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        color: t.accent,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: t.surfaceBase, width: 2),
+                      ),
+                      child: Icon(Icons.edit_rounded,
+                          color: t.onAccent, size: 13),
+                    ),
                   ),
-                  child: Icon(Icons.edit_rounded,
-                      color: t.onAccent, size: 13),
                 ),
               ),
             ),
@@ -411,6 +418,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildLogoutButton(LinguaTokens t) {
+    // Annoncé comme bouton ; pendant la déconnexion, le spinner remplace le
+    // texte, donc le libellé est fourni explicitement.
+    return Semantics(
+      button: true,
+      enabled: !_signingOut,
+      label: _signingOut ? tr('profile.logout_btn') : null,
+      child: _logoutBody(t),
+    );
+  }
+
+  Widget _logoutBody(LinguaTokens t) {
     return GestureDetector(
       onTap: _signingOut ? null : _signOut,
       child: Container(

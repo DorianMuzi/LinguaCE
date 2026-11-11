@@ -294,8 +294,8 @@ class _ChatScreenState extends State<ChatScreen> {
             icon: Icon(Icons.delete_outline_rounded,
                 color: t.textTertiary, size: 20),
             tooltip: tr('common.delete'),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
+            // Pas de `constraints` vide : il ramenait la cible à la taille de
+            // l'icône (20 px). Le thème garantit ≥ 44 px.
           ),
         ],
       ),
@@ -582,13 +582,16 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           const SizedBox(width: 10),
-          GestureDetector(
-            onTap: _sendMessage,
-            child: Container(
-              width: 46,
-              height: 46,
-              decoration: BoxDecoration(color: t.accent, shape: BoxShape.circle),
-              child: Icon(Icons.send_rounded, color: t.onAccent, size: 20),
+          // Vrai bouton : libellé lu par les lecteurs d'écran, focus clavier,
+          // retour visuel, cible de 48 px.
+          IconButton.filled(
+            onPressed: _sendMessage,
+            tooltip: tr('chat.send'),
+            icon: const Icon(Icons.send_rounded, size: 20),
+            style: IconButton.styleFrom(
+              backgroundColor: t.accent,
+              foregroundColor: t.onAccent,
+              fixedSize: const Size.square(48),
             ),
           ),
         ],

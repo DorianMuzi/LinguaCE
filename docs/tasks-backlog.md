@@ -85,6 +85,27 @@ déjà dans l'UI (`set.notifications` dans `app_strings.dart`) mais ne fait rien
 > et le lot 3 a converti les emojis décoratifs en icônes teintées. Il reste à
 > vérifier les tailles de cibles tactiles ailleurs que dans la nav bar (qui a
 > déjà ses 44 px) et à repasser un lecteur d'écran sur l'ensemble.
+>
+> ✅ **Terminé (nov. 2026).**
+> - **Contraste mesuré** (`test/contrast_test.dart`, qui échoue sous 4,5:1) :
+>   chaque encre sur chaque surface opaque, dans les deux thèmes.
+>   `textTertiary` est à 7,7 / 5,6 (sombre, base / carte) et 5,4 / 5,1
+>   (clair) ; `textFaint` ≥ 4,54. Corrigés : `danger` en sombre (2,2 → ≥ 5,3,
+>   les snackbars d'erreur passent sur l'aplat `garnet`, blanc à 9:1),
+>   `goldInk` (3,0 → ≥ 4,7), `emberInk` (3,5 → ≥ 4,9) et `success` (3,4 →
+>   ≥ 5,0) en clair.
+> - **Cibles ≥ 44 px** : effacer l'historique du chat (20 px), « Mot de passe
+>   oublié » (~20 px), pastilles de langue de la connexion (~30 px), crayon du
+>   profil (28 px), bouton d'envoi du chat (46 → 48 px).
+> - **Lecteurs d'écran** : boutons annoncés comme tels (cartes de leçon,
+>   verrouillées = désactivées ; réponses de QCM avec « Correct ! » / « Pas
+>   tout à fait… » après réponse ; flashcard ; déconnexion ×2) ; libellés
+>   pour Envoyer, Retour, Modifier le nom, et les langues en toutes lettres.
+> - Bouton ⚙️ du profil retiré : il ne faisait rien.
+> - `test/a11y_test.dart` : guidelines Flutter (cibles 48 dp + libellés) sur
+>   l'onboarding et la feuille de signalement, dans les deux thèmes.
+>
+> **Reste côté mainteneur** : un passage TalkBack réel sur un appareil Android.
 
 **Contexte.** Deux points relevés en revue : le token `textTertiary` (#919191
 sur fond clair ≈ 2,8:1) est sous le seuil WCAG AA, et les emojis utilisés comme
@@ -100,10 +121,10 @@ par les lecteurs d'écran.
 - Vérifier que les cibles tactiles interactives font ≥ 48×48 dp.
 
 **Critères d'acceptation.**
-- [ ] `textTertiary` (ou son remplaçant pour le texte) atteint un contraste
+- [x] `textTertiary` (ou son remplaçant pour le texte) atteint un contraste
       AA dans les deux thèmes (donner les ratios mesurés dans la PR).
-- [ ] Les emojis informatifs ont un label sémantique ou sont exclus.
-- [ ] `analyze` + `test` verts.
+- [x] Les emojis informatifs ont un label sémantique ou sont exclus.
+- [x] `analyze` + `test` verts.
 
 ---
 

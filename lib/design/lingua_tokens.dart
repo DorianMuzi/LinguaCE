@@ -194,7 +194,9 @@ class LinguaTokens extends ThemeExtension<LinguaTokens> {
     textTertiary: Color(0xFF92ABBE),
     textFaint: Color(0xFF7E99B0),
     success: LinguaPalette.green400,
-    danger: LinguaPalette.garnet400,
+    // Rouge d'ENCRE (texte, icônes, bordures) : le grenat 400 tombait à
+    // 2,2:1 sur les cartes. Les aplats d'erreur (snackbars) prennent `garnet`.
+    danger: Color(0xFFFF7A6B),
     dangerHover: Color(0xFFC94334),
     ember: LinguaPalette.ember500,
     gold: LinguaPalette.gold500,
@@ -255,7 +257,7 @@ class LinguaTokens extends ThemeExtension<LinguaTokens> {
     textSecondary: Color(0xFF23415A),
     textTertiary: Color(0xFF4C6A85),
     textFaint: Color(0xFF516B84),
-    success: Color(0xFF1E8F52),
+    success: Color(0xFF17703F), // ≥ 4,5:1 sur toutes les surfaces claires
     danger: LinguaPalette.garnet500,
     dangerHover: Color(0xFF6E1A12),
     // Les rampes de marque ne bougent pas : seuls le texte et les icônes
@@ -297,11 +299,12 @@ class LinguaTokens extends ThemeExtension<LinguaTokens> {
   ///
   /// L'or de marque (`gold`) est réservé aux aplats et aux ornements : posé en
   /// texte sur du papier il tombe sous 3:1. Utiliser CE getter dès que l'or
-  /// porte un caractère.
-  Color get goldInk => isDark ? gold : const Color(0xFFB87A1C);
+  /// porte un caractère. En clair, assombri pour tenir 4,5:1 (AA texte normal)
+  /// jusque sur `surfaceSunken` — vérifié par `test/contrast_test.dart`.
+  Color get goldInk => isDark ? gold : const Color(0xFF8C5D12);
 
   /// Même règle pour la flamme.
-  Color get emberInk => isDark ? ember : const Color(0xFFD9491A);
+  Color get emberInk => isDark ? ember : const Color(0xFFB33A10);
 
   @override
   LinguaTokens copyWith({

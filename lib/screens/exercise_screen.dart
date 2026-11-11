@@ -504,7 +504,9 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 13)),
           const SizedBox(height: 16),
           Expanded(
-            child: GestureDetector(
+            child: Semantics(
+              button: true,
+              child: GestureDetector(
               onTap: _flip,
               child: AnimatedBuilder(
                 animation: _flipAnim,
@@ -525,6 +527,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                   );
                 },
               ),
+            ),
             ),
           ),
           const SizedBox(height: 20),
@@ -657,7 +660,21 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               bg = t.accentTint;
             }
 
-            return Padding(
+            // Après réponse, la couleur et l'icône disent juste/faux : on le
+            // dit aussi aux lecteurs d'écran.
+            final verdict = !_isAnswered
+                ? null
+                : isCorrectChoice
+                    ? tr('ex.correct')
+                    : isSelected
+                        ? tr('ex.not_quite')
+                        : null;
+            return Semantics(
+              button: true,
+              enabled: !_isAnswered,
+              selected: isSelected,
+              value: verdict,
+              child: Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: GestureDetector(
                 onTap: _isAnswered ? null : () => _answerQcm(i),
@@ -691,6 +708,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                     ],
                   ),
                 ),
+              ),
               ),
             );
           }),

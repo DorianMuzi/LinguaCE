@@ -330,11 +330,14 @@ class _AppDrawerState extends State<AppDrawer> {
             // ── Bouton déconnexion ───────────────────────────────────
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: GestureDetector(
+              child: Semantics(
+                button: true,
+                child: GestureDetector(
                 onTap: _signOut,
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  // 14 + 20 (texte) + 14 ≥ 44 px de cible
+                  padding: const EdgeInsets.symmetric(vertical: 14),
                   decoration: BoxDecoration(
                     color: t.surfaceRaised,
                     borderRadius: LinguaRadius.rMd,
@@ -354,6 +357,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     ],
                   ),
                 ),
+              ),
               ),
             ),
 

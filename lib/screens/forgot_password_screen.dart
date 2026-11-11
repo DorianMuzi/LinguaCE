@@ -63,7 +63,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: GoogleFonts.manrope(color: Colors.white)),
-        backgroundColor: t.danger,
+        backgroundColor: t.garnet,
         behavior: SnackBarBehavior.floating,
         shape: const RoundedRectangleBorder(borderRadius: LinguaRadius.rMd),
         margin: const EdgeInsets.all(16),
