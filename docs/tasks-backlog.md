@@ -260,10 +260,11 @@ quel. Tout nouvel exemple ou toute correction doit être marqué
 >   best-effort à relire), chemins invoke ET streaming. SSE intact.
 >   `analyze` + 30 tests verts.
 >
-> **Reste à faire côté mainteneur :** `supabase db push` puis
-> `supabase functions deploy chat` ; vérifier qu'un appel sans JWT valide
-> renvoie 401 et qu'au-delà du quota l'API renvoie 429. CE des 2 messages
-> d'erreur à valider sur #chechen-linguistics.
+> **Vérifié en production (oct.–nov. 2026) :** migration appliquée et
+> fonction déployée ; un appel avec la seule clé anon renvoie bien **401** ;
+> le chat répond normalement à un utilisateur connecté (quota décompté).
+> **Reste à faire :** observer un vrai **429** (dépasser le quota quotidien) ;
+> CE des 2 messages d'erreur à valider sur #chechen-linguistics.
 
 **Contexte.** `supabase/functions/chat/index.ts` ne vérifie que la présence de
 la clé `ANTHROPIC_API_KEY`. Elle **ne valide pas l'appelant** : la clé `anon`
@@ -348,8 +349,13 @@ sans infra de paiement et garde le chat accessible.
 > n'a pu être validé que par relecture (pas de Postgres local) : à confirmer
 > par un vrai parcours de leçon.
 >
-> **Reste à faire côté mainteneur :** `supabase db push`, puis terminer une
-> leçon (XP crédité = `xp_reward`, une seule fois ; la rejouer → +0).
+> **Vérifié en production (nov. 2026) :** migrations appliquées ; un `PATCH`
+> anonyme de `xp` / `lessons_completed` est refusé ; une leçon terminée via
+> `complete_lesson` a crédité exactement son `xp_reward` (150), une seule fois
+> (contrôle en base : un seul `xp_events` de 150, compteur de leçons cohérent).
+> Écart hérité, sans bug actuel : une leçon terminée avant le passage au
+> crédit fixe avait rapporté le score de session (35) au lieu de 100.
+> **Reste à faire :** confirmer qu'une révision (« Revoir ») crédite bien +0.
 
 **Contexte.** La politique RLS `profiles_update_own` autorise un utilisateur à
 mettre à jour **sa propre ligne `profiles`** — colonnes `xp`, `level`, `league`
@@ -403,8 +409,10 @@ et truster le classement. Les valeurs de progression doivent être
 > prouverait rien. À mesurer sur une table peuplée (quelques milliers de
 > profils). Le SQL n'a été validé que par relecture (pas de Postgres local).
 >
-> **Reste à faire côté mainteneur :** `supabase db push`, puis ouvrir l'écran
-> Progrès : classement affiché, ta ligne marquée « moi », rang correct.
+> **Appliqué en production (nov. 2026) :** `get_leaderboard` existe et refuse
+> les appels anonymes (401).
+> **Reste à faire :** ouvrir l'écran Progrès connecté (classement affiché, ta
+> ligne marquée « moi », rang correct).
 
 **Contexte.** `ProfileService.fetchLeaderboard` récupère le top 20 puis, si
 l'utilisateur n'y est pas, fait une **seconde requête** `COUNT(*) WHERE xp > moi`
