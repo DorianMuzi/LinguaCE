@@ -9,7 +9,7 @@ void main() {
         'already_completed': false,
         'xp': 100,
         'level': 1,
-        'league': 'stone',
+        'league': 'loup',
       });
       expect(r.xpAwarded, 100);
       expect(r.alreadyCompleted, isFalse);

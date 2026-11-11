@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lingua_ce/i18n/app_strings.dart';
 import 'package:lingua_ce/services/profile_service.dart';
 
 void main() {
@@ -38,23 +39,44 @@ void main() {
   });
 
   group('ProfileService — ligues culturelles', () {
-    test('seuils de leagueForXp', () {
-      expect(ProfileService.leagueForXp(0), 'stone');
-      expect(ProfileService.leagueForXp(999), 'stone');
-      expect(ProfileService.leagueForXp(1000), 'forest');
-      expect(ProfileService.leagueForXp(3000), 'mountain');
-      expect(ProfileService.leagueForXp(7000), 'eagle');
-      expect(ProfileService.leagueForXp(15000), 'noxco');
+    test('seuils de leagueForXp (identiques à grant_xp côté SQL)', () {
+      expect(ProfileService.leagueForXp(0), 'loup');
+      expect(ProfileService.leagueForXp(999), 'loup');
+      expect(ProfileService.leagueForXp(1000), 'aigle');
+      expect(ProfileService.leagueForXp(2999), 'aigle');
+      expect(ProfileService.leagueForXp(3000), 'mouflon');
+      expect(ProfileService.leagueForXp(7000), 'cheval');
+      expect(ProfileService.leagueForXp(15000), 'faucon');
     });
 
-    test('normalizeLeague mappe les anciennes valeurs et les inconnues', () {
-      expect(ProfileService.normalizeLeague('Aigle'), 'stone');
-      expect(ProfileService.normalizeLeague('Argent'), 'forest');
-      expect(ProfileService.normalizeLeague('Or'), 'mountain');
-      expect(ProfileService.normalizeLeague('Diamant'), 'eagle');
-      expect(ProfileService.normalizeLeague('noxco'), 'noxco');
-      expect(ProfileService.normalizeLeague(null), 'stone');
-      expect(ProfileService.normalizeLeague('???'), 'stone');
+    test('normalizeLeague : clés actuelles conservées', () {
+      for (final k in ['loup', 'aigle', 'mouflon', 'cheval', 'faucon']) {
+        expect(ProfileService.normalizeLeague(k), k);
+      }
+    });
+
+    test('normalizeLeague : clés de la version précédente, même palier', () {
+      expect(ProfileService.normalizeLeague('stone'), 'loup');
+      expect(ProfileService.normalizeLeague('forest'), 'aigle');
+      expect(ProfileService.normalizeLeague('mountain'), 'mouflon');
+      expect(ProfileService.normalizeLeague('eagle'), 'cheval');
+      expect(ProfileService.normalizeLeague('noxco'), 'faucon');
+    });
+
+    test('normalizeLeague : noms hérités et valeurs inconnues', () {
+      // 'Aigle' capitalisé = ancien défaut (1er palier), pas la clé 'aigle'.
+      expect(ProfileService.normalizeLeague('Aigle'), 'loup');
+      expect(ProfileService.normalizeLeague('Argent'), 'aigle');
+      expect(ProfileService.normalizeLeague('Or'), 'mouflon');
+      expect(ProfileService.normalizeLeague('Diamant'), 'cheval');
+      expect(ProfileService.normalizeLeague(null), 'loup');
+      expect(ProfileService.normalizeLeague('???'), 'loup');
+    });
+
+    test('chaque ligue a son libellé dans les 4 langues', () {
+      for (final k in ['loup', 'aigle', 'mouflon', 'cheval', 'faucon']) {
+        expect(tr('league.$k'), isNot('league.$k'), reason: 'clé manquante : $k');
+      }
     });
   });
 

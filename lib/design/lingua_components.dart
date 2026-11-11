@@ -619,14 +619,16 @@ class _TowerPainter extends CustomPainter {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Écusson de ligue : anneau or, glyphe animal au centre.
+// Écusson de ligue : anneau à la couleur de la ligue, animal totem au centre.
 //
-// Les cinq ligues gardent leur couleur dans les deux thèmes.
+// Prend la clé stockée en base (`loup`, `aigle`, `mouflon`, `cheval`,
+// `faucon`). Les cinq ligues gardent leur couleur dans les deux thèmes.
+// Décoratif : le nom de la ligue est toujours écrit à côté, donc l'écusson
+// est exclu de l'arbre sémantique pour ne pas être lu deux fois.
 // ─────────────────────────────────────────────────────────────────────────────
-enum League { wolf, eagle, mouflon, horse, falcon }
-
 class LeagueBadge extends StatelessWidget {
-  final League league;
+  /// Clé de ligue (cf. ProfileService.normalizeLeague).
+  final String league;
   final double size;
   final bool locked;
 
@@ -637,29 +639,24 @@ class LeagueBadge extends StatelessWidget {
     this.locked = false,
   });
 
-  static const _colors = <League, Color>{
-    League.wolf: LinguaPalette.steel500,
-    League.eagle: LinguaPalette.gold500,
-    League.mouflon: LinguaPalette.garnet400,
-    League.horse: LinguaPalette.ember500,
-    League.falcon: LinguaPalette.blue400,
-  };
+  static const keys = ['loup', 'aigle', 'mouflon', 'cheval', 'faucon'];
 
-  static const _labels = <League, String>{
-    League.wolf: 'Loup',
-    League.eagle: 'Aigle',
-    League.mouflon: 'Mouflon',
-    League.horse: 'Cheval',
-    League.falcon: 'Faucon',
+  static const _colors = <String, Color>{
+    'loup': LinguaPalette.steel500,
+    'aigle': LinguaPalette.gold500,
+    'mouflon': LinguaPalette.garnet400,
+    'cheval': LinguaPalette.ember500,
+    'faucon': LinguaPalette.blue400,
   };
 
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
+    final known = keys.contains(league);
     final color = locked ? t.outline : (_colors[league] ?? t.gold);
+    final inner = size - 6; // anneau de 2 px + liseré de 1 px de chaque côté
 
-    return Semantics(
-      label: '${_labels[league]}${locked ? ' — verrouillé' : ''}',
+    return ExcludeSemantics(
       child: Container(
         width: size,
         height: size,
@@ -669,14 +666,17 @@ class LeagueBadge extends StatelessWidget {
           border: Border.all(color: color, width: 2),
         ),
         alignment: Alignment.center,
-        child: Text(
-          _labels[league]!.substring(0, 1),
-          style: GoogleFonts.oswald(
-            color: locked ? t.textFaint : color,
-            fontSize: size * 0.42,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+        child: known
+            ? Opacity(
+                opacity: locked ? 0.35 : 1,
+                child: BrandAssets.circle(
+                  context,
+                  BrandAssets.league(league),
+                  size: inner,
+                ),
+              )
+            : Icon(Icons.shield_outlined,
+                color: locked ? t.textFaint : color, size: size * 0.5),
       ),
     );
   }
@@ -700,6 +700,10 @@ abstract final class BrandAssets {
   /// borné : au-delà du dernier stade illustré, on garde le dernier.
   static String pkharmat(int level) =>
       'assets/brand/pkharmat-${level.clamp(1, pkharmatStages)}.jpg';
+
+  /// Animal totem d'une ligue (`loup`, `aigle`, `mouflon`, `cheval`,
+  /// `faucon`) — les clés de `LeagueBadge.keys`.
+  static String league(String key) => 'assets/brand/league-$key.jpg';
 
   /// Recadrage circulaire d'une illustration de marque. Purement décoratif :
   /// exclu de l'arbre sémantique (le sens est porté par le texte voisin).

@@ -84,7 +84,16 @@ class _ProgressScreenState extends State<ProgressScreen> {
             _buildWeeklyChart(),
             const SizedBox(height: LinguaSpacing.stackSection),
             // L'emoji de ligue disparaît du libellé : l'écusson le porte.
-            SectionLabel(tr('progress.league', {'l': tr('league.$_league')})),
+            Row(
+              children: [
+                LeagueBadge(league: _league, size: 36),
+                const SizedBox(width: LinguaSpacing.sm),
+                Expanded(
+                  child: SectionLabel(
+                      tr('progress.league', {'l': tr('league.$_league')})),
+                ),
+              ],
+            ),
             const SizedBox(height: LinguaSpacing.md),
             _buildLeague(),
             const SizedBox(height: LinguaSpacing.stackSection),

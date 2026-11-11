@@ -266,9 +266,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            LeagueBadge(league: _league, size: 30),
+            const SizedBox(width: 6),
             AccentChip(
-                label: tr('progress.league', {'l': tr('league.$_league')}),
-                emoji: ProfileService.leagueEmoji(_league)),
+                label: tr('progress.league', {'l': tr('league.$_league')})),
             const SizedBox(width: 8),
             Container(
               padding:

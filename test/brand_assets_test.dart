@@ -23,6 +23,7 @@ void main() {
         BrandAssets.naxci,
         for (var i = 1; i <= BrandAssets.pkharmatStages; i++)
           BrandAssets.pkharmat(i),
+        for (final k in LeagueBadge.keys) BrandAssets.league(k),
       ];
       for (final p in paths) {
         expect(File(p).existsSync(), isTrue, reason: 'asset manquant : $p');
@@ -46,6 +47,15 @@ void main() {
       await tester.pumpWidget(host(const NaxciAvatar(size: 32)));
       expect(tester.takeException(), isNull);
       expect(tester.getSize(find.byType(NaxciAvatar)), const Size(32, 32));
+    });
+
+    testWidgets('LeagueBadge : chaque ligue et une clé inconnue',
+        (tester) async {
+      for (final k in [...LeagueBadge.keys, 'inconnue']) {
+        await tester.pumpWidget(host(LeagueBadge(league: k, size: 40)));
+        expect(tester.takeException(), isNull, reason: k);
+        expect(tester.getSize(find.byType(LeagueBadge)), const Size(40, 40));
+      }
     });
 
     testWidgets('Medallion.pkharmat affiche la pastille de niveau',

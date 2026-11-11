@@ -15,7 +15,7 @@ class ProfileService {
       'level': 1,
       'streak': 0,
       'lessons_completed': 0,
-      'league': 'stone',
+      'league': 'loup',
       'interface_language': 'FR',
     });
   }
@@ -59,7 +59,7 @@ class ProfileService {
         'level': 1,
         'streak': 0,
         'lessons_completed': 0,
-        'league': 'stone',
+        'league': 'loup',
         'interface_language': 'FR',
       });
 
@@ -141,35 +141,41 @@ class ProfileService {
   }
 
   // ── Ligues culturelles ────────────────────────────────────────────────
-  // Les 5 ligues du README : Pierre → Forêt → Montagne → Aigle → Noxço.
+  // Les 5 ligues du design system, par palier croissant :
+  // Loup → Aigle → Mouflon → Cheval → Faucon (animaux totems).
   // La base stocke la clé stable ; l'affichage passe par i18n (league.<clé>).
+  // Le barème DOIT rester identique à celui de la fonction SQL grant_xp.
 
   /// Ligue correspondant à un total d'XP.
   static String leagueForXp(int xp) {
-    if (xp >= 15000) return 'noxco';
-    if (xp >= 7000) return 'eagle';
-    if (xp >= 3000) return 'mountain';
-    if (xp >= 1000) return 'forest';
-    return 'stone';
+    if (xp >= 15000) return 'faucon';
+    if (xp >= 7000) return 'cheval';
+    if (xp >= 3000) return 'mouflon';
+    if (xp >= 1000) return 'aigle';
+    return 'loup';
   }
 
-  /// Normalise les valeurs héritées (Aigle/Argent/Or/Diamant) encore en
-  /// base — elles sont réécrites en clé stable à la prochaine complétion
-  /// de leçon, mais l'affichage doit les comprendre d'ici là.
+  /// Normalise toute valeur encore en base vers une clé actuelle :
+  /// - clés actuelles : telles quelles ;
+  /// - clés de la version précédente (stone/forest/…) : même palier ;
+  /// - noms hérités, avec majuscule (Argent/Or/Diamant ; 'Aigle' capitalisé
+  ///   était l'ancien défaut, donc le premier palier — à ne pas confondre
+  ///   avec la clé actuelle 'aigle', en minuscules).
   static String normalizeLeague(String? raw) => switch (raw) {
-        'stone' || 'forest' || 'mountain' || 'eagle' || 'noxco' => raw!,
-        'Argent' => 'forest',
-        'Or' => 'mountain',
-        'Diamant' => 'eagle',
-        _ => 'stone', // 'Aigle' était l'ancienne ligue par défaut
+        'loup' || 'aigle' || 'mouflon' || 'cheval' || 'faucon' => raw!,
+        'forest' || 'Argent' => 'aigle',
+        'mountain' || 'Or' => 'mouflon',
+        'eagle' || 'Diamant' => 'cheval',
+        'noxco' => 'faucon',
+        _ => 'loup', // 'stone', 'Aigle' hérité, null, inconnu
       };
 
   static String leagueEmoji(String league) => switch (normalizeLeague(league)) {
-        'noxco' => '🐺',
-        'eagle' => '🦅',
-        'mountain' => '⛰️',
-        'forest' => '🌲',
-        _ => '🪨',
+        'faucon' => '🦅',
+        'cheval' => '🐎',
+        'mouflon' => '🐏',
+        'aigle' => '🦅',
+        _ => '🐺',
       };
 
   static const _avatarPalette = [
