@@ -300,8 +300,8 @@ const Map<String, Map<String, String>> _strings = {
     'CE': 'Daga daiyta'
   },
   // ── Signaler une erreur de contenu ────────────────────────────────────
-  // CE : Barkalla, ġalat, xaam = mots déjà validés ; le reste vient de
-  // l'algorithme (Latin garde son n : emprunt) — À VALIDER par un natif.
+  // CE validés par l'auteur : Ġalat xaam be, Transliteraci, Djadaxiyta,
+  // Barkalla xaam qäçna. Encore à valider : Goçe, Qiŋ, Kommentari.
   'report.title': {
     'FR': 'Signaler une erreur',
     'EN': 'Report an error',
@@ -312,7 +312,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Translittération',
     'EN': 'Transliteration',
     'RU': 'Транслитерация',
-    'CE': 'Latin yoza'
+    'CE': 'Transliteraci'
   },
   'report.cat_translation': {
     'FR': 'Traduction',
