@@ -218,12 +218,14 @@ const Map<String, Map<String, String>> _strings = {
   'league.faucon':
       {'FR': 'Faucon', 'EN': 'Falcon', 'RU': 'Сокол', 'CE': 'Leça'},
   // ── Onboarding (premier lancement) ────────────────────────────────────
-  // CE : Ṫäẋägara (Suivant), Dola (C'est parti) validés par l'auteur ;
+  // CE : Djaẋaƶa (Suivant), Dola (C'est parti) validés par l'auteur ;
   // Ṫeġa, Dolalurg = mots déjà validés ; le reste est
   // passé par l'algorithme Muziŋ Dar depuis un brouillon cyrillique — À
   // VALIDER par un natif.
   'onb.next':
-      {'FR': 'Suivant', 'EN': 'Next', 'RU': 'Далее', 'CE': 'Ṫäẋägara'},
+      // Bouton d'action (« avancer »), pas une étiquette : Djaẋaƶa. Pour un
+      // simple libellé Suivant/Précédent, l'auteur recommande Ṫäẋägara.
+      {'FR': 'Suivant', 'EN': 'Next', 'RU': 'Далее', 'CE': 'Djaẋaƶa'},
   'onb.back': {'FR': 'Retour', 'EN': 'Back', 'RU': 'Назад', 'CE': 'Yuxa'},
   'onb.start':
       {'FR': "C'est parti", 'EN': "Let's go", 'RU': 'Начать', 'CE': 'Dola'},
@@ -326,7 +328,7 @@ const Map<String, Map<String, String>> _strings = {
   },
   // ── Signaler une erreur de contenu ────────────────────────────────────
   // CE validés par l'auteur : Ġalat xaam be, Transliteraci, Djadaxiyta,
-  // Barkalla xaam qäçna, Goçe, Q̇irġ, Kommentari (tout validé).
+  // Barkalla xaam qäçna, Goçe, Q̇iŋ, Kommentari (tout validé).
   'report.title': {
     'FR': 'Signaler une erreur',
     'EN': 'Report an error',
@@ -346,7 +348,7 @@ const Map<String, Map<String, String>> _strings = {
     'CE': 'Goçe'
   },
   'report.cat_other':
-      {'FR': 'Autre', 'EN': 'Other', 'RU': 'Другое', 'CE': 'Q̇irġ'},
+      {'FR': 'Autre', 'EN': 'Other', 'RU': 'Другое', 'CE': 'Q̇iŋ'},
   'report.comment_hint': {
     'FR': 'Ce qui ne va pas (facultatif)',
     'EN': "What's wrong (optional)",
