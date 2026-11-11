@@ -12,6 +12,12 @@ import '../services/claude_service.dart';
 import '../services/chat_service.dart';
 import '../services/onboarding_service.dart';
 
+/// Brouillon à déposer dans le champ de saisie du chat depuis un autre écran
+/// (p. ex. « Pratiquer le mot du jour » sur l'accueil). Jamais envoyé
+/// automatiquement : l'utilisateur relit, modifie, et garde la main sur son
+/// quota quotidien.
+final chatDraft = ValueNotifier<String?>(null);
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -34,11 +40,27 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    chatDraft.addListener(_consumeDraft);
+    _consumeDraft(); // brouillon déposé avant la (re)création de l'écran
     _loadHistory();
+  }
+
+  void _consumeDraft() {
+    final draft = chatDraft.value;
+    if (draft == null) return;
+    chatDraft.value = null;
+    _controller.value = TextEditingValue(
+      text: draft,
+      selection: TextSelection.collapsed(offset: draft.length),
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _inputFocus.requestFocus();
+    });
   }
 
   @override
   void dispose() {
+    chatDraft.removeListener(_consumeDraft);
     _controller.dispose();
     _inputFocus.dispose();
     _scrollController.dispose();

@@ -10,7 +10,11 @@ import '../services/lesson_service.dart';
 import 'exercise_screen.dart';
 
 class LearnScreen extends StatefulWidget {
-  const LearnScreen({super.key});
+  /// Notifié à chaque retour sur l'onglet : une leçon a pu être terminée
+  /// depuis l'accueil entre-temps.
+  final Listenable? refresh;
+
+  const LearnScreen({super.key, this.refresh});
 
   @override
   State<LearnScreen> createState() => _LearnScreenState();
@@ -23,7 +27,14 @@ class _LearnScreenState extends State<LearnScreen> {
   @override
   void initState() {
     super.initState();
+    widget.refresh?.addListener(_load);
     _load();
+  }
+
+  @override
+  void dispose() {
+    widget.refresh?.removeListener(_load);
+    super.dispose();
   }
 
   Future<void> _load() async {

@@ -58,11 +58,13 @@ class _MainScreenState extends State<MainScreen> {
   // restent visibles pendant le chargement — pas de skeleton qui clignote,
   // contrairement à l'ancien mécanisme de graines qui recréait l'écran).
   final _refreshHome = ValueNotifier(0);
+  final _refreshLearn = ValueNotifier(0);
   final _refreshProgress = ValueNotifier(0);
 
   @override
   void dispose() {
     _refreshHome.dispose();
+    _refreshLearn.dispose();
     _refreshProgress.dispose();
     super.dispose();
   }
@@ -70,13 +72,17 @@ class _MainScreenState extends State<MainScreen> {
   void _setTab(int index) => setState(() {
         _currentIndex = index;
         if (index == 0) _refreshHome.value++;
+        if (index == 2) _refreshLearn.value++;
         if (index == 3) _refreshProgress.value++;
       });
 
   List<Widget> get _screens => [
         HomeScreen(onTabChange: _setTab, refresh: _refreshHome),
         ChatScreen(key: ValueKey('chat-${localeController.value}')),
-        LearnScreen(key: ValueKey('learn-${localeController.value}')),
+        LearnScreen(
+          key: ValueKey('learn-${localeController.value}'),
+          refresh: _refreshLearn,
+        ),
         ProgressScreen(refresh: _refreshProgress),
       ];
 

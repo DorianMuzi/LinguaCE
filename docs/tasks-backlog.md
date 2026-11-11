@@ -159,6 +159,24 @@ existe dans les données, pas encore dans la sensation.
 ## 5. Refonte des actions rapides de l'accueil
 **Labels :** `enhancement`, `priority: low`, `discussion`
 
+> ✅ **Fait (nov. 2026).** Les 3 raccourcis vers les onglets sont remplacés par
+> deux actions qui n'existent nulle part ailleurs :
+> - **Réviser** : ouvre directement une leçon terminée (une différente chaque
+>   jour). Carte désactivée avec la consigne « Termine d'abord une leçon » tant
+>   qu'aucune ne l'est. La révision rapporte +0 XP (`complete_lesson`).
+> - **Pratiquer le mot** : ouvre le chat avec une question sur le mot du jour
+>   déjà saisie (`chatDraft`). Jamais envoyée automatiquement : l'utilisateur
+>   relit et garde la main sur son quota.
+>
+> « Reprendre » n'est pas une action à part : le bouton « Continuer » de la
+> leçon du jour ouvre désormais directement les exercices au lieu de basculer
+> sur l'onglet Leçons. L'onglet Leçons se rafraîchit aussi à chaque retour
+> (une leçon a pu être terminée depuis l'accueil). Aucune requête en plus.
+> Tests : `test/home_actions_test.dart`. L'objectif quotidien est écarté pour
+> l'instant, car il demanderait une requête `xp_events` supplémentaire.
+> **CE à valider** : Karlayakqa, Ẋalxa cẋa deşar çeqdakqa, Doş şardaŋ,
+> Naxçica, et la question pré-remplie.
+
 **Contexte.** Les 3 « actions rapides » de l'accueil (`home_screen.dart`,
 `_buildQuickActions`) dupliquent exactement la barre de navigation (Chat /
 Leçons / Progrès), accessible 100 px plus bas. C'est de l'espace gâché.
@@ -171,9 +189,9 @@ Leçons / Progrès), accessible 100 px plus bas. C'est de l'espace gâché.
 - Chaînes localisées, design tokens.
 
 **Critères d'acceptation.**
-- [ ] Plus aucune action rapide ne duplique un onglet de la nav bar.
-- [ ] Les nouvelles actions mènent à un état utile en un tap.
-- [ ] `analyze` + `test` verts.
+- [x] Plus aucune action rapide ne duplique un onglet de la nav bar.
+- [x] Les nouvelles actions mènent à un état utile en un tap.
+- [x] `analyze` + `test` verts.
 
 ---
 

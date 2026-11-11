@@ -98,11 +98,34 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Быстрые действия',
     'CE': 'Sixa ġullaqaş'
   },
-  'home.qa_chat': {'FR': 'Chat IA', 'EN': 'AI Chat', 'RU': 'ИИ-чат', 'CE': 'AI Q̇amel'},
-  'home.qa_lessons':
-      {'FR': 'Leçons', 'EN': 'Lessons', 'RU': 'Уроки', 'CE': 'Deşarş'},
-  'home.qa_progress':
-      {'FR': 'Progrès', 'EN': 'Progress', 'RU': 'Прогресс', 'CE': 'Progress'},
+  // CE des clés home.qa_review* / home.qa_practice* : Dico3.py, à valider.
+  'home.qa_review':
+      {'FR': 'Réviser', 'EN': 'Review', 'RU': 'Повторить', 'CE': 'Karlayakqa'},
+  'home.qa_review_none': {
+    'FR': 'Termine d\'abord une leçon',
+    'EN': 'Finish a lesson first',
+    'RU': 'Сначала пройди урок',
+    'CE': 'Ẋalxa cẋa deşar çeqdakqa'
+  },
+  'home.qa_practice': {
+    'FR': 'Pratiquer le mot',
+    'EN': 'Practice the word',
+    'RU': 'Практиковать слово',
+    'CE': 'Doş şardaŋ'
+  },
+  'home.qa_practice_sub': {
+    'FR': '« {w} » avec Naxçi',
+    'EN': '"{w}" with Naxçi',
+    'RU': '«{w}» с Naxçi',
+    'CE': '"{w}" Naxçica'
+  },
+  // Pré-rempli dans le chat, jamais envoyé sans l'utilisateur.
+  'home.qa_practice_prompt': {
+    'FR': 'Comment utiliser « {w} » ({m}) dans une phrase simple ?',
+    'EN': 'How do I use "{w}" ({m}) in a simple sentence?',
+    'RU': 'Как использовать «{w}» ({m}) в простом предложении?',
+    'CE': '"{w}" doş yuq̇aẋ dolu cẋa atta predloƶeni yazye.'
+  },
   'home.daily_lesson': {
     'FR': 'Leçon du jour',
     'EN': 'Daily lesson',
