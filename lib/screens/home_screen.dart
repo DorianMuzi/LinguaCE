@@ -288,7 +288,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: _quickAction(
               icon: Icons.replay_rounded,
               title: tr('home.qa_review'),
-              subtitle: review?.title ?? tr('home.qa_review_none'),
+              subtitle: review?.titleFor(localeController.value) ??
+                  tr('home.qa_review_none'),
               onTap: review == null ? null : () => _openLesson(review),
             ),
           ),
@@ -363,7 +364,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  lesson.title,
+                  lesson.titleFor(localeController.value),
                   style: GoogleFonts.manrope(
                     color: t.textPrimary,
                     fontSize: 16,
@@ -371,7 +372,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Text(
-                  lesson.subtitle,
+                  lesson.subtitleFor(localeController.value),
                   style: GoogleFonts.manrope(
                     color: t.textSecondary,
                     fontSize: 13,
@@ -454,17 +455,21 @@ class _HomeScreenState extends State<HomeScreen> {
             cyrillic: word.cyrillic,
             size: 30,
           ),
-          const SizedBox(height: LinguaSpacing.md),
-          Container(height: 1, color: t.outlineSubtle),
-          const SizedBox(height: LinguaSpacing.md),
-          Text(
-            tr('home.word_meaning', {'m': meaning}),
-            style: GoogleFonts.manrope(
-              color: t.textSecondary,
-              fontSize: 14,
-              height: 1.5,
+          // Interface en tchétchène : le sens en français n'a pas lieu d'être
+          // (le mot se lit déjà dans la langue de l'interface).
+          if (localeController.value != 'CE') ...[
+            const SizedBox(height: LinguaSpacing.md),
+            Container(height: 1, color: t.outlineSubtle),
+            const SizedBox(height: LinguaSpacing.md),
+            Text(
+              tr('home.word_meaning', {'m': meaning}),
+              style: GoogleFonts.manrope(
+                color: t.textSecondary,
+                fontSize: 14,
+                height: 1.5,
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );

@@ -593,6 +593,16 @@ const Map<String, Map<String, String>> _strings = {
   },
 
   // ── Chat ──────────────────────────────────────────────────────────────────
+  // Infobulles (remplacent celles de Flutter, toujours en anglais faute de
+  // traductions Material chargées). CE « Menyu sẋadella » : Dico3, à valider.
+  'nav.menu': {
+    'FR': 'Ouvrir le menu',
+    'EN': 'Open menu',
+    'RU': 'Открыть меню',
+    'CE': 'Menyu sẋadella'
+  },
+  'common.back':
+      {'FR': 'Retour', 'EN': 'Back', 'RU': 'Назад', 'CE': 'Yuxa'},
   'chat.send':
       {'FR': 'Envoyer', 'EN': 'Send', 'RU': 'Отправить', 'CE': 'Djadaxiyta'},
   'chat.language': {'FR': 'Langue :', 'EN': 'Language:', 'RU': 'Язык:', 'CE': 'Mott:'},

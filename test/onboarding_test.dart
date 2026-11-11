@@ -50,6 +50,18 @@ void main() {
       expect(blocks.last.containsKey('cache_control'), isFalse);
     });
 
+    test('CE : tchétchène seul, prime sur les règles du bloc en cache', () {
+      final text = ClaudeService.buildSystemBlocks('CE').last['text'] as String;
+      expect(text, contains('TCHÉTCHÈNE UNIQUEMENT'));
+      expect(text, contains('PRIME'));
+      expect(text, contains('Muziŋ Dar'));
+      expect(text, isNot(contains('1992')));
+      // La langue vient après le niveau : c'est la dernière consigne lue.
+      expect(text.indexOf('TCHÉTCHÈNE'),
+          greaterThan(text.indexOf(ClaudeService.levelInstruction(
+              LearnerLevel.beginner))));
+    });
+
     test('chaque niveau a une consigne distincte', () {
       final texts =
           LearnerLevel.values.map(ClaudeService.levelInstruction).toSet();

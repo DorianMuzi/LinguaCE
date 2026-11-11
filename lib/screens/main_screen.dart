@@ -147,7 +147,7 @@ class _MainScreenState extends State<MainScreen> {
           IconButton(
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
             icon: Icon(Icons.menu_rounded, color: t.textPrimary, size: 22),
-            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            tooltip: tr('nav.menu'),
           ),
           GestureDetector(
             onTap: () => _scaffoldKey.currentState?.openDrawer(),

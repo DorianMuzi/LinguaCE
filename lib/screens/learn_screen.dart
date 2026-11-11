@@ -5,6 +5,7 @@ import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
 import '../i18n/app_strings.dart';
+import '../i18n/locale_controller.dart';
 import '../models/models.dart';
 import '../services/lesson_service.dart';
 import 'exercise_screen.dart';
@@ -231,7 +232,7 @@ class _LessonCard extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            lesson.title,
+                            lesson.titleFor(localeController.value),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.oswald(
@@ -262,7 +263,7 @@ class _LessonCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 2),
-                    Text(lesson.subtitle,
+                    Text(lesson.subtitleFor(localeController.value),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.manrope(

@@ -389,12 +389,23 @@ Couleurs :
     final langInstruction = switch (language) {
       'EN' => 'Always reply in English.',
       'RU' => 'Отвечай исключительно на русском языке.',
-      'CE' =>
-        'Réponds EXCLUSIVEMENT en tchétchène, en utilisant le système de '
-            'translittération latine de 1992 (Muziŋ Dar) — PAS de cyrillique. '
-            'Pour chaque mot ou phrase enseigné, donne aussi sa traduction '
-            'française entre parenthèses pour aider l\'apprenant. Reste simple '
-            'et pédagogique.',
+      // Choix de l'auteur (nov. 2026) : immersion totale en CE. Cette
+      // consigne doit primer explicitement sur les règles 1 et 2 du bloc en
+      // cache (« langue de l'utilisateur FR/EN/RU », « cyrillique +
+      // traduction »), sinon le modèle répond en français.
+      'CE' => '=== LANGUE DE RÉPONSE : TCHÉTCHÈNE UNIQUEMENT ===\n'
+          'L\'utilisateur a choisi l\'interface en tchétchène. Cette consigne '
+          'PRIME sur les règles d\'enseignement 1 et 2 ci-dessus.\n'
+          '- Écris TOUTE ta réponse en tchétchène : explications, exemples, '
+          'questions, titres.\n'
+          '- Écris-la UNIQUEMENT avec la translittération officielle LinguaCE '
+          '(Muziŋ Dar) définie plus haut : diacritiques à point (k̇ q̇ ċ ṫ ṗ '
+          'ç̇ ġ ẋ), jamais d\'apostrophe, kh ou sh.\n'
+          '- AUCUN mot en cyrillique, AUCUN mot en français, anglais ou russe, '
+          'ni traduction entre parenthèses.\n'
+          '- Phrases courtes et simples, vocabulaire courant.\n'
+          'Exemple de ton (validé par l\'auteur) : « Marşalla du! Taxana '
+          'muxa ġo daŋ deza ẋuna? »',
       _ => 'Réponds exclusivement en français.',
     };
     return [
@@ -403,7 +414,9 @@ Couleurs :
         'text': _systemBase,
         'cache_control': {'type': 'ephemeral'},
       },
-      {'type': 'text', 'text': '$langInstruction\n${levelInstruction(level)}'},
+      // La langue en DERNIER : c'est la consigne la plus récente que le
+      // modèle lit, et celle qui doit l'emporter.
+      {'type': 'text', 'text': '${levelInstruction(level)}\n$langInstruction'},
     ];
   }
 

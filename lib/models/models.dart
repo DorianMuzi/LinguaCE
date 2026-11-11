@@ -26,8 +26,15 @@ enum LessonStatus { completed, active, locked }
 
 class LessonModel {
   final String id;
+
+  /// Titre et sous-titre de référence, en français.
   final String title;
   final String subtitle;
+
+  /// Traductions par code de langue d'interface (EN, RU, CE), issues des
+  /// colonnes `title_i18n` / `subtitle_i18n` de `public.lessons`.
+  final Map<String, String> titleI18n;
+  final Map<String, String> subtitleI18n;
   final String icon;
   final LessonStatus status;
   final int xpReward;
@@ -43,10 +50,31 @@ class LessonModel {
     required this.xpReward,
     required this.totalExercises,
     required this.completedExercises,
+    this.titleI18n = const {},
+    this.subtitleI18n = const {},
   });
 
   double get progress =>
       totalExercises > 0 ? completedExercises / totalExercises : 0;
+
+  /// Titre dans la langue [lang], repli sur le français.
+  String titleFor(String lang) => pickI18n(titleI18n, lang, title);
+  String subtitleFor(String lang) => pickI18n(subtitleI18n, lang, subtitle);
+
+  static String pickI18n(Map<String, String> i18n, String lang, String fr) {
+    final v = i18n[lang]?.trim();
+    return (v == null || v.isEmpty) ? fr : v;
+  }
+
+  /// Lit une colonne jsonb `{"EN": "...", ...}` ; tolère `null` (colonne
+  /// pas encore migrée) et les valeurs non textuelles.
+  static Map<String, String> parseI18n(dynamic raw) {
+    if (raw is! Map) return const {};
+    return {
+      for (final e in raw.entries)
+        if (e.value is String) e.key.toString(): e.value as String,
+    };
+  }
 }
 
 enum ExerciseType { flashcard, qcm, translation }

@@ -175,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: t.surfaceBase,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: t.textPrimary),
-          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          tooltip: tr('common.back'),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(tr('title.profile'),

@@ -6,6 +6,7 @@ import '../design/lingua_components.dart';
 import '../design/lingua_tokens.dart';
 import '../design/lingua_scale.dart';
 import '../i18n/app_strings.dart';
+import '../i18n/locale_controller.dart';
 import '../models/models.dart';
 import '../services/exercise_service.dart';
 import '../services/lesson_service.dart';
@@ -948,7 +949,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                     fontSize: 32,
                     fontWeight: FontWeight.bold)),
             const SizedBox(height: 6),
-            Text(widget.lesson.title,
+            Text(widget.lesson.titleFor(localeController.value),
                 style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 16)),
             const SizedBox(height: 36),
             Container(

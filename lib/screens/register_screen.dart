@@ -180,6 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded,
               color: t.textSecondary, size: 20),
+          tooltip: tr('common.back'),
           onPressed: () => Navigator.pop(context),
         ),
       ),

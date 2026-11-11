@@ -60,6 +60,8 @@ class LessonService {
           id: id,
           title: l['title'] as String,
           subtitle: l['subtitle'] as String,
+          titleI18n: LessonModel.parseI18n(l['title_i18n']),
+          subtitleI18n: LessonModel.parseI18n(l['subtitle_i18n']),
           icon: l['icon'] as String,
           status: status,
           xpReward: l['xp_reward'] as int? ?? 50,
