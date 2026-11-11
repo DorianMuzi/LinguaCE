@@ -299,6 +299,49 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Напоминать в 19:00',
     'CE': 'Daga daiyta'
   },
+  // ── Signaler une erreur de contenu ────────────────────────────────────
+  // CE : Barkalla, ġalat, xaam = mots déjà validés ; le reste vient de
+  // l'algorithme (Latin garde son n : emprunt) — À VALIDER par un natif.
+  'report.title': {
+    'FR': 'Signaler une erreur',
+    'EN': 'Report an error',
+    'RU': 'Сообщить об ошибке',
+    'CE': 'Ġalat xaam be'
+  },
+  'report.cat_translit': {
+    'FR': 'Translittération',
+    'EN': 'Transliteration',
+    'RU': 'Транслитерация',
+    'CE': 'Latin yoza'
+  },
+  'report.cat_translation': {
+    'FR': 'Traduction',
+    'EN': 'Translation',
+    'RU': 'Перевод',
+    'CE': 'Goçe'
+  },
+  'report.cat_other':
+      {'FR': 'Autre', 'EN': 'Other', 'RU': 'Другое', 'CE': 'Qiŋ'},
+  'report.comment_hint': {
+    'FR': 'Ce qui ne va pas (facultatif)',
+    'EN': "What's wrong (optional)",
+    'RU': 'Что не так (необязательно)',
+    'CE': 'Kommentari'
+  },
+  'report.send':
+      {'FR': 'Envoyer', 'EN': 'Send', 'RU': 'Отправить', 'CE': 'Djadaxiyta'},
+  'report.thanks': {
+    'FR': "Merci ! Ton signalement aide à corriger le tchétchène de l'app.",
+    'EN': "Thanks! Your report helps fix the app's Chechen.",
+    'RU': 'Спасибо! Твоё сообщение помогает исправить чеченский в приложении.',
+    'CE': 'Barkalla, xaam qäçna.'
+  },
+  'report.failed': {
+    'FR': 'Envoi impossible. Vérifie ta connexion et réessaie.',
+    'EN': "Couldn't send. Check your connection and try again.",
+    'RU': 'Не удалось отправить. Проверь соединение и попробуй снова.',
+    'CE': 'ġalat xilla. Yuxa ġort.'
+  },
   'set.level': {
     'FR': "Niveau d'apprentissage",
     'EN': 'Learning level',

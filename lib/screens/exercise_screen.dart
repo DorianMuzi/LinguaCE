@@ -9,6 +9,7 @@ import '../i18n/app_strings.dart';
 import '../models/models.dart';
 import '../services/exercise_service.dart';
 import '../services/lesson_service.dart';
+import '../widgets/report_sheet.dart';
 
 // ═══════════════════════════════════════════════════════════
 // SCREEN
@@ -399,7 +400,19 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          // Signaler une erreur sur l'exercice affiché (traduction,
+          // translittération…) : utile tant que le contenu est en validation.
+          IconButton(
+            tooltip: tr('report.title'),
+            onPressed: () => showReportSheet(
+              context,
+              lessonId: widget.lesson.id,
+              position: _currentIndex + 1,
+              exercise: _current,
+            ),
+            icon: Icon(Icons.flag_outlined, color: t.textSecondary, size: 20),
+          ),
+          const SizedBox(width: 4),
           Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.centerRight,
