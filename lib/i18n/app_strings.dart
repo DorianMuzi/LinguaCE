@@ -98,7 +98,8 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Быстрые действия',
     'CE': 'Sixa ġullaqaş'
   },
-  // CE des clés home.qa_review* / home.qa_practice* : Dico3.py, à valider.
+  // CE des clés home.qa_review* / home.qa_practice* : Dico3.py, à valider,
+  // sauf la question pré-remplie (corrigée par l'auteur).
   'home.qa_review':
       {'FR': 'Réviser', 'EN': 'Review', 'RU': 'Повторить', 'CE': 'Karlayakqa'},
   'home.qa_review_none': {
@@ -124,7 +125,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Comment utiliser « {w} » ({m}) dans une phrase simple ?',
     'EN': 'How do I use "{w}" ({m}) in a simple sentence?',
     'RU': 'Как использовать «{w}» ({m}) в простом предложении?',
-    'CE': '"{w}" doş yuq̇aẋ dolu cẋa atta predloƶeni yazye.'
+    'CE': '"{w}" doş yuq̇aẋ doluş, cẋa atta doş-adam yazye.'
   },
   'home.daily_lesson': {
     'FR': 'Leçon du jour',
@@ -217,14 +218,15 @@ const Map<String, Map<String, String>> _strings = {
   'league.faucon':
       {'FR': 'Faucon', 'EN': 'Falcon', 'RU': 'Сокол', 'CE': 'Leça'},
   // ── Onboarding (premier lancement) ────────────────────────────────────
-  // CE : Djaẋaƶa, Djadolo, Ṫeġa, Dolalurg = mots déjà validés ; le reste est
+  // CE : Ṫäẋägara (Suivant), Dola (C'est parti) validés par l'auteur ;
+  // Ṫeġa, Dolalurg = mots déjà validés ; le reste est
   // passé par l'algorithme Muziŋ Dar depuis un brouillon cyrillique — À
   // VALIDER par un natif.
   'onb.next':
-      {'FR': 'Suivant', 'EN': 'Next', 'RU': 'Далее', 'CE': 'Djaẋaƶa'},
+      {'FR': 'Suivant', 'EN': 'Next', 'RU': 'Далее', 'CE': 'Ṫäẋägara'},
   'onb.back': {'FR': 'Retour', 'EN': 'Back', 'RU': 'Назад', 'CE': 'Yuxa'},
   'onb.start':
-      {'FR': "C'est parti", 'EN': "Let's go", 'RU': 'Начать', 'CE': 'Djadolo'},
+      {'FR': "C'est parti", 'EN': "Let's go", 'RU': 'Начать', 'CE': 'Dola'},
   'onb.p1_title':
       {'FR': 'Pkharmat', 'EN': 'Pkharmat', 'RU': 'Пхармат', 'CE': 'Pẋarmat'},
   'onb.p1_body': {
@@ -324,7 +326,7 @@ const Map<String, Map<String, String>> _strings = {
   },
   // ── Signaler une erreur de contenu ────────────────────────────────────
   // CE validés par l'auteur : Ġalat xaam be, Transliteraci, Djadaxiyta,
-  // Barkalla xaam qäçna. Encore à valider : Goçe, Qiŋ, Kommentari.
+  // Barkalla xaam qäçna, Goçe, Q̇irġ, Kommentari (tout validé).
   'report.title': {
     'FR': 'Signaler une erreur',
     'EN': 'Report an error',
@@ -344,7 +346,7 @@ const Map<String, Map<String, String>> _strings = {
     'CE': 'Goçe'
   },
   'report.cat_other':
-      {'FR': 'Autre', 'EN': 'Other', 'RU': 'Другое', 'CE': 'Qiŋ'},
+      {'FR': 'Autre', 'EN': 'Other', 'RU': 'Другое', 'CE': 'Q̇irġ'},
   'report.comment_hint': {
     'FR': 'Ce qui ne va pas (facultatif)',
     'EN': "What's wrong (optional)",
@@ -621,13 +623,13 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Session expirée. Reconnecte-toi.',
     'EN': 'Session expired. Please sign in again.',
     'RU': 'Сессия истекла. Войдите снова.',
-    'CE': 'Yuxa çuvala deza ẋuna.'
+    'CE': 'Sessiyŋ xan çeqyalla.'
   },
   'err.quota_reached': {
     'FR': 'Limite quotidienne du chat atteinte. Réessaie demain.',
     'EN': 'Daily chat limit reached. Try again tomorrow.',
     'RU': 'Дневной лимит чата исчерпан. Попробуйте завтра.',
-    'CE': 'Taxana chat yac. Kxana yuxa ġort.'
+    'CE': 'Dinaŋ norma qoç-na.'
   },
 
   'err.google_signin': {
