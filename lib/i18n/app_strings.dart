@@ -193,6 +193,118 @@ const Map<String, Map<String, String>> _strings = {
   'league.cheval': {'FR': 'Cheval', 'EN': 'Horse', 'RU': 'Конь', 'CE': 'Govr'},
   'league.faucon':
       {'FR': 'Faucon', 'EN': 'Falcon', 'RU': 'Сокол', 'CE': 'Leça'},
+  // ── Onboarding (premier lancement) ────────────────────────────────────
+  // CE : Djaẋaƶa, Djadolo, Ṫeġa, Dolalurg = mots déjà validés ; le reste est
+  // passé par l'algorithme Muziŋ Dar depuis un brouillon cyrillique — À
+  // VALIDER par un natif.
+  'onb.next':
+      {'FR': 'Suivant', 'EN': 'Next', 'RU': 'Далее', 'CE': 'Djaẋaƶa'},
+  'onb.back': {'FR': 'Retour', 'EN': 'Back', 'RU': 'Назад', 'CE': 'Yuxa'},
+  'onb.start':
+      {'FR': "C'est parti", 'EN': "Let's go", 'RU': 'Начать', 'CE': 'Djadolo'},
+  'onb.p1_title':
+      {'FR': 'Pkharmat', 'EN': 'Pkharmat', 'RU': 'Пхармат', 'CE': 'Pẋarmat'},
+  'onb.p1_body': {
+    'FR': 'Enchaîné sur le mont Bashlam pour avoir offert le feu aux hommes, '
+        "il t'invite à raviver sa flamme — un mot à la fois.",
+    'EN': 'Chained on Mount Bashlam for giving fire to humankind, he invites '
+        'you to rekindle his flame — one word at a time.',
+    'RU': 'Прикованный к горе Башлам за то, что подарил людям огонь, он зовёт '
+        'тебя вновь разжечь его пламя — слово за словом.',
+    'CE': 'Pẋarmataŋ ċe yuxa latae — doş-doş.'
+  },
+  'onb.p2_title': {
+    'FR': 'Naxçi, ton guide',
+    'EN': 'Naxçi, your guide',
+    'RU': 'Naxçi, твой проводник',
+    'CE': 'Naxçi, ẋaŋ neq̇goyturg'
+  },
+  'onb.p2_body': {
+    'FR': "Pose-moi tes questions quand tu veux : je t'explique, je te "
+        "corrige et je t'accompagne.",
+    'EN': "Ask me anything, any time: I'll explain, correct you and walk "
+        'with you.',
+    'RU': 'Задавай мне вопросы когда угодно: я объясню, поправлю и буду рядом.',
+    'CE': 'Xattarş xattal: asa qeto a, nisdo a, ẋöca lela a.'
+  },
+  'onb.p3_title': {
+    'FR': 'Ton niveau',
+    'EN': 'Your level',
+    'RU': 'Твой уровень',
+    'CE': 'Ẋaŋ ṫeġa'
+  },
+  'onb.p3_body': {
+    'FR': 'Naxçi adapte ses explications à ton niveau. Tu pourras le changer '
+        'dans ton profil.',
+    'EN': 'Naxçi adapts his explanations to your level. You can change it in '
+        'your profile.',
+    'RU': 'Naxçi подстраивает объяснения под твой уровень. Его можно изменить '
+        'в профиле.',
+    'CE': 'Naxçis ẋaŋ ṫeġane ẋäƶƶina qetor du.'
+  },
+  'onb.lvl.beginner': {
+    'FR': 'Débutant',
+    'EN': 'Beginner',
+    'RU': 'Начинающий',
+    'CE': 'Dolalurg'
+  },
+  'onb.lvl.beginner_desc': {
+    'FR': 'Je découvre le tchétchène',
+    'EN': "I'm new to Chechen",
+    'RU': 'Я только начинаю',
+    'CE': 'Noxçiyŋ mott kerla bu suna'
+  },
+  'onb.lvl.intermediate': {
+    'FR': 'Intermédiaire',
+    'EN': 'Intermediate',
+    'RU': 'Средний',
+    'CE': 'Yukq̇era'
+  },
+  'onb.lvl.intermediate_desc': {
+    'FR': 'Je connais quelques mots',
+    'EN': 'I know a few words',
+    'RU': 'Я знаю несколько слов',
+    'CE': 'Cẋayolu deşnaş xäa suna'
+  },
+  'onb.lvl.advanced': {
+    'FR': 'Avancé',
+    'EN': 'Advanced',
+    'RU': 'Продвинутый',
+    'CE': 'Qiəna'
+  },
+  'onb.lvl.advanced_desc': {
+    'FR': 'Je veux me perfectionner',
+    'EN': 'I want to improve',
+    'RU': 'Хочу совершенствоваться',
+    'CE': 'Suna qiŋ a dika jamo läa'
+  },
+  'onb.p4_title': {
+    'FR': 'Rappel quotidien',
+    'EN': 'Daily reminder',
+    'RU': 'Ежедневное напоминание',
+    'CE': 'Diynaẋ cq̇a daga daiytar'
+  },
+  'onb.p4_body': {
+    'FR': "Un petit rappel le soir, si tu n'as pas encore pratiqué, pour "
+        'garder ta série. Tu pourras le changer dans ton profil.',
+    'EN': "A gentle evening reminder, if you haven't practised yet, to keep "
+        'your streak. You can change it in your profile.',
+    'RU': 'Вечернее напоминание, если ты ещё не занимался, чтобы сохранить '
+        'серию. Его можно изменить в профиле.',
+    'CE': 'Süyranna 19:00 saẋteẋ daga daiyta.'
+  },
+  'onb.p4_switch': {
+    'FR': 'Me rappeler à 19 h',
+    'EN': 'Remind me at 7 pm',
+    'RU': 'Напоминать в 19:00',
+    'CE': 'Daga daiyta'
+  },
+  'set.level': {
+    'FR': "Niveau d'apprentissage",
+    'EN': 'Learning level',
+    'RU': 'Уровень обучения',
+    'CE': 'Ṫeġa'
+  },
   'progress.stats': {
     'FR': 'Mes statistiques',
     'EN': 'My stats',

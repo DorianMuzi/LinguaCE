@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../config/app_config.dart';
 import '../i18n/app_strings.dart';
 import '../models/models.dart';
+import 'onboarding_service.dart';
 
 class ClaudeService {
   static String get _model => AppConfig.anthropicModel;
@@ -378,7 +379,13 @@ Couleurs :
   /// petit bloc de langue, placé APRÈS le point de cache, varie. Les quatre
   /// langues d'interface partagent ainsi la même entrée de cache.
   /// L'Edge Function `chat` transmet `system` tel quel à l'API.
-  static List<Map<String, dynamic>> _buildSystemBlocks(String language) {
+  ///
+  /// Le niveau de l'apprenant (choisi à l'onboarding) rejoint lui aussi le
+  /// bloc variable : la grammaire reste en cache quel que soit le niveau.
+  static List<Map<String, dynamic>> buildSystemBlocks(
+    String language, {
+    LearnerLevel level = LearnerLevel.beginner,
+  }) {
     final langInstruction = switch (language) {
       'EN' => 'Always reply in English.',
       'RU' => 'Отвечай исключительно на русском языке.',
@@ -396,9 +403,27 @@ Couleurs :
         'text': _systemBase,
         'cache_control': {'type': 'ephemeral'},
       },
-      {'type': 'text', 'text': langInstruction},
+      {'type': 'text', 'text': '$langInstruction\n${levelInstruction(level)}'},
     ];
   }
+
+  /// Consigne d'adaptation au niveau déclaré par l'apprenant.
+  static String levelInstruction(LearnerLevel level) => switch (level) {
+        LearnerLevel.beginner =>
+          "NIVEAU DE L'APPRENANT : débutant. Il découvre le tchétchène. "
+              'Phrases courtes, vocabulaire de base, une seule notion à la '
+              "fois. N'introduis la grammaire (classes, cas) que si elle est "
+              'indispensable, et toujours par un exemple simple.',
+        LearnerLevel.intermediate =>
+          "NIVEAU DE L'APPRENANT : intermédiaire. Il connaît déjà des mots "
+              'et des tournures courantes. Tu peux introduire la grammaire '
+              '(classes nominales, cas, temps) progressivement, avec des '
+              'exemples tirés de la vie quotidienne.',
+        LearnerLevel.advanced =>
+          "NIVEAU DE L'APPRENANT : avancé. Il veut se perfectionner. Va plus "
+              'loin : grammaire détaillée, évidentialité, nuances, proverbes, '
+              'registres. Corrige avec précision en citant la règle.',
+      };
 
   /// Envoie la conversation à Naxçi et renvoie sa réponse complète.
   ///
@@ -409,6 +434,7 @@ Couleurs :
   static Future<String> send({
     required List<ChatMessage> messages,
     required String language,
+    LearnerLevel level = LearnerLevel.beginner,
     void Function(String accumulated)? onDelta,
   }) async {
     // Fenêtre glissante : seuls les derniers messages partent à l'API.
@@ -435,7 +461,7 @@ Couleurs :
     final body = <String, dynamic>{
       'model': _model,
       'max_tokens': 1024,
-      'system': _buildSystemBlocks(language),
+      'system': buildSystemBlocks(language, level: level),
       'messages': apiMessages,
     };
 

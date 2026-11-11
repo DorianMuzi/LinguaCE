@@ -8,7 +8,7 @@ import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
 import '../i18n/app_strings.dart';
-import 'main_screen.dart';
+import 'onboarding_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   final String lang;
@@ -141,7 +141,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await ProfileService.createProfile(name);
         if (!mounted) return;
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const MainScreen()),
+          MaterialPageRoute(builder: (_) => OnboardingScreen.entry()),
           (_) => false,
         );
       } else {

@@ -7,6 +7,7 @@ import '../design/responsive.dart';
 import '../i18n/app_strings.dart';
 import '../services/auth_service.dart';
 import '../services/notification_service.dart';
+import '../services/onboarding_service.dart';
 import '../services/profile_service.dart';
 import '../widgets/xp_bar.dart';
 import 'auth_screen.dart';
@@ -326,7 +327,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return CopilotCard(
       padding: EdgeInsets.zero,
       child: Column(
-        children: items.asMap().entries.map((e) {
+        children: [
+          // Niveau choisi à l'onboarding : adapte les réponses de Naxçi.
+          ListTile(
+            leading:
+                Icon(Icons.school_outlined, color: t.textSecondary, size: 20),
+            title: Text(tr('set.level'),
+                style: GoogleFonts.manrope(color: t.textPrimary, fontSize: 15)),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(tr('onb.lvl.${OnboardingService.level.key}'),
+                    style: GoogleFonts.manrope(
+                        color: t.textSecondary, fontSize: 14)),
+                Icon(Icons.chevron_right_rounded,
+                    color: t.textSecondary, size: 20),
+              ],
+            ),
+            onTap: _pickLevel,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          ),
+          Divider(height: 1, color: t.outlineSubtle, indent: 52),
+          ...items.asMap().entries.map((e) {
           final (icon, label, hasSwitch) = e.value;
           final index = e.key;
           final isLast = index == items.length - 1;
@@ -355,9 +377,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Divider(height: 1, color: t.outlineSubtle, indent: 52),
             ],
           );
-        }).toList(),
+        }),
+        ],
       ),
     );
+  }
+
+  /// Change le niveau d'apprentissage (mêmes choix qu'à l'onboarding).
+  Future<void> _pickLevel() async {
+    final picked = await showDialog<LearnerLevel>(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: Text(tr('set.level')),
+        children: [
+          for (final level in LearnerLevel.values)
+            SimpleDialogOption(
+              onPressed: () => Navigator.pop(ctx, level),
+              child: Row(
+                children: [
+                  Expanded(child: Text(tr('onb.lvl.${level.key}'))),
+                  if (level == OnboardingService.level)
+                    Icon(Icons.check_rounded,
+                        color: ctx.tokens.accent, size: 20),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+    if (picked == null || picked == OnboardingService.level) return;
+    await OnboardingService.setLevel(picked);
+    if (mounted) setState(() {});
   }
 
   Widget _buildLogoutButton(LinguaTokens t) {

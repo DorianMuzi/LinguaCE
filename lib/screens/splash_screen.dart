@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../design/lingua_tokens.dart';
 import '../i18n/app_strings.dart';
 import 'auth_screen.dart';
-import 'main_screen.dart';
+import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -72,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen>
     if (!mounted) return;
     final session = Supabase.instance.client.auth.currentSession;
     final destination =
-        session != null ? const MainScreen() : const AuthScreen();
+        session != null ? OnboardingScreen.entry() : const AuthScreen();
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (_, anim, __) => destination,

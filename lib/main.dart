@@ -6,6 +6,7 @@ import 'design/lingua_theme.dart';
 import 'design/theme_controller.dart';
 import 'i18n/locale_controller.dart';
 import 'screens/splash_screen.dart';
+import 'services/onboarding_service.dart';
 
 /// Contrôleur de thème global (clair / sombre / système), persisté.
 final themeController = ThemeController();
@@ -20,6 +21,7 @@ Future<void> main() async {
   }
   await themeController.load();
   await localeController.load();
+  await OnboardingService.load();
   runApp(const LinguaCEApp());
 }
 

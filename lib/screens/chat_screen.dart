@@ -10,6 +10,7 @@ import '../i18n/locale_controller.dart';
 import '../models/models.dart';
 import '../services/claude_service.dart';
 import '../services/chat_service.dart';
+import '../services/onboarding_service.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -88,6 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
       final reply = await ClaudeService.send(
         messages: List.unmodifiable(_messages),
         language: _aiLang,
+        level: OnboardingService.level,
         onDelta: (partial) {
           if (!mounted) return;
           setState(() {

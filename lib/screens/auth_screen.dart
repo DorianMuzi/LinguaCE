@@ -8,7 +8,7 @@ import '../design/lingua_components.dart';
 import '../design/responsive.dart';
 import '../i18n/app_strings.dart';
 import '../i18n/locale_controller.dart';
-import 'main_screen.dart';
+import 'onboarding_screen.dart';
 import 'forgot_password_screen.dart';
 import 'register_screen.dart';
 
@@ -103,7 +103,7 @@ class _AuthScreenState extends State<AuthScreen> {
   void _navigateToMain() {
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const MainScreen()),
+      MaterialPageRoute(builder: (_) => OnboardingScreen.entry()),
     );
   }
 
