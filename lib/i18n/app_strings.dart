@@ -183,13 +183,13 @@ const Map<String, Map<String, String>> _strings = {
   'progress.league':
       {'FR': 'Ligue {l}', 'EN': 'League {l}', 'RU': 'Лига {l}', 'CE': 'Liga {l}'},
   // Les 5 ligues culturelles (Loup → Aigle → Mouflon → Cheval → Faucon).
-  // CE à valider par un natif : Borz (борз), Ärzu (аьрзу), Govr (говр),
-  // Leça (леча — « faucon ou aigle selon la source »), Muflon (emprunt,
-  // faute de terme tchétchène confirmé).
+  // CE : Borz (борз), Ärzu (аьрзу), Melkaŋ (мелкан, validé par l'auteur ;
+  // accent tonique sur la dernière syllabe), Govr (говр), Leça (леча —
+  // « faucon ou aigle selon la source », à valider par un natif).
   'league.loup': {'FR': 'Loup', 'EN': 'Wolf', 'RU': 'Волк', 'CE': 'Borz'},
   'league.aigle': {'FR': 'Aigle', 'EN': 'Eagle', 'RU': 'Орёл', 'CE': 'Ärzu'},
   'league.mouflon':
-      {'FR': 'Mouflon', 'EN': 'Mouflon', 'RU': 'Муфлон', 'CE': 'Muflon'},
+      {'FR': 'Mouflon', 'EN': 'Mouflon', 'RU': 'Муфлон', 'CE': 'Melkaŋ'},
   'league.cheval': {'FR': 'Cheval', 'EN': 'Horse', 'RU': 'Конь', 'CE': 'Govr'},
   'league.faucon':
       {'FR': 'Faucon', 'EN': 'Falcon', 'RU': 'Сокол', 'CE': 'Leça'},
