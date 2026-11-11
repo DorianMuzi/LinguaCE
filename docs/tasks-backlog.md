@@ -174,8 +174,8 @@ existe dans les données, pas encore dans la sensation.
 > (une leçon a pu être terminée depuis l'accueil). Aucune requête en plus.
 > Tests : `test/home_actions_test.dart`. L'objectif quotidien est écarté pour
 > l'instant, car il demanderait une requête `xp_events` supplémentaire.
-> **CE à valider** : Karlayakqa, Ẋalxa cẋa deşar çeqdakqa, Doş şardaŋ,
-> Naxçica. La question pré-remplie a été corrigée par l'auteur.
+> **CE validé par l'auteur** : Karlayakqa, Ẋalxa cẋa deşar çeqdakqa,
+> Doş şardaŋ, Naxçica, et la question pré-remplie, qu'il a corrigée.
 
 **Contexte.** Les 3 « actions rapides » de l'accueil (`home_screen.dart`,
 `_buildQuickActions`) dupliquent exactement la barre de navigation (Chat /

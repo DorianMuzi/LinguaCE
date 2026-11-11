@@ -98,8 +98,8 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Быстрые действия',
     'CE': 'Sixa ġullaqaş'
   },
-  // CE des clés home.qa_review* / home.qa_practice* : Dico3.py, à valider,
-  // sauf la question pré-remplie (corrigée par l'auteur).
+  // CE des clés home.qa_review* / home.qa_practice* : validées par l'auteur
+  // (la question pré-remplie a été corrigée par lui).
   'home.qa_review':
       {'FR': 'Réviser', 'EN': 'Review', 'RU': 'Повторить', 'CE': 'Karlayakqa'},
   'home.qa_review_none': {
