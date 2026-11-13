@@ -159,6 +159,25 @@ existe dans les données, pas encore dans la sensation.
 ## 4. Deep link de réinitialisation du mot de passe
 **Labels :** `bug`, `priority: medium`
 
+> 🟡 **Implémenté (nov. 2026), reste la vérification sur appareil réel.**
+> - L'email part avec une URL de retour (`PasswordRecovery.sendEmail`) :
+>   `linguace://reset-password` sur Android, l'origine de la page sur le web.
+> - `AndroidManifest.xml` : intent-filter `VIEW` / `BROWSABLE` sur
+>   `linguace://reset-password`.
+> - supabase_flutter (app_links) échange le code (PKCE) et émet
+>   `passwordRecovery` ; `PasswordRecovery.pending` passe à vrai et l'app
+>   ouvre `ResetPasswordScreen` (depuis le splash au démarrage à froid, via
+>   le Navigator racine sinon). Nouveau mot de passe → `updateUser` → entrée
+>   dans l'app, déjà connecté.
+> - ⚠️ PKCE : le lien doit être ouvert sur l'appareil / le navigateur qui a
+>   fait la demande.
+> - **Config Supabase (tableau de bord, une fois)** : Authentication › URL
+>   Configuration › Redirect URLs, ajouter `linguace://reset-password` et,
+>   pour le web en dev, `http://localhost:*/**`. Sans cela, Supabase ignore
+>   `redirectTo` et renvoie vers la Site URL.
+> - Tests : `test/password_recovery_test.dart` (URL, événement, validation,
+>   écran).
+
 **Contexte.** L'écran « Mot de passe oublié » envoie un email de réinitialisation
 (`forgot_password_screen.dart`), mais le retour vers l'app via le lien n'a pas
 été validé sur device — c'est un piège classique Supabase/Android.

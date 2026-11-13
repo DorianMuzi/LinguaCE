@@ -3,8 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../design/lingua_tokens.dart';
 import '../i18n/app_strings.dart';
+import '../services/password_recovery.dart';
 import 'auth_screen.dart';
 import 'onboarding_screen.dart';
+import 'reset_password_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -71,8 +73,13 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _navigate() async {
     if (!mounted) return;
     final session = Supabase.instance.client.auth.currentSession;
-    final destination =
-        session != null ? OnboardingScreen.entry() : const AuthScreen();
+    // App ouverte par un lien de réinitialisation : écran de nouveau mot de
+    // passe d'abord (la session de récupération est déjà active).
+    final destination = PasswordRecovery.pending.value
+        ? const ResetPasswordScreen()
+        : session != null
+            ? OnboardingScreen.entry()
+            : const AuthScreen();
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (_, anim, __) => destination,

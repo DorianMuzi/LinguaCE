@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../config/app_config.dart';
+import 'password_recovery.dart';
 
 class SupabaseService {
   static Future<void> initialize() => Supabase.initialize(
@@ -56,6 +57,7 @@ class SupabaseService {
 
   static Future<void> signOut() => _client.auth.signOut();
 
+  /// Passe par [PasswordRecovery] pour inclure l'URL de retour.
   static Future<void> resetPassword(String email) =>
-      _client.auth.resetPasswordForEmail(email.trim());
+      PasswordRecovery.sendEmail(email);
 }

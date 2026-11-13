@@ -6,6 +6,7 @@ import '../design/lingua_scale.dart';
 import '../design/lingua_components.dart';
 import '../design/responsive.dart';
 import '../i18n/app_strings.dart';
+import '../services/password_recovery.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -38,7 +39,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     setState(() => _isLoading = true);
     try {
-      await Supabase.instance.client.auth.resetPasswordForEmail(email);
+      // Avec l'URL de retour : le lien rouvre l'app sur l'écran de nouveau
+      // mot de passe (tâche #4).
+      await PasswordRecovery.sendEmail(email);
       if (!mounted) return;
       setState(() {
         _isLoading = false;

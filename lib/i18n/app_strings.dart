@@ -603,6 +603,50 @@ const Map<String, Map<String, String>> _strings = {
   },
   'common.back':
       {'FR': 'Retour', 'EN': 'Back', 'RU': 'Назад', 'CE': 'Yuxa'},
+  // ── Nouveau mot de passe (lien de réinitialisation, tâche #4) ──────────
+  // CE : Dico3, à valider (« Doġanaŋ doş » repris de l'inscription).
+  'reset.title': {
+    'FR': 'Nouveau mot de passe',
+    'EN': 'New password',
+    'RU': 'Новый пароль',
+    'CE': 'Kerla doġanaŋ doş'
+  },
+  'reset.subtitle': {
+    'FR': 'Choisis un nouveau mot de passe pour ton compte.',
+    'EN': 'Choose a new password for your account.',
+    'RU': 'Выбери новый пароль для своего аккаунта.',
+    'CE': 'Ẋaŋ akkauntna kerla doġanaŋ doş qolla.'
+  },
+  'reset.password': {
+    'FR': 'Nouveau mot de passe',
+    'EN': 'New password',
+    'RU': 'Новый пароль',
+    'CE': 'Kerla doġanaŋ doş'
+  },
+  'reset.confirm': {
+    'FR': 'Confirmer le mot de passe',
+    'EN': 'Confirm password',
+    'RU': 'Подтвердить пароль',
+    'CE': 'Doġanaŋ doş ç̇aġde'
+  },
+  'reset.show': {
+    'FR': 'Afficher le mot de passe',
+    'EN': 'Show password',
+    'RU': 'Показать пароль',
+    'CE': 'Doġanaŋ doş gayta'
+  },
+  'reset.hide': {
+    'FR': 'Masquer le mot de passe',
+    'EN': 'Hide password',
+    'RU': 'Скрыть пароль',
+    'CE': 'Doġanaŋ doş djalaçq̇o'
+  },
+  'reset.done': {
+    'FR': 'Mot de passe modifié.',
+    'EN': 'Password changed.',
+    'RU': 'Пароль изменён.',
+    'CE': 'Doġanaŋ doş xiycina.'
+  },
   'chat.send':
       {'FR': 'Envoyer', 'EN': 'Send', 'RU': 'Отправить', 'CE': 'Djadaxiyta'},
   'chat.language': {'FR': 'Langue :', 'EN': 'Language:', 'RU': 'Язык:', 'CE': 'Mott:'},

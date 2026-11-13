@@ -33,6 +33,18 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Lien « mot de passe oublié » (tâche #4) : l'email de Supabase
+                 redirige vers linguace://reset-password?code=… ; ce filtre
+                 rouvre l'app, et supabase_flutter (via app_links) échange le
+                 code puis émet passwordRecovery. La même URL doit figurer
+                 dans Supabase › Authentication › URL Configuration ›
+                 Redirect URLs. Voir lib/services/password_recovery.dart. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="linguace" android:host="reset-password"/>
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
