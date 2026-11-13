@@ -29,6 +29,9 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   /// Chargés depuis la base au montage (repli hors-ligne dans le service).
   List<Exercise> _exercises = [];
 
+  /// Langue d'interface : sens, consignes et propositions s'y affichent.
+  String get _lang => localeController.value;
+
   /// Nombre d'exercices de base (hors rattrapages ajoutés en fin de file) :
   /// la progression persistée reste bornée à cette valeur.
   int _baseCount = 0;
@@ -615,7 +618,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                 color: t.surfaceRaised,
                 borderRadius: LinguaRadius.rPill,
               ),
-              child: Text(_current.french,
+              child: Text(_current.meaningFor(_lang),
                   style: GoogleFonts.oswald(
                       color: t.textPrimary,
                       fontSize: 24,
@@ -632,7 +635,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(_current.prompt ?? '',
+          Text(_current.promptFor(_lang) ?? '',
               style: GoogleFonts.oswald(
                   color: t.textPrimary,
                   fontSize: 22,
@@ -691,7 +694,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                   child: Row(
                     children: [
                       Expanded(
-                        child: Text(_current.choices![i],
+                        child: Text(_current.choicesFor(_lang)![i],
                             style: GoogleFonts.manrope(
                               color: fg,
                               fontSize: 16,
@@ -721,7 +724,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               correctLabel: _isCorrect
                   ? null
                   : tr('ex.answer_is',
-                      {'x': _current.choices![_current.correctIndex!]}),
+                      {'x': _current.choicesFor(_lang)![_current.correctIndex!]}),
               xp: _isCorrect ? '+10 XP' : null,
             ),
           ],
@@ -751,7 +754,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
               children: [
                 Icon(Icons.edit_note_rounded, size: 36, color: t.textAccent),
                 const SizedBox(height: 12),
-                Text(_current.prompt ?? '',
+                Text(_current.promptFor(_lang) ?? '',
                     style: GoogleFonts.oswald(
                         color: t.textPrimary,
                         fontSize: 20,
@@ -846,7 +849,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                       style: GoogleFonts.manrope(
                           color: t.textTertiary, fontSize: 15)),
                   const SizedBox(height: 4),
-                  Text(_current.french,
+                  Text(_current.meaningFor(_lang),
                       style: GoogleFonts.manrope(
                           color: t.textSecondary, fontSize: 14)),
                   if (_isCorrect) ...[

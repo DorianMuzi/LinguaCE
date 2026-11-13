@@ -94,6 +94,11 @@ class Exercise {
   final List<String>? choices;
   final int? correctIndex;
 
+  /// Textes traduits par langue d'interface (colonne jsonb `i18n`). Le
+  /// tchétchène, lui, ne se traduit pas : seuls le sens, la consigne et les
+  /// propositions rédigées en français ont des versions EN/RU.
+  final Map<String, ExerciseText> i18n;
+
   const Exercise({
     required this.type,
     required this.cyrillic,
@@ -102,7 +107,25 @@ class Exercise {
     this.prompt,
     this.choices,
     this.correctIndex,
+    this.i18n = const {},
   });
+
+  /// Sens du mot dans la langue [lang], repli sur le français.
+  String meaningFor(String lang) => i18n[lang]?.meaning ?? french;
+
+  /// Consigne dans la langue [lang], repli sur le français.
+  String? promptFor(String lang) => i18n[lang]?.prompt ?? prompt;
+
+  /// Propositions dans la langue [lang]. Une traduction qui n'a pas le même
+  /// nombre d'entrées est ignorée : l'index de la bonne réponse ne
+  /// correspondrait plus.
+  List<String>? choicesFor(String lang) {
+    final t = i18n[lang]?.choices;
+    if (t == null || choices == null || t.length != choices!.length) {
+      return choices;
+    }
+    return t;
+  }
 
   /// Construit un exercice depuis une ligne Supabase.
   /// Renvoie `null` si la ligne est inexploitable — mieux vaut sauter un
@@ -146,7 +169,39 @@ class Exercise {
       prompt: r['prompt'] as String?,
       choices: choices,
       correctIndex: correctIndex,
+      i18n: ExerciseText.parseAll(r['i18n']),
     );
+  }
+}
+
+/// Textes d'un exercice dans une langue donnée ; tout champ absent ou vide
+/// retombe sur la version française.
+class ExerciseText {
+  final String? meaning;
+  final String? prompt;
+  final List<String>? choices;
+
+  const ExerciseText({this.meaning, this.prompt, this.choices});
+
+  /// Lit `{"EN": {"meaning": ..., "prompt": ..., "choices": [...]}, ...}`.
+  /// Tolère `null` (colonne pas encore migrée) et les entrées malformées.
+  static Map<String, ExerciseText> parseAll(dynamic raw) {
+    if (raw is! Map) return const {};
+    String? text(dynamic v) =>
+        (v is String && v.trim().isNotEmpty) ? v : null;
+    return {
+      for (final e in raw.entries)
+        if (e.value is Map)
+          e.key.toString(): ExerciseText(
+            meaning: text((e.value as Map)['meaning']),
+            prompt: text((e.value as Map)['prompt']),
+            choices: (e.value as Map)['choices'] is List
+                ? ((e.value as Map)['choices'] as List)
+                    .whereType<String>()
+                    .toList()
+                : null,
+          ),
+    };
   }
 }
 

@@ -5,6 +5,7 @@ import '../design/lingua_components.dart';
 import '../design/lingua_scale.dart';
 import '../design/lingua_tokens.dart';
 import '../i18n/app_strings.dart';
+import '../i18n/locale_controller.dart';
 import '../models/models.dart';
 import '../services/report_service.dart';
 
@@ -128,7 +129,7 @@ class _ReportSheetState extends State<ReportSheet> {
                         style:
                             GoogleFonts.manrope(color: t.goldInk, fontSize: 14)),
                     const SizedBox(height: 2),
-                    Text(ex.french,
+                    Text(ex.meaningFor(localeController.value),
                         style: GoogleFonts.manrope(
                             color: t.textSecondary, fontSize: 14)),
                   ],
