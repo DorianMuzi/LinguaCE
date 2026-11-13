@@ -229,6 +229,16 @@ Leçons / Progrès), accessible 100 px plus bas. C'est de l'espace gâché.
 > **Reste à faire côté mainteneur :** appliquer la migration
 > (`supabase db push`), puis vérifier qu'une 7ᵉ leçon ajoutée en base
 > s'ouvre sans recompiler.
+>
+> ✅ **Contenu multilingue (nov. 2026, appliqué en production).**
+> - Titres et sous-titres de leçons : colonnes `title_i18n` /
+>   `subtitle_i18n` (EN/RU/CE), migration `20261112120000_lesson_i18n`.
+>   CE issu de Dico3, à valider.
+> - Exercices : colonne `i18n` (sens, consigne, propositions en EN/RU),
+>   migration `20261113120000_exercise_i18n`, les 36 exercices traduits.
+>   En CE, le sens reste en français (langue source).
+> - Toute nouvelle leçon ou tout nouvel exercice doit remplir ces colonnes ;
+>   à défaut, l'app retombe sur le français.
 
 **Contexte.** Le contenu pédagogique réel (exercices) est codé en dur côté
 client dans `lib/screens/exercise_screen.dart` (`_Data._byLesson`, leçons '1'
