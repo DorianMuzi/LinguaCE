@@ -47,6 +47,9 @@ void main() {
     expect(texts, contains('Marşa voġiyla'));
     // « Bonjour » = де дика дойла ; марша вогӀийла n'en est plus la réponse.
     expect(texts, contains('De dika doyla'));
+    // « 1 » cité seul : forme absolue, comme qoə / pxiə.
+    expect(texts, contains('cẋaə'));
+    expect(RegExp(r'\b[Cc]ẋa(?![\wə])').hasMatch(texts), isFalse);
     expect(texts, isNot(contains('Bonjour (formel)')));
     expect(texts, contains('qoə'));
     expect(texts, contains('Pxiə'));

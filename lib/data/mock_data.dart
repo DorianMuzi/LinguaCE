@@ -210,7 +210,7 @@ class MockData {
     ],
     '3': [
       Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'цхьа', translit: 'cẋa', french: 'Un (1)'),
+          cyrillic: 'цхьаъ', translit: 'cẋaə', french: 'Un (1)'),
       Exercise(type: ExerciseType.flashcard,
           cyrillic: 'шиъ', translit: 'şiə', french: 'Deux (2)'),
       Exercise(
@@ -229,9 +229,9 @@ class MockData {
       ),
       Exercise(
         type: ExerciseType.qcm,
-        cyrillic: 'цхьа', translit: 'cẋa', french: 'Un (1)',
+        cyrillic: 'цхьаъ', translit: 'cẋaə', french: 'Un (1)',
         prompt: 'Comment dit-on "1" en tchétchène ?',
-        choices: ['Şiə', 'Qoə', 'Cẋa', 'Diə'],
+        choices: ['Şiə', 'Qoə', 'Cẋaə', 'Diə'],
         correctIndex: 2,
       ),
       Exercise(
