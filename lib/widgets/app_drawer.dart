@@ -9,6 +9,7 @@ import '../i18n/app_strings.dart';
 import '../services/profile_service.dart';
 import '../services/auth_service.dart';
 import '../screens/auth_screen.dart';
+import '../screens/dictionary_screen.dart';
 import '../screens/profile_screen.dart';
 import 'language_picker.dart';
 
@@ -252,6 +253,12 @@ class _AppDrawerState extends State<AppDrawer> {
                     icon: Icons.home_outlined,
                     label: tr('drawer.home'),
                     onTap: () => Navigator.pop(context),
+                  ),
+                  _DrawerItem(
+                    icon: Icons.menu_book_outlined,
+                    label: tr('dict.title'),
+                    onTap: () => _closeDrawer().push(MaterialPageRoute(
+                        builder: (_) => const DictionaryScreen())),
                   ),
                   _DrawerItem(
                     icon: Icons.info_outline,

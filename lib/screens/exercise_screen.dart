@@ -10,6 +10,7 @@ import '../i18n/locale_controller.dart';
 import '../models/models.dart';
 import '../services/exercise_service.dart';
 import '../services/lesson_service.dart';
+import '../services/text_fold.dart';
 import '../widgets/report_sheet.dart';
 
 // ═══════════════════════════════════════════════════════════
@@ -31,18 +32,7 @@ class ExerciseScreen extends StatefulWidget {
   }
 
   @visibleForTesting
-  static String normalizeAnswer(String s) {
-    const folds = {
-      'ş': 's', 'ẋ': 'x', 'ç': 'c', 'ġ': 'g', 'ŋ': 'n', 'ƶ': 'z', 'ċ': 'c',
-      'ü': 'u', 'ö': 'o', 'ä': 'a', 'ə': 'e',
-      'ʔ': '', 'ʼ': '', 'ʻ': '', '\'': '', '`': '',
-    };
-    var out = s.trim().toLowerCase();
-    folds.forEach((k, v) => out = out.replaceAll(k, v));
-    // Retire les diacritiques combinants (ex. point suscrit de k̇, q̇).
-    out = out.replaceAll(RegExp('[̀-ͯ]'), '');
-    return out.replaceAll(RegExp(r'\s+'), ' ');
-  }
+  static String normalizeAnswer(String s) => TextFold.fold(s);
 
   @override
   State<ExerciseScreen> createState() => _ExerciseScreenState();

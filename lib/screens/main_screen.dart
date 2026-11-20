@@ -11,6 +11,7 @@ import '../widgets/floating_nav_bar.dart';
 import '../widgets/app_drawer.dart';
 import 'home_screen.dart';
 import 'chat_screen.dart';
+import 'dictionary_screen.dart';
 import 'learn_screen.dart';
 import 'progress_screen.dart';
 import 'profile_screen.dart';
@@ -190,6 +191,15 @@ class _MainScreenState extends State<MainScreen> {
             ),
       centerTitle: true,
       actions: [
+        // Dictionnaire : accessible depuis tous les onglets.
+        IconButton(
+          tooltip: tr('dict.title'),
+          icon: Icon(Icons.search_rounded, color: t.textPrimary, size: 22),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const DictionaryScreen()),
+          ),
+        ),
         Semantics(
           button: true,
           label: tr('nav.profile'),

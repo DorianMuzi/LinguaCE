@@ -603,6 +603,87 @@ const Map<String, Map<String, String>> _strings = {
   },
   'common.back':
       {'FR': 'Retour', 'EN': 'Back', 'RU': 'Назад', 'CE': 'Yuxa'},
+  // ── Dictionnaire (LinguaCE Core) ───────────────────────────────────────
+  // CE : Dico3, à valider (termes grammaticaux tchétchènes compris).
+  'dict.title': {
+    'FR': 'Dictionnaire',
+    'EN': 'Dictionary',
+    'RU': 'Словарь',
+    'CE': 'Doşam'
+  },
+  'dict.search_hint': {
+    'FR': 'Un mot en tchétchène ou en français',
+    'EN': 'A word in Chechen or English',
+    'RU': 'Слово на чеченском или русском',
+    'CE': 'Doş laxa'
+  },
+  'dict.empty': {
+    'FR': 'Aucun mot trouvé',
+    'EN': 'No word found',
+    'RU': 'Слово не найдено',
+    'CE': 'Doş ca kariyra'
+  },
+  'dict.count': {
+    'FR': '{n} mots',
+    'EN': '{n} words',
+    'RU': 'Слов: {n}',
+    'CE': '{n} deşnaş'
+  },
+  'dict.class': {
+    'FR': 'Classe {c}',
+    'EN': 'Class {c}',
+    'RU': 'Класс {c}',
+    'CE': 'Klass {c}'
+  },
+  'pos.noun': {'FR': 'Nom', 'EN': 'Noun', 'RU': 'Существительное', 'CE': 'Ċerdoş'},
+  'pos.verb': {'FR': 'Verbe', 'EN': 'Verb', 'RU': 'Глагол', 'CE': 'Xandoş'},
+  'pos.adjective': {
+    'FR': 'Adjectif',
+    'EN': 'Adjective',
+    'RU': 'Прилагательное',
+    'CE': 'Bilgaldoş'
+  },
+  'pos.adverb':
+      {'FR': 'Adverbe', 'EN': 'Adverb', 'RU': 'Наречие', 'CE': 'Kucdoş'},
+  'pos.pronoun': {
+    'FR': 'Pronom',
+    'EN': 'Pronoun',
+    'RU': 'Местоимение',
+    'CE': 'Ċermetdoş'
+  },
+  'pos.numeral': {
+    'FR': 'Numéral',
+    'EN': 'Numeral',
+    'RU': 'Числительное',
+    'CE': 'Teraẋdoş'
+  },
+  'pos.postposition': {
+    'FR': 'Postposition',
+    'EN': 'Postposition',
+    'RU': 'Послелог',
+    'CE': 'Deşṫäẋenca'
+  },
+  'pos.conjunction': {
+    'FR': 'Conjonction',
+    'EN': 'Conjunction',
+    'RU': 'Союз',
+    'CE': 'Xutturg'
+  },
+  'pos.particle':
+      {'FR': 'Particule', 'EN': 'Particle', 'RU': 'Частица', 'CE': 'Daq̇alg'},
+  'pos.interjection': {
+    'FR': 'Interjection',
+    'EN': 'Interjection',
+    'RU': 'Междометие',
+    'CE': 'Aydardoş'
+  },
+  'pos.phrase': {
+    'FR': 'Expression',
+    'EN': 'Phrase',
+    'RU': 'Выражение',
+    'CE': 'Deşniyŋ cẋänaqetar'
+  },
+
   // ── Nouveau mot de passe (lien de réinitialisation, tâche #4) ──────────
   // CE : Dico3, à valider (« Doġanaŋ doş » repris de l'inscription).
   'reset.title': {

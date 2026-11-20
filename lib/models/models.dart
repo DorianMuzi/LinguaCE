@@ -205,6 +205,87 @@ class ExerciseText {
   }
 }
 
+/// Un mot du lexique commun (LinguaCE Core, table `public.lexemes`).
+/// Les apps ne voient que les mots validés par un natif.
+class Lexeme {
+  final int id;
+  final String cyrillic;
+  final String latin;
+  final int sense;
+
+  /// noun, verb, adjective, adverb, pronoun, numeral, postposition,
+  /// conjunction, particle, interjection, phrase.
+  final String pos;
+
+  /// Classe nominale (noms) : v, y, y2, d, b, b2 — sinon null.
+  final String? nounClass;
+
+  /// Traductions par langue d'interface : {"FR": ["Merci"], ...}.
+  final Map<String, List<String>> translations;
+  final String? audioUrl;
+
+  const Lexeme({
+    required this.id,
+    required this.cyrillic,
+    required this.latin,
+    required this.pos,
+    this.sense = 1,
+    this.nounClass,
+    this.translations = const {},
+    this.audioUrl,
+  });
+
+  /// Traductions dans la langue [lang], repli sur le français. En interface
+  /// tchétchène, il n'y a pas de « traduction » : on montre le français.
+  List<String> translationsFor(String lang) {
+    final own = translations[lang];
+    if (own != null && own.isNotEmpty) return own;
+    return translations['FR'] ?? const [];
+  }
+
+  /// Lettre cyrillique de la classe nominale : в, й, д, б (+ « II »).
+  static String? classLetter(String? nounClass) => switch (nounClass) {
+        'v' => 'в',
+        'y' => 'й',
+        'y2' => 'й II',
+        'd' => 'д',
+        'b' => 'б',
+        'b2' => 'б II',
+        _ => null,
+      };
+
+  /// Ligne Supabase → mot ; `null` si la ligne est inexploitable.
+  static Lexeme? fromRow(Map<String, dynamic> r) {
+    final id = r['id'];
+    final cyrillic = r['cyrillic'];
+    final latin = r['latin'];
+    final pos = r['pos'];
+    if (id is! int || cyrillic is! String || latin is! String || pos is! String) {
+      return null;
+    }
+    final raw = r['translations'];
+    final translations = <String, List<String>>{};
+    if (raw is Map) {
+      for (final e in raw.entries) {
+        if (e.value is List) {
+          translations[e.key.toString()] =
+              (e.value as List).whereType<String>().toList();
+        }
+      }
+    }
+    return Lexeme(
+      id: id,
+      cyrillic: cyrillic,
+      latin: latin,
+      sense: r['sense'] is int ? r['sense'] as int : 1,
+      pos: pos,
+      nounClass: r['noun_class'] as String?,
+      translations: translations,
+      audioUrl: r['audio_url'] as String?,
+    );
+  }
+}
+
 class LeagueUser {
   final String name;
   final String avatarInitials;
