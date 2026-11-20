@@ -20,6 +20,30 @@ class ExerciseScreen extends StatefulWidget {
   final LessonModel lesson;
   const ExerciseScreen({super.key, required this.lesson});
 
+  /// Réponse tapée acceptée ? Indulgent sur ce qui est difficile à saisir
+  /// sur un clavier courant : diacritiques (ş → s, k̇ → k…), casse, espaces,
+  /// apostrophes. Le « ə » final (coup de glotte, ъ) est facultatif ou
+  /// tapé « e » : « qoə », « qoe » et « qo » valent tous « qoə ».
+  static bool answerMatches(String given, String expected) {
+    final g = normalizeAnswer(given);
+    return g == normalizeAnswer(expected) ||
+        g == normalizeAnswer(expected.replaceAll('ə', ''));
+  }
+
+  @visibleForTesting
+  static String normalizeAnswer(String s) {
+    const folds = {
+      'ş': 's', 'ẋ': 'x', 'ç': 'c', 'ġ': 'g', 'ŋ': 'n', 'ƶ': 'z', 'ċ': 'c',
+      'ü': 'u', 'ö': 'o', 'ä': 'a', 'ə': 'e',
+      'ʔ': '', 'ʼ': '', 'ʻ': '', '\'': '', '`': '',
+    };
+    var out = s.trim().toLowerCase();
+    folds.forEach((k, v) => out = out.replaceAll(k, v));
+    // Retire les diacritiques combinants (ex. point suscrit de k̇, q̇).
+    out = out.replaceAll(RegExp('[̀-ͯ]'), '');
+    return out.replaceAll(RegExp(r'\s+'), ' ');
+  }
+
   @override
   State<ExerciseScreen> createState() => _ExerciseScreenState();
 }
@@ -164,7 +188,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
 
   void _checkTranslation() {
     final correct =
-        _normalize(_translCtrl.text) == _normalize(_current.translit);
+        ExerciseScreen.answerMatches(_translCtrl.text, _current.translit);
     correct ? HapticFeedback.lightImpact() : HapticFeedback.mediumImpact();
     setState(() {
       _isAnswered = true;
@@ -183,18 +207,6 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   /// Comparaison tolérante : ignore la casse, les espaces multiples et les
   /// signes diacritiques du latin Muziŋ Dar (ş→s, ġ→g, ʔ/ʼ ignorés…) pour
   /// que la saisie reste réaliste avec un clavier standard.
-  static String _normalize(String s) {
-    const folds = {
-      'ş': 's', 'ẋ': 'x', 'ç': 'c', 'ġ': 'g', 'ŋ': 'n', 'ƶ': 'z', 'ċ': 'c',
-      'ü': 'u', 'ö': 'o', 'ä': 'a', 'ə': 'e',
-      'ʔ': '', 'ʼ': '', 'ʻ': '', '\'': '', '`': '',
-    };
-    var out = s.trim().toLowerCase();
-    folds.forEach((k, v) => out = out.replaceAll(k, v));
-    // Retire les diacritiques combinants (ex. point suscrit de k̇, q̇).
-    out = out.replaceAll(RegExp('[̀-ͯ]'), '');
-    return out.replaceAll(RegExp(r'\s+'), ' ');
-  }
 
   void _next() {
     // Boucle de rattrapage : un exercice raté revient en fin de file

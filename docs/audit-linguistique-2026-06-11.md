@@ -5,6 +5,18 @@
 > (`lib/services/claude_service.dart`) et sa table de translittération.
 > Aucun fichier n'a été modifié.
 
+> ✅ **Points 1 à 3 de la liste §6 tranchés par l'auteur (2026-11-20)** et
+> appliqués aux leçons en production (migration
+> `20261120130000_reference_forms.sql`), au jeu hors-ligne et au prompt :
+> 1. `Марша вогӀийла` (préfixe de classe в-) est la forme de référence ;
+>    variantes d'accord `йогӀийла`, `догӀийла`, `богӀийла`.
+> 2. `Дукха баркалла` (modificateur avant) ; `Баркалла дукха` existe à
+>    l'oral / en emphase.
+> 3. Formes absolues `кхоъ` / `пхиъ` quand le nombre est cité seul ; formes
+>    courtes `кхо` / `пхи` devant un nom.
+>
+> Corrigé au passage : choix de QCM « Vorx » → « Vorh » (ворхӀ, хӀ → h).
+
 **Référence normative utilisée** : la grammaire du system prompt lui-même (`lib/services/claude_service.dart`, lignes 18–363) : 6 classes nominales, accord transitif=objet / intransitif=sujet, 4 formes de la copule, 11 cas, et la table de translittération « Muziŋ Dar » (lignes 183–203). Conformément aux limites du projet, l'audit n'a pas tenté de reconstituer les règles serveur de translittération ; il signale uniquement les contradictions entre les sorties latines en dur et la table affichée dans le prompt.
 
 ---
