@@ -170,18 +170,20 @@ class MockData {
       ),
     ],
     '2': [
+      // « Bonjour » = де дика дойла ; марша вогӀийла = « Bienvenue »
+      // (décision de l'auteur, 2026-11-21).
       Exercise(type: ExerciseType.flashcard,
-          cyrillic: 'Марша вогӀийла', translit: 'Marşa voġiyla',
-          french: 'Bonjour (formel)'),
+          cyrillic: 'Де дика дойла', translit: 'De dika doyla',
+          french: 'Bonjour'),
       Exercise(type: ExerciseType.flashcard,
           cyrillic: 'Дела реза хуьлда', translit: 'Dela reza xülda',
           french: 'Que Dieu soit satisfait'),
       Exercise(
         type: ExerciseType.qcm,
-        cyrillic: 'Марша вогӀийла', translit: 'Marşa voġiyla',
-        french: 'Bonjour (formel)',
-        prompt: 'Quel est le bonjour formel en tchétchène ?',
-        choices: ['Salam', 'Barkalla', 'Marşa voġiyla', 'Dika de'],
+        cyrillic: 'Де дика дойла', translit: 'De dika doyla',
+        french: 'Bonjour',
+        prompt: 'Comment dit-on "Bonjour" en tchétchène ?',
+        choices: ['Salam', 'Barkalla', 'De dika doyla', 'Marşa voġiyla'],
         correctIndex: 2,
       ),
       Exercise(
@@ -194,16 +196,16 @@ class MockData {
       Exercise(
         type: ExerciseType.qcm,
         cyrillic: 'Марша вогӀийла', translit: 'Marşa voġiyla',
-        french: 'Entre libre (litt.)',
-        prompt: 'Que signifie littéralement "Marşa voġiyla" ?',
-        choices: ['Bonne journée', 'Entre libre', 'Bonne nuit', 'À bientôt'],
+        french: 'Bienvenue',
+        prompt: 'Que signifie "Marşa voġiyla" ?',
+        choices: ['Bonne journée', 'Bienvenue', 'Bonne nuit', 'À bientôt'],
         correctIndex: 1,
       ),
       Exercise(
         type: ExerciseType.translation,
-        cyrillic: 'Марша вогӀийла', translit: 'Marşa voġiyla',
-        french: 'Bonjour (formel)',
-        prompt: 'Traduis en tchétchène :\n"Bonjour" (formel)',
+        cyrillic: 'Де дика дойла', translit: 'De dika doyla',
+        french: 'Bonjour',
+        prompt: 'Traduis en tchétchène :\n"Bonjour"',
       ),
     ],
     '3': [

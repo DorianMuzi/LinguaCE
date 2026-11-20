@@ -28,7 +28,8 @@ void main() {
   test('le jeu hors-ligne suit les formes de référence', () {
     final all = MockData.exercisesByLesson.values.expand((l) => l).toList();
     final texts = [
-      for (final e in all) ...[e.cyrillic, e.translit, e.prompt ?? '', ...?e.choices],
+      for (final e in all)
+        ...[e.cyrillic, e.translit, e.french, e.prompt ?? '', ...?e.choices],
     ].join(' | ');
     // « огӀийла » sans le préfixe de classe в- (la nouvelle forme le contient).
     for (final old in [
@@ -44,6 +45,9 @@ void main() {
           reason: 'forme ancienne encore présente : ${old.pattern}');
     }
     expect(texts, contains('Marşa voġiyla'));
+    // « Bonjour » = де дика дойла ; марша вогӀийла n'en est plus la réponse.
+    expect(texts, contains('De dika doyla'));
+    expect(texts, isNot(contains('Bonjour (formel)')));
     expect(texts, contains('qoə'));
     expect(texts, contains('Pxiə'));
   });

@@ -175,7 +175,9 @@ Forme attributive (devant nom) : ЦӀен байракх = Drapeau rouge
 Forme substantive (seul) : ЦӀениг = Le rouge (celui qui est rouge)
 
 VOCABULAIRE DE BASE :
-Салам = Salut (informel)           | Марша вогӀийла = Bonjour (formel)
+Салам = Salut (informel)           | Де дика дойла = Bonjour (accord д- : де est de classe д)
+Марша вогӀийла = Bienvenue (litt. « qu'il vienne en paix » ; classe й- : марша йогӀийла)
+Ӏадика йойла = Au revoir (classe й-)
 Баркалла = Merci                    | Дела реза хуьлда = Que Dieu soit satisfait
 Дика = Bien/Bon | Вон = Mauvais    | Дукха = Beaucoup | КӀезиг = Peu
 ХӀун = Quoi | Мила = Qui           | Мичахь = Où (lieu) | Мича = Où (direction) | Муха = Comment
