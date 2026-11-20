@@ -16,6 +16,12 @@
 >    courtes `кхо` / `пхи` devant un nom.
 >
 > Corrigé au passage : choix de QCM « Vorx » → « Vorh » (ворхӀ, хӀ → h).
+>
+> ✅ **Numéraux et « où ? » tranchés par l'auteur (2026-11-20)**, corrigés
+> dans le prompt de Naxçi et dans le lexique du Core :
+> - point 16 : 30 = `ткъе итт` (« тIейткъа » était une coquille) ; 50 =
+>   `шовзткъе итт` ; 60 = `кхузткъа` ; 19 = `ткъайоьсна` confirmé ;
+> - `Мичча = Où` → `Мичахь` (localisation) / `Мича` (direction).
 
 **Référence normative utilisée** : la grammaire du system prompt lui-même (`lib/services/claude_service.dart`, lignes 18–363) : 6 classes nominales, accord transitif=objet / intransitif=sujet, 4 formes de la copule, 11 cas, et la table de translittération « Muziŋ Dar » (lignes 183–203). Conformément aux limites du projet, l'audit n'a pas tenté de reconstituer les règles serveur de translittération ; il signale uniquement les contradictions entre les sorties latines en dur et la table affichée dans le prompt.
 
