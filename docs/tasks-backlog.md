@@ -252,9 +252,9 @@ Leçons / Progrès), accessible 100 px plus bas. C'est de l'espace gâché.
 > ✅ **Contenu multilingue (nov. 2026, appliqué en production).**
 > - Titres et sous-titres de leçons : colonnes `title_i18n` /
 >   `subtitle_i18n` (EN/RU/CE), migration `20261112120000_lesson_i18n`.
->   Titres CE des leçons 1 à 8 validés par l'auteur (2026-11-20). Les
->   sous-titres CE des leçons 7 et 8 reprennent des mots validés du lexique ;
->   ceux des leçons 1 à 6 (Dico3) restent à confirmer.
+>   Titres et sous-titres CE des leçons 1 à 8 validés par l'auteur
+>   (2026-11-20/21) ; sous-titre de la leçon 2 corrigé en « De dika doyla,
+>   jadika yoyla… ».
 > - Leçons 7 (Compter jusqu'à 20) et 8 (Le corps) : construites sur le
 >   lexique validé du Core, exercices reliés à leurs mots ; contenu dans le
 >   dépôt privé `LinguaCE-core` (lexique fermé).
