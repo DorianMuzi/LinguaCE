@@ -7,7 +7,7 @@ import 'locale_controller.dart';
 /// [params] permet l'interpolation : `tr('home.streak', {'n': '3'})`
 /// remplace `{n}` par `3`. Repli sur le français si la traduction manque.
 ///
-/// Les textes tchétchènes (CE) sont en latin Muziŋ Dar, validés par l'auteur
+/// Les textes tchétchènes (CE) sont en latin Muziŋ Darr, validés par l'auteur
 /// (novembre 2026). Tout nouveau texte CE doit l'être avant publication.
 String tr(String key, [Map<String, String>? params]) {
   final lang = localeController.value;

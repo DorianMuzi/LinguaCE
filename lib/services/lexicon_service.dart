@@ -43,7 +43,7 @@ class LexiconService {
   /// à égalité, ordre alphabétique latin. Requête vide → tout le lexique.
   static List<Lexeme> search(List<Lexeme> all, String query, String lang) {
     final q = TextFold.foldCyrillic(query);
-    // Ordre de l'alphabet Muziŋ Dar, pas des points de code (ẋ avant y).
+    // Ordre de l'alphabet Muziŋ Darr, pas des points de code (ẋ avant y).
     if (q.isEmpty) {
       return [...all]..sort((a, b) => MuzinDar.compare(a.latin, b.latin));
     }

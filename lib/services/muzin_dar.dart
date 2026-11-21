@@ -1,4 +1,4 @@
-/// L'alphabet latin tchétchène (Muziŋ Dar), tel que le définit la
+/// L'alphabet latin tchétchène (Muziŋ Darr), tel que le définit la
 /// spécification du Core (spec/alphabet.md, dépôt privé) : 41 lettres, ordre
 /// validé par l'auteur le 2026-11-21.
 ///

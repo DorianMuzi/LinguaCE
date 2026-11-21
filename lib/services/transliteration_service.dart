@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Client de translittération cyrillique tchétchène → latin.
 ///
-/// L'algorithme (Chechen Latin Script, « Muziŋ Dar ») est **propriétaire** et
+/// L'algorithme (Chechen Latin Script, « Muziŋ Darr ») est **propriétaire** et
 /// vit côté serveur dans une Edge Function Supabase (`transliterate`), dont
 /// le code est versionné dans le dépôt privé `linguace-core`. Ce client ne
 /// fait qu'appeler l'API : aucune règle n'est exposée dans le code public.

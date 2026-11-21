@@ -198,7 +198,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   }
 
   /// Comparaison tolérante : ignore la casse, les espaces multiples et les
-  /// signes diacritiques du latin Muziŋ Dar (ş→s, ġ→g, ʔ/ʼ ignorés…) pour
+  /// signes diacritiques du latin Muziŋ Darr (ş→s, ġ→g, ʔ/ʼ ignorés…) pour
   /// que la saisie reste réaliste avec un clavier standard.
 
   void _next() {

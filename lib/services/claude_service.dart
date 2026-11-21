@@ -191,7 +191,7 @@ Arabe : Иман (foi), Дуа (prière), Ӏилма (science)
 Turcique : кузгу (miroir), шиш (brochette)
 Russe moderne : компьютер→кампутар, телевидение→телвидени
 
-=== TRANSLITTÉRATION OFFICIELLE LINGUACE (Muziŋ Dar) ===
+=== TRANSLITTÉRATION OFFICIELLE LINGUACE (Muziŋ Darr) ===
 
 ALPHABET DE BASE :
 а→a, б→b, ц→c, ч→ç, д→d, э→e, ф→f, г→g
@@ -402,7 +402,7 @@ Couleurs :
           '- Écris TOUTE ta réponse en tchétchène : explications, exemples, '
           'questions, titres.\n'
           '- Écris-la UNIQUEMENT avec la translittération officielle LinguaCE '
-          '(Muziŋ Dar) définie plus haut : diacritiques à point (k̇ q̇ ċ ṫ ṗ '
+          '(Muziŋ Darr) définie plus haut : diacritiques à point (k̇ q̇ ċ ṫ ṗ '
           'ç̇ ġ ẋ), jamais d\'apostrophe, kh ou sh.\n'
           '- AUCUN mot en cyrillique, AUCUN mot en français, anglais ou russe, '
           'ni traduction entre parenthèses.\n'
