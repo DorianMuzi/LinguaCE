@@ -757,7 +757,8 @@ const Map<String, Map<String, String>> _strings = {
     'CE': 'Doġanaŋ doş xiycina.'
   },
   // ── Studio (prononciations natives, LinguaCE Voice) ─────────────────────
-  // CE : rédigé en cyrillique, latin Dico3 — À VALIDER par l'auteur.
+  // CE : rédigé en cyrillique, latin Dico3, validé par l'auteur le 2026-11-21
+  // (« Sacaye », corrigé par l'auteur).
   'studio.title':
       {'FR': 'Studio', 'EN': 'Studio', 'RU': 'Студия', 'CE': 'Studio'},
   'studio.progress': {
@@ -773,7 +774,7 @@ const Map<String, Map<String, String>> _strings = {
     'CE': 'Djayazde'
   },
   'studio.stop':
-      {'FR': 'Arrêter', 'EN': 'Stop', 'RU': 'Остановить', 'CE': 'Sacae'},
+      {'FR': 'Arrêter', 'EN': 'Stop', 'RU': 'Остановить', 'CE': 'Sacaye'},
   'studio.listen':
       {'FR': 'Écouter', 'EN': 'Listen', 'RU': 'Прослушать', 'CE': 'Ladoġa'},
   'studio.redo': {
@@ -802,7 +803,7 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Espace : enregistrer / arrêter · Entrée : garder · → : passer',
     'EN': 'Space: record / stop · Enter: keep · →: skip',
     'RU': 'Пробел: записать / остановить · Enter: сохранить · →: пропустить',
-    'CE': 'Space: djayazde / sacae · Enter: ç̇aġde · →: ṫexdala'
+    'CE': 'Space: djayazde / sacaye · Enter: ç̇aġde · →: ṫexdala'
   },
   'studio.mic_denied': {
     'FR': 'Micro refusé. Autorise-le dans les réglages du navigateur ou du '
