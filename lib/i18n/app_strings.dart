@@ -756,6 +756,85 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Пароль изменён.',
     'CE': 'Doġanaŋ doş xiycina.'
   },
+  // ── Proposer un mot (dictionnaire) ───────────────────────────────────────
+  // CE : rédigé en cyrillique, latin Dico3 — À VALIDER par l'auteur.
+  'dict.propose': {
+    'FR': 'Proposer ce mot',
+    'EN': 'Suggest this word',
+    'RU': 'Предложить это слово',
+    'CE': 'Hara doş djadaxiyta'
+  },
+  'submit.title': {
+    'FR': 'Proposer un mot',
+    'EN': 'Suggest a word',
+    'RU': 'Предложить слово',
+    'CE': 'Doş djadaxiyta'
+  },
+  'submit.intro': {
+    'FR': 'Tu connais un mot qui manque ? Propose-le : il sera relu par un '
+        'locuteur natif avant d\'être ajouté.',
+    'EN': 'Know a word that is missing? Suggest it: a native speaker will '
+        'review it before it is added.',
+    'RU': 'Знаете слово, которого здесь нет? Предложите его: носитель языка '
+        'проверит его перед добавлением.',
+    'CE': 'Quzaẋ docu doş xäa ẋuna? Djadaxiyta: ṫetöxnaçul ẋalxa iza '
+        'noxçiyŋ mott xuuço tollur du.'
+  },
+  'submit.cyrillic': {
+    'FR': 'En cyrillique',
+    'EN': 'In Cyrillic',
+    'RU': 'Кириллицей',
+    'CE': 'Kirilliceẋ'
+  },
+  'submit.latin': {
+    'FR': 'En latin',
+    'EN': 'In Latin script',
+    'RU': 'Латиницей',
+    'CE': 'Latiniceẋ'
+  },
+  'submit.meaning': {
+    'FR': 'Sens, en français',
+    'EN': 'Meaning, in English',
+    'RU': 'Значение, по-русски',
+    'CE': 'Mäjna'
+  },
+  'submit.note': {
+    'FR': 'Remarque (facultatif)',
+    'EN': 'Note (optional)',
+    'RU': 'Примечание (необязательно)',
+    'CE': 'Bilgaldakqar (ca öşuş)'
+  },
+  'submit.send': {
+    'FR': 'Envoyer',
+    'EN': 'Send',
+    'RU': 'Отправить',
+    'CE': 'Djadaxiyta'
+  },
+  'submit.thanks': {
+    'FR': 'Merci ! Ton mot sera relu avant d\'être ajouté.',
+    'EN': 'Thank you! Your word will be reviewed before it is added.',
+    'RU': 'Спасибо! Ваше слово проверят перед добавлением.',
+    'CE': 'Barkalla! Ṫetöxnaçul ẋalxa ẋaŋ doş tollur du.'
+  },
+  'submit.err_form': {
+    'FR': 'Indique le mot (en cyrillique ou en latin) et son sens.',
+    'EN': 'Enter the word (in Cyrillic or Latin) and its meaning.',
+    'RU': 'Укажите слово (кириллицей или латиницей) и его значение.',
+    'CE': 'Doş (kirilliceẋ ya latiniceẋ) a, cünaŋ mäjna a yazde.'
+  },
+  'submit.err_cyrillic': {
+    'FR': 'Le champ cyrillique doit être écrit en lettres cyrilliques.',
+    'EN': 'The Cyrillic field must use Cyrillic letters.',
+    'RU': 'Поле «кириллицей» должно быть написано кириллицей.',
+    'CE': 'Kirillican mettig kirillican elpaşca yazde.'
+  },
+  'submit.err_latin': {
+    'FR': 'Le champ latin doit être écrit en lettres latines.',
+    'EN': 'The Latin field must use Latin letters.',
+    'RU': 'Поле «латиницей» должно быть написано латиницей.',
+    'CE': 'Latinaŋ mettig latinaŋ elpaşca yazde.'
+  },
+
   // ── Barre de lettres tchétchènes (libellés lus par les lecteurs d'écran) ─
   // CE : rédigé en cyrillique, latin Dico3, validé par l'auteur le 2026-11-21.
   'letters.insert': {

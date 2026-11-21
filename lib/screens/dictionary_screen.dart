@@ -10,6 +10,7 @@ import '../i18n/locale_controller.dart';
 import '../models/models.dart';
 import '../services/lexeme_audio.dart';
 import '../services/lexicon_service.dart';
+import 'submit_word_screen.dart';
 
 /// Premier dictionnaire de LinguaCE, alimenté par le lexique commun du Core
 /// (mots validés par un natif). Recherche en latin — avec ou sans
@@ -74,6 +75,13 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                 color: t.textPrimary,
                 fontSize: 20,
                 fontWeight: FontWeight.bold)),
+        actions: [
+          IconButton(
+            tooltip: tr('submit.title'),
+            icon: Icon(Icons.add_rounded, color: t.textPrimary),
+            onPressed: () => _propose(''),
+          ),
+        ],
       ),
       body: SafeArea(
         child: ContentClamp(
@@ -135,10 +143,23 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     final results = LexiconService.search(all, _query.text, _lang);
     if (results.isEmpty) {
       return Center(
-        child: Semantics(
-          liveRegion: true,
-          child: Text(tr('dict.empty'),
-              style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 15)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Semantics(
+              liveRegion: true,
+              child: Text(tr('dict.empty'),
+                  style: GoogleFonts.manrope(color: t.textSecondary, fontSize: 15)),
+            ),
+            const SizedBox(height: LinguaSpacing.md),
+            // Mot absent : l'utilisateur peut le proposer (relu avant ajout).
+            CopilotButton(
+              label: tr('dict.propose'),
+              icon: Icons.add_rounded,
+              variant: CopilotButtonVariant.tonal,
+              onPressed: () => _propose(_query.text),
+            ),
+          ],
         ),
       );
     }
@@ -160,6 +181,11 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       },
     );
   }
+
+  void _propose(String initial) => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => SubmitWordScreen(initial: initial)),
+      );
 
   Future<void> _play(String audioUrl) async {
     try {
