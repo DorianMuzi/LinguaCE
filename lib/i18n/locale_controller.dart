@@ -19,12 +19,31 @@ class LocaleController extends ValueNotifier<String> {
     'CE': 'Noxçiyŋ',
   };
 
+  /// Langue choisie par l'utilisateur si elle existe ; sinon celle du
+  /// téléphone (tant qu'il n'a rien choisi, l'app suit le téléphone).
   Future<void> load() async {
+    String? saved;
     try {
       final prefs = await SharedPreferences.getInstance();
-      final v = prefs.getString(_key);
-      if (v != null && supported.contains(v)) value = v;
+      saved = prefs.getString(_key);
     } catch (_) {}
+    if (saved != null && supported.contains(saved)) {
+      value = saved;
+    } else {
+      value = fromDevice(
+          PlatformDispatcher.instance.locales.map((l) => l.languageCode));
+    }
+  }
+
+  /// Première langue du téléphone que l'app parle (dans l'ordre de
+  /// préférence de l'utilisateur) ; sinon l'anglais, le plus largement
+  /// compris par la diaspora (Allemagne, Autriche, Turquie…).
+  static String fromDevice(Iterable<String> languageCodes) {
+    for (final code in languageCodes) {
+      final c = code.toUpperCase();
+      if (supported.contains(c)) return c;
+    }
+    return 'EN';
   }
 
   Future<void> setLang(String lang) async {
