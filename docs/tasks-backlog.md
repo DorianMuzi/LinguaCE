@@ -336,8 +336,9 @@ quel. Tout nouvel exemple ou toute correction doit être marqué
 > **Vérifié en production (oct.–nov. 2026) :** migration appliquée et
 > fonction déployée ; un appel avec la seule clé anon renvoie bien **401** ;
 > le chat répond normalement à un utilisateur connecté (quota décompté).
-> **Reste à faire :** observer un vrai **429** (dépasser le quota quotidien) ;
-> CE des 2 messages d'erreur à valider sur #chechen-linguistics.
+> **Reste à faire :** observer un vrai **429** (dépasser le quota quotidien).
+> CE des 2 messages d'erreur validé par l'auteur (« Sessiyŋ xan çeqyalla. »,
+> « Dinaŋ norma qoç-na. »).
 
 **Contexte.** `supabase/functions/chat/index.ts` ne vérifie que la présence de
 la clé `ANTHROPIC_API_KEY`. Elle **ne valide pas l'appelant** : la clé `anon`

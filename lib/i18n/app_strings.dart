@@ -594,7 +594,7 @@ const Map<String, Map<String, String>> _strings = {
 
   // ── Chat ──────────────────────────────────────────────────────────────────
   // Infobulles (remplacent celles de Flutter, toujours en anglais faute de
-  // traductions Material chargées). CE « Menyu sẋadella » : Dico3, à valider.
+  // traductions Material chargées). CE validé par l'auteur le 2026-11-21.
   'nav.menu': {
     'FR': 'Ouvrir le menu',
     'EN': 'Open menu',
@@ -604,7 +604,7 @@ const Map<String, Map<String, String>> _strings = {
   'common.back':
       {'FR': 'Retour', 'EN': 'Back', 'RU': 'Назад', 'CE': 'Yuxa'},
   // ── Dictionnaire (LinguaCE Core) ───────────────────────────────────────
-  // CE : Dico3, à valider (termes grammaticaux tchétchènes compris).
+  // CE validé par l'auteur le 2026-11-21, termes grammaticaux compris.
   'dict.title': {
     'FR': 'Dictionnaire',
     'EN': 'Dictionary',
@@ -685,7 +685,7 @@ const Map<String, Map<String, String>> _strings = {
   },
 
   // ── Nouveau mot de passe (lien de réinitialisation, tâche #4) ──────────
-  // CE : Dico3, à valider (« Doġanaŋ doş » repris de l'inscription).
+  // CE validé par l'auteur le 2026-11-21.
   'reset.title': {
     'FR': 'Nouveau mot de passe',
     'EN': 'New password',
