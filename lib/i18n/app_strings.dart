@@ -681,7 +681,10 @@ const Map<String, Map<String, String>> _strings = {
     'FR': 'Expression',
     'EN': 'Phrase',
     'RU': 'Выражение',
-    'CE': 'Deşniyŋ cẋänaqetar'
+    // алар : tournure figée, locution — le sens des entrées « phrase » du
+    // lexique (formules de politesse, questions toutes faites). Auteur,
+    // 2026-11-21.
+    'CE': 'Alar'
   },
 
   // ── Nouveau mot de passe (lien de réinitialisation, tâche #4) ──────────
