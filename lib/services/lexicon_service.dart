@@ -33,6 +33,9 @@ class LexiconService {
     return _cache!;
   }
 
+  /// Oublie le cache (une prononciation vient d'être ajoutée au Studio).
+  static void invalidate() => _cache = null;
+
   /// Filtre [all] selon [query] : latin (sans diacritiques), cyrillique
   /// (variantes du palochka acceptées) et traductions dans [lang] (+ FR).
   /// Classement : correspondance exacte, puis début de mot, puis le reste ;

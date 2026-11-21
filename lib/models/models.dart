@@ -235,6 +235,18 @@ class Lexeme {
     this.audioUrl,
   });
 
+  /// Le même mot avec une nouvelle prononciation (après un dépôt au Studio).
+  Lexeme withAudio(String path) => Lexeme(
+        id: id,
+        cyrillic: cyrillic,
+        latin: latin,
+        pos: pos,
+        sense: sense,
+        nounClass: nounClass,
+        translations: translations,
+        audioUrl: path,
+      );
+
   /// Traductions dans la langue [lang], repli sur le français. En interface
   /// tchétchène, il n'y a pas de « traduction » : on montre le français.
   List<String> translationsFor(String lang) {

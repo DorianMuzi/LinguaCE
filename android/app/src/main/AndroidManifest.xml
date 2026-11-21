@@ -8,6 +8,8 @@
          l'appareil (cf. limite documentée dans docs/tasks-backlog.md #1) —
          relais du ScheduledNotificationBootReceiver ci-dessous. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- Studio : enregistrement des prononciations par les locuteurs natifs. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <application
         android:label="LinguaCE"
         android:name="${applicationName}"

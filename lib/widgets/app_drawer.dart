@@ -11,6 +11,8 @@ import '../services/auth_service.dart';
 import '../screens/auth_screen.dart';
 import '../screens/dictionary_screen.dart';
 import '../screens/profile_screen.dart';
+import '../screens/studio_screen.dart';
+import '../services/lexeme_audio.dart';
 import 'language_picker.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -22,11 +24,19 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   Map<String, dynamic>? _profile;
+  bool _isRecorder = false;
 
   @override
   void initState() {
     super.initState();
     _loadProfile();
+    _loadRecorder();
+  }
+
+  /// Le Studio n'apparaît qu'aux enregistreurs (locuteurs natifs inscrits).
+  Future<void> _loadRecorder() async {
+    final ok = await RecordingService.isRecorder();
+    if (mounted && ok) setState(() => _isRecorder = true);
   }
 
   Future<void> _loadProfile() async {
@@ -260,6 +270,13 @@ class _AppDrawerState extends State<AppDrawer> {
                     onTap: () => _closeDrawer().push(MaterialPageRoute(
                         builder: (_) => const DictionaryScreen())),
                   ),
+                  if (_isRecorder)
+                    _DrawerItem(
+                      icon: Icons.mic_none_rounded,
+                      label: tr('studio.title'),
+                      onTap: () => _closeDrawer().push(MaterialPageRoute(
+                          builder: (_) => const StudioScreen())),
+                    ),
                   _DrawerItem(
                     icon: Icons.info_outline,
                     label: tr('drawer.about'),

@@ -8,6 +8,7 @@ import '../design/responsive.dart';
 import '../i18n/app_strings.dart';
 import '../i18n/locale_controller.dart';
 import '../models/models.dart';
+import '../services/lexeme_audio.dart';
 import '../services/lexicon_service.dart';
 
 /// Premier dictionnaire de LinguaCE, alimenté par le lexique commun du Core
@@ -17,7 +18,10 @@ class DictionaryScreen extends StatefulWidget {
   /// Source des mots — injectable pour les tests.
   final Future<List<Lexeme>> Function()? load;
 
-  const DictionaryScreen({super.key, this.load});
+  /// Lecture d'une prononciation — injectable pour les tests.
+  final Future<void> Function(String audioUrl)? play;
+
+  const DictionaryScreen({super.key, this.load, this.play});
 
   @override
   State<DictionaryScreen> createState() => _DictionaryScreenState();
@@ -157,7 +161,16 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     );
   }
 
+  Future<void> _play(String audioUrl) async {
+    try {
+      await (widget.play ?? LexemeAudio.play)(audioUrl);
+    } catch (_) {
+      // Son indisponible (réseau) : le mot reste lisible, rien à signaler.
+    }
+  }
+
   Widget _entry(Lexeme l) {
+    final t = context.tokens;
     final cls = Lexeme.classLetter(l.nounClass);
     return CopilotCard(
       child: Row(
@@ -172,6 +185,12 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
               size: 26,
             ),
           ),
+          if (l.audioUrl case final audio?)
+            IconButton(
+              tooltip: tr('audio.play'),
+              icon: Icon(Icons.volume_up_rounded, color: t.accent),
+              onPressed: () => _play(audio),
+            ),
           const SizedBox(width: LinguaSpacing.md),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,

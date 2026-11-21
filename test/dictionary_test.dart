@@ -143,5 +143,29 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('barkalla'), findsOneWidget);
     });
+
+    testWidgets('🔊 seulement pour les mots qui ont une prononciation',
+        (tester) async {
+      final played = <String>[];
+      final initial = localeController.value;
+      addTearDown(() => localeController.value = initial);
+      localeController.value = 'FR';
+      await tester.pumpWidget(MaterialApp(
+        theme: LinguaTheme.dark(),
+        home: DictionaryScreen(
+          load: () async => [
+            _words.first.withAudio('${_words.first.id}/1.wav'),
+            ..._words.skip(1),
+          ],
+          play: (url) async => played.add(url),
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      final speaker = find.byTooltip(tr('audio.play'));
+      expect(speaker, findsOneWidget);
+      await tester.tap(speaker);
+      expect(played, ['${_words.first.id}/1.wav']);
+    });
   });
 }

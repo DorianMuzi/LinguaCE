@@ -756,6 +756,101 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Пароль изменён.',
     'CE': 'Doġanaŋ doş xiycina.'
   },
+  // ── Studio (prononciations natives, LinguaCE Voice) ─────────────────────
+  // CE : rédigé en cyrillique, latin Dico3 — À VALIDER par l'auteur.
+  'studio.title':
+      {'FR': 'Studio', 'EN': 'Studio', 'RU': 'Студия', 'CE': 'Studio'},
+  'studio.progress': {
+    'FR': '{n} / {t} mots enregistrés',
+    'EN': '{n} / {t} words recorded',
+    'RU': 'Записано слов: {n} / {t}',
+    'CE': '{n} / {t} doş djayazdina'
+  },
+  'studio.record': {
+    'FR': 'Enregistrer',
+    'EN': 'Record',
+    'RU': 'Записать',
+    'CE': 'Djayazde'
+  },
+  'studio.stop':
+      {'FR': 'Arrêter', 'EN': 'Stop', 'RU': 'Остановить', 'CE': 'Sacae'},
+  'studio.listen':
+      {'FR': 'Écouter', 'EN': 'Listen', 'RU': 'Прослушать', 'CE': 'Ladoġa'},
+  'studio.redo': {
+    'FR': 'Refaire',
+    'EN': 'Redo',
+    'RU': 'Перезаписать',
+    'CE': 'Yuxa djayazde'
+  },
+  'studio.keep':
+      {'FR': 'Garder', 'EN': 'Keep', 'RU': 'Сохранить', 'CE': 'Ç̇aġde'},
+  'studio.skip':
+      {'FR': 'Passer', 'EN': 'Skip', 'RU': 'Пропустить', 'CE': 'Ṫexdala'},
+  'studio.current': {
+    'FR': 'Prise actuelle',
+    'EN': 'Current take',
+    'RU': 'Текущая запись',
+    'CE': 'Hincalera yazdar'
+  },
+  'studio.hint': {
+    'FR': 'Dis le mot une fois, clairement, sans bruit autour.',
+    'EN': 'Say the word once, clearly, with no background noise.',
+    'RU': 'Произнеси слово один раз, чётко, без шума вокруг.',
+    'CE': 'Doş cq̇a ala, q̇ästtina, gonax ġovġa yocuş.'
+  },
+  'studio.keys': {
+    'FR': 'Espace : enregistrer / arrêter · Entrée : garder · → : passer',
+    'EN': 'Space: record / stop · Enter: keep · →: skip',
+    'RU': 'Пробел: записать / остановить · Enter: сохранить · →: пропустить',
+    'CE': 'Space: djayazde / sacae · Enter: ç̇aġde · →: ṫexdala'
+  },
+  'studio.mic_denied': {
+    'FR': 'Micro refusé. Autorise-le dans les réglages du navigateur ou du '
+        'téléphone.',
+    'EN': 'Microphone blocked. Allow it in your browser or phone settings.',
+    'RU': 'Микрофон заблокирован. Разреши его в настройках браузера или '
+        'телефона.',
+    'CE': 'Mikrofon djaq̇ovlina bu. Brauzeraŋ ya telefonaŋ parametraşkaẋ '
+        'baq̇o lo.'
+  },
+  'studio.silence': {
+    'FR': 'Aucun son détecté. Rapproche-toi du micro.',
+    'EN': 'No sound detected. Move closer to the microphone.',
+    'RU': 'Звук не обнаружен. Подойди ближе к микрофону.',
+    'CE': 'Az ca xeza. Mikrofone gerga ẋaƶa.'
+  },
+  'studio.saved': {
+    'FR': 'Enregistré.',
+    'EN': 'Saved.',
+    'RU': 'Сохранено.',
+    'CE': 'Djayazdina.'
+  },
+  'studio.done_label': {
+    'FR': 'Enregistré',
+    'EN': 'Recorded',
+    'RU': 'Записано',
+    'CE': 'Djayazdina'
+  },
+  'studio.all_done': {
+    'FR': 'Tous les mots sont enregistrés.',
+    'EN': 'Every word is recorded.',
+    'RU': 'Все слова записаны.',
+    'CE': 'Masso a deşnaş djayazdina.'
+  },
+  'studio.filter_missing': {
+    'FR': 'À enregistrer',
+    'EN': 'To record',
+    'RU': 'Записать',
+    'CE': 'Djayazda deza'
+  },
+  'studio.filter_all':
+      {'FR': 'Tous', 'EN': 'All', 'RU': 'Все', 'CE': 'Masso a'},
+  'audio.play': {
+    'FR': 'Écouter la prononciation',
+    'EN': 'Listen to the pronunciation',
+    'RU': 'Прослушать произношение',
+    'CE': 'Ladoġa'
+  },
   'chat.send':
       {'FR': 'Envoyer', 'EN': 'Send', 'RU': 'Отправить', 'CE': 'Djadaxiyta'},
   'chat.language': {'FR': 'Langue :', 'EN': 'Language:', 'RU': 'Язык:', 'CE': 'Mott:'},
