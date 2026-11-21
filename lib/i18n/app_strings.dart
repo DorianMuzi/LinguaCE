@@ -757,7 +757,7 @@ const Map<String, Map<String, String>> _strings = {
     'CE': 'Doġanaŋ doş xiycina.'
   },
   // ── Barre de lettres tchétchènes (libellés lus par les lecteurs d'écran) ─
-  // CE : rédigé en cyrillique, latin Dico3 — À VALIDER par l'auteur.
+  // CE : rédigé en cyrillique, latin Dico3, validé par l'auteur le 2026-11-21.
   'letters.insert': {
     'FR': 'Insérer « {l} »',
     'EN': 'Insert “{l}”',
