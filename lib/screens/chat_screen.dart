@@ -11,6 +11,7 @@ import '../models/models.dart';
 import '../services/claude_service.dart';
 import '../services/chat_service.dart';
 import '../services/onboarding_service.dart';
+import '../widgets/letter_bar.dart';
 
 /// Brouillon à déposer dans le champ de saisie du chat depuis un autre écran
 /// (p. ex. « Pratiquer le mot du jour » sur l'accueil). Jamais envoyé
@@ -547,7 +548,28 @@ class _ChatScreenState extends State<ChatScreen> {
         color: t.surfaceRaised,
         border: Border(top: BorderSide(color: t.outlineSubtle)),
       ),
-      child: Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Lettres tchétchènes, visibles pendant la saisie seulement.
+          ListenableBuilder(
+            listenable: _inputFocus,
+            builder: (_, __) => _inputFocus.hasFocus
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: LetterBar(
+                        controller: _controller, focusNode: _inputFocus),
+                  )
+                : const SizedBox.shrink(),
+          ),
+          _buildInputRow(t),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputRow(LinguaTokens t) {
+    return Row(
         children: [
           Expanded(
             child: TextField(
@@ -595,7 +617,6 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
         ],
-      ),
     );
   }
 }

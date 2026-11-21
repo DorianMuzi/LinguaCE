@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/models.dart';
+import 'muzin_dar.dart';
 import 'text_fold.dart';
 
 /// Accès au lexique commun (LinguaCE Core) et recherche du dictionnaire.
@@ -42,8 +43,9 @@ class LexiconService {
   /// à égalité, ordre alphabétique latin. Requête vide → tout le lexique.
   static List<Lexeme> search(List<Lexeme> all, String query, String lang) {
     final q = TextFold.foldCyrillic(query);
+    // Ordre de l'alphabet Muziŋ Dar, pas des points de code (ẋ avant y).
     if (q.isEmpty) {
-      return [...all]..sort((a, b) => a.latin.compareTo(b.latin));
+      return [...all]..sort((a, b) => MuzinDar.compare(a.latin, b.latin));
     }
 
     int? rank(Lexeme l) {
@@ -72,7 +74,7 @@ class LexiconService {
         if (rank(l) case final r?) (l, r),
     ]..sort((a, b) {
         final c = a.$2.compareTo(b.$2);
-        return c != 0 ? c : a.$1.latin.compareTo(b.$1.latin);
+        return c != 0 ? c : MuzinDar.compare(a.$1.latin, b.$1.latin);
       });
     return [for (final (l, _) in scored) l];
   }

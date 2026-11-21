@@ -756,6 +756,21 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Пароль изменён.',
     'CE': 'Doġanaŋ doş xiycina.'
   },
+  // ── Barre de lettres tchétchènes (libellés lus par les lecteurs d'écran) ─
+  // CE : rédigé en cyrillique, latin Dico3 — À VALIDER par l'auteur.
+  'letters.insert': {
+    'FR': 'Insérer « {l} »',
+    'EN': 'Insert “{l}”',
+    'RU': 'Вставить «{l}»',
+    'CE': '«{l}» çudilla'
+  },
+  'letters.shift': {
+    'FR': 'Majuscule',
+    'EN': 'Capital letter',
+    'RU': 'Заглавная буква',
+    'CE': 'Dokqa elp'
+  },
+
   // ── Studio (prononciations natives, LinguaCE Voice) ─────────────────────
   // CE : rédigé en cyrillique, latin Dico3, validé par l'auteur le 2026-11-21
   // (« Sacaye », corrigé par l'auteur).

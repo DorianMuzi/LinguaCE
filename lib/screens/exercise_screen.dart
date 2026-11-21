@@ -11,6 +11,7 @@ import '../models/models.dart';
 import '../services/exercise_service.dart';
 import '../services/lesson_service.dart';
 import '../services/text_fold.dart';
+import '../widgets/letter_bar.dart';
 import '../widgets/report_sheet.dart';
 
 // ═══════════════════════════════════════════════════════════
@@ -83,6 +84,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
 
   int? _selectedChoice;
   final _translCtrl = TextEditingController();
+  final _translFocus = FocusNode();
 
   @override
   void initState() {
@@ -123,6 +125,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
   void dispose() {
     _flipCtrl.dispose();
     _translCtrl.dispose();
+    _translFocus.dispose();
     super.dispose();
   }
 
@@ -777,6 +780,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
             const SizedBox(height: 10),
             TextField(
               controller: _translCtrl,
+              focusNode: _translFocus,
               style: GoogleFonts.manrope(color: t.textPrimary, fontSize: 20),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -802,6 +806,10 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                     horizontal: 18, vertical: 14),
               ),
             ),
+            const SizedBox(height: 10),
+            // Lettres absentes d'un clavier ordinaire (ẋ, ç̇, q̇…). Facultatif :
+            // la réponse sans diacritiques reste acceptée.
+            LetterBar(controller: _translCtrl, focusNode: _translFocus),
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
