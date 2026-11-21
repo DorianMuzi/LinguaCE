@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'locale_controller.dart';
 
 /// Traduit une clé dans la langue d'interface courante.
@@ -5,8 +7,8 @@ import 'locale_controller.dart';
 /// [params] permet l'interpolation : `tr('home.streak', {'n': '3'})`
 /// remplace `{n}` par `3`. Repli sur le français si la traduction manque.
 ///
-/// ⚠️ Les traductions tchétchènes (CE) sont fournies en **best-effort**
-/// (système latin Muziŋ Dar) et méritent une relecture par un locuteur.
+/// Les textes tchétchènes (CE) sont en latin Muziŋ Dar, validés par l'auteur
+/// (novembre 2026). Tout nouveau texte CE doit l'être avant publication.
 String tr(String key, [Map<String, String>? params]) {
   final lang = localeController.value;
   final entry = _strings[key];
@@ -16,6 +18,10 @@ String tr(String key, [Map<String, String>? params]) {
   }
   return s;
 }
+
+/// Toutes les traductions, pour les tests (complétude, script CE).
+@visibleForTesting
+Map<String, Map<String, String>> get debugAppStrings => _strings;
 
 const Map<String, Map<String, String>> _strings = {
   // ── Navigation ────────────────────────────────────────────────────────────
@@ -473,7 +479,8 @@ const Map<String, Map<String, String>> _strings = {
     'RU': 'Конфиденциальность',
     'CE': 'Q̇aylaxalla'
   },
-  // Textes longs : pas encore de version CE (repli sur le FR).
+  // Textes longs : CE rédigé en cyrillique, latin Dico3, validé par l'auteur
+  // le 2026-11-21.
   'set.privacy_body': {
     'FR': 'Ce que LinguaCE enregistre :\n'
         '• ton compte (adresse e-mail) et ton profil : pseudo, XP, niveau, '
@@ -510,6 +517,18 @@ const Map<String, Map<String, String>> _strings = {
         'Твоё имя и XP видны в рейтинге.\n\n'
         'Язык, тема, уровень и напоминания остаются на твоём устройстве.\n\n'
         'Вопросы? Пиши нам в Discord: discord.gg/fnPmjfttc',
+    'CE': 'LinguaCE-s ç̇aġdo:\n'
+        '• ẋaŋ akkaunt (elektronni poşt) a, ẋaŋ profil a: ċe, XP, ṫeġa, '
+        'roġ, liga;\n'
+        '• deşarşkara ẋaŋ progress;\n'
+        '• Naxçica xilla ẋaŋ q̇amel (Q̇ameleẋ djadaqa yiş yu, korzinaŋ '
+        'ikonka);\n'
+        '• aẋ xaam bina ġalataş.\n\n'
+        'Naxçiga yazdina ẋaŋ xaamaş Claude-ga (Anthropic) djadaxiyto, '
+        'ƶöpaş qolla.\n\n'
+        'Ẋaŋ ċe a, XP a reytingeẋ guş yu.\n\n'
+        'Mott, tema, ṫeġa, daga daytar ẋaŋ telefoneẋ düsu.\n\n'
+        'Xattar duy? Discord-eẋ yazde txuna: discord.gg/fnPmjfttc',
   },
   'set.help': {
     'FR': 'Aide & Support',
@@ -535,6 +554,12 @@ const Map<String, Map<String, String>> _strings = {
         'Слово переведено или транслитерировано неверно? В уроке нажми на '
         'флажок, чтобы сообщить.\n\n'
         'Ошибка, идея? Присоединяйся к сообществу:\n'
+        'Discord: discord.gg/fnPmjfttc\n'
+        'Instagram: @lingua_ce',
+    'CE': 'Noxçiyŋ mattax xattar duy? Naxçiga xatta, «Q̇amel» deq̇eẋ.\n\n'
+        'Doş niysa ca goçdina ya ca yazdina? Deşareẋ bayraq ṫetajae, '
+        'xaam be.\n\n'
+        'Ġalat, kerla oyla? Txaŋ yuq̇aralle djaqeta:\n'
         'Discord: discord.gg/fnPmjfttc\n'
         'Instagram: @lingua_ce',
   },
