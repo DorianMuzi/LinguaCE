@@ -99,7 +99,11 @@ class CopilotCard extends StatelessWidget {
       boxShadow: elevated ? t.shadowSm : null,
     );
 
+    // La clé empêche d'animer le passage filet ↔ contour : à mi-parcours,
+    // l'interpolation donnerait quatre côtés de couleurs différentes avec des
+    // coins arrondis, ce que Flutter refuse de peindre.
     final body = AnimatedContainer(
+      key: ValueKey(edge != null),
       duration: LinguaDuration.base,
       curve: LinguaCurves.out,
       padding: padding,
