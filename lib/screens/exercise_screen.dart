@@ -986,7 +986,9 @@ class _ExerciseScreenState extends State<ExerciseScreen>
                           : Icons.lightbulb_rounded,
                       tint: _mistakes == 0 ? t.success : null),
                   Container(width: 1, height: 40, color: t.outlineSubtle),
-                  _stat(t, tr('ex.exercises'), '${_exercises.length}',
+                  // Nombre d'exercices de la leçon, sans les reprises de la
+                  // boucle de rattrapage (sinon « 7 » pour une leçon de 6).
+                  _stat(t, tr('ex.exercises'), '$_baseCount',
                       Icons.menu_book_rounded, tint: t.textAccent),
                 ],
               ),
