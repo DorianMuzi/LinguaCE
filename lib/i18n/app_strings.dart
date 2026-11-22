@@ -757,7 +757,7 @@ const Map<String, Map<String, String>> _strings = {
     'CE': 'Doġanaŋ doş xiycina.'
   },
   // ── Proposer un mot (dictionnaire) ───────────────────────────────────────
-  // CE : rédigé en cyrillique, latin Dico3 — À VALIDER par l'auteur.
+  // CE : rédigé en cyrillique, latin Dico3, validé par l'auteur le 2026-11-22.
   'dict.propose': {
     'FR': 'Proposer ce mot',
     'EN': 'Suggest this word',
